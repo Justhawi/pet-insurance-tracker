@@ -100,7 +100,7 @@ def _do_refresh():
         import fetch_live_data as fld
         def cb(line):
             _refresh["message"] = str(line)[-160:]
-        results = fld.run_fetch(progress_cb=cb, discover=True)
+        results = fld.run_fetch(progress_cb=cb, discover=True, use_browser=False)
         # run_fetch already wrote companies_data.json + baked the HTML in this folder
         _refresh.update(count=len(results), message="Done")
     except Exception as e:
