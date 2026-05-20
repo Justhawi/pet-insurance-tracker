@@ -238,12 +238,18 @@ def label_matches_company(label, company_name, website=""):
     """
     if not label:
         return False
-    label = _deaccent(label)
+    nlabel = _deaccent(label)
+    collapsed_label = re.sub(r'[^a-z0-9]', '', nlabel)   # "Lifetime Pet Cover" -> "lifetimepetcover"
     btoks = brand_tokens(company_name)
     dtoks = domain_tokens(website)
     for t in btoks + dtoks:
-        if t in label:
+        if t and (t in nlabel or t in collapsed_label):
             return True
+    # Spacing/punctuation-tolerant full-name match so e.g.
+    # "Lifetime Pet Cover" matches the company "Lifetimepetcover".
+    collapsed_company = re.sub(r'[^a-z0-9]', '', _deaccent(company_name))
+    if len(collapsed_company) >= 6 and collapsed_company in collapsed_label:
+        return True
     return False
 
 def calc(tp_s, tp_r, g_s, g_r):
@@ -835,19 +841,23 @@ _GM_JS = r"""
             const v = num(sp.textContent);
             if (v >= 1 && v <= 5) { rating = v; break; }
         }
+        // Review count — handle European formats too: (11.686), 11 686, 1,234 …
         let count = 0;
-        const row = f7.parentElement;
-        if (row) {
-            for (const child of row.children) {
-                if (child === f7) continue;
-                const btn = child.querySelector('button[aria-label], [aria-label*="review"]') || child;
-                const lbl = (btn.getAttribute ? btn.getAttribute('aria-label') : null) || btn.innerText || '';
-                if (/review|avis|rese|bewertung|recensione|avalia/i.test(lbl)) {
-                    const m = lbl.match(/(\d[\d,\.\s]*)/);
-                    if (m) { count = cnt(m[1]); break; }
+        const scopes = [f7, f7.parentElement].filter(Boolean);
+        for (const scope of scopes) {
+            const txt = scope.innerText || '';
+            let m = txt.match(/[\(\[]\s*(\d[\d.,\s ]*\d)\s*[\)\]]/);   // (11.686)
+            if (m && cnt(m[1]) > 0) { count = cnt(m[1]); break; }
+            m = txt.match(/(\d[\d.,\s ]*\d|\d)\s*(?:reviews?|rese|opinion|avis|recension|bewertung|valoracion|avalia)/i);
+            if (m && cnt(m[1]) > 0) { count = cnt(m[1]); break; }
+            for (const el of scope.querySelectorAll('[aria-label]')) {
+                const lbl = el.getAttribute('aria-label') || '';
+                if (/review|rese|opinion|avis|recension|bewertung|valoracion|avalia/i.test(lbl)) {
+                    const mm = lbl.match(/(\d[\d.,\s ]*\d|\d)/);
+                    if (mm && cnt(mm[1]) > 0) { count = cnt(mm[1]); break; }
                 }
             }
-            if (!count) { const m = row.innerText.match(/\((\d[\d,]+)\)/); if (m) count = cnt(m[1]); }
+            if (count) break;
         }
         if (rating >= 1 && rating <= 5) return {rating, count, title};
     }
@@ -858,8 +868,8 @@ _GM_JS = r"""
         if (mR) {
             const rating = num(mR[1]); let count = 0; let node = starEl.parentElement;
             for (let i = 0; i < 5 && node; i++) {
-                const mT = node.innerText.match(/\((\d[\d,]+)\)/);
-                if (mT) { count = cnt(mT[1]); break; }
+                const mT = node.innerText.match(/[\(\[]\s*(\d[\d.,\s ]*\d)\s*[\)\]]/);
+                if (mT && cnt(mT[1]) > 0) { count = cnt(mT[1]); break; }
                 node = node.parentElement;
             }
             if (rating >= 1 && rating <= 5) return {rating, count, title};
