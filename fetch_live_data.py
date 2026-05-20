@@ -690,28 +690,68 @@ def _http_get(url, timeout=20):
         return r.getcode(), r.read().decode("utf-8", "ignore")
 
 def fetch_trustpilot_http(company_name, website):
-    """Browser-free Trustpilot fetch (for the cloud server).
-    Returns (status, score, reviews, url)."""
+    """Browser-free Trustpilot fetch (cloud server). Returns (status, score, reviews, url).
+    Key rule: a BLOCK (403/429/5xx/network) is NOT 'not_listed' — we return 'error'
+    so the caller keeps the previous real value. Only a clean 404 (or a search that
+    finds nothing) counts as genuinely not on Trustpilot."""
     domains = []
     if website:
         d = re.sub(r'^https?://', '', website).rstrip('/').split('/')[0]
         domains.append(d)
         domains.append(d[4:] if d.startswith('www.') else 'www.' + d)
-    reached = False
-    for dom in domains:
-        url = f"https://www.trustpilot.com/review/{dom}"
+
+    state = {"saw_404": False, "saw_block": False}
+
+    def _try(url):
         try:
             code, html = _http_get(url)
-            reached = True
         except urllib.error.HTTPError as e:
-            reached = True
-            continue
+            if e.code == 404:
+                state["saw_404"] = True
+            else:                       # 403 / 429 / 5xx => blocked, not "missing"
+                state["saw_block"] = True
+            return None
         except Exception:
-            continue
-        s, c = _parse_tp_html(html)
-        if s > 0:
-            return "ok", s, c, url
-    return ("not_listed" if reached else "error"), 0.0, 0, ""
+            state["saw_block"] = True
+            return None
+        sc, ct = _parse_tp_html(html)
+        return (sc, ct) if sc > 0 else None
+
+    # 1) Direct profile by website domain
+    for dom in domains:
+        url = f"https://www.trustpilot.com/review/{dom}"
+        r = _try(url)
+        if r:
+            return "ok", r[0], r[1], url
+
+    # 2) Search fallback (only worth trying if we were not blocked)
+    if not state["saw_block"]:
+        try:
+            code, html = _http_get(
+                "https://www.trustpilot.com/search?query=" + urllib.parse.quote_plus(company_name))
+            mnd = re.search(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', html, re.DOTALL)
+            if mnd:
+                units = []
+                _walk_business_units(json.loads(mnd.group(1)), units)
+                for u in units:
+                    if label_matches_company(u.get("name", ""), company_name, website):
+                        sc = float(u.get("score") or 0); ct = int(u.get("reviews") or 0)
+                        dom = (u.get("website") or "").strip()
+                        url = f"https://www.trustpilot.com/review/{dom}" if dom else \
+                              "https://www.trustpilot.com/search?query=" + urllib.parse.quote_plus(company_name)
+                        if sc > 0:
+                            return "ok", round(sc, 1), ct, url
+        except urllib.error.HTTPError as e:
+            if e.code != 404:
+                state["saw_block"] = True
+        except Exception:
+            pass
+
+    if state["saw_block"]:
+        return "error", 0.0, 0, ""        # blocked -> keep previous real value
+    if state["saw_404"]:
+        return "not_listed", 0.0, 0, ""   # genuinely no profile
+    return "error", 0.0, 0, ""
 
 def discover_emerging_companies_http(existing_results, min_opinions=501, max_pages=4):
     """Browser-free version of emerging-company discovery (Trustpilot category)."""
