@@ -7,7 +7,8 @@ Google Maps : uses JavaScript evaluation for reliable score + review count
 
 import json, re, time, os, sys, urllib.parse, random, urllib.request, urllib.error
 from datetime import datetime
-from playwright.sync_api import sync_playwright
+# NOTE: playwright is imported lazily inside run_fetch (browser mode only),
+# so this module also runs on servers that have no browser installed.
 
 HERE      = os.path.dirname(os.path.abspath(__file__))
 JSON_PATH = os.path.join(HERE, "companies_data.json")
@@ -265,11 +266,9 @@ def accept_consent(page):
 # ─────────────────────────────────────────────────────────────
 # TRUSTPILOT  — search-first approach
 # ─────────────────────────────────────────────────────────────
-def _extract_tp(page):
-    """Extract TrustScore + reviewCount from current Trustpilot page."""
-    content = page.content()
-
-    # 1. __NEXT_DATA__ (most reliable — Next.js inlines all data)
+def _parse_tp_html(content):
+    """Extract (score, reviews) from Trustpilot page HTML. Pure string parsing,
+    no browser — usable both from Playwright (page.content()) and plain HTTP."""
     m = re.search(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', content, re.DOTALL)
     if m:
         try:
@@ -279,8 +278,6 @@ def _extract_tp(page):
             if sc and float(sc.group(1)) > 0:
                 return round(float(sc.group(1)), 1), int(ct.group(1) if ct else 0)
         except Exception: pass
-
-    # 2. JSON-LD aggregateRating
     for raw in re.findall(r'<script[^>]*type="application/ld\+json"[^>]*>(.*?)</script>', content, re.DOTALL):
         try:
             data  = json.loads(raw)
@@ -292,29 +289,29 @@ def _extract_tp(page):
                 if rv and float(rv) > 0:
                     return round(float(rv), 1), _int(rc or 0)
         except Exception: pass
+    m_s = re.search(r'"ratingValue"\s*:\s*"?([\d.]+)"?', content)
+    m_c = re.search(r'"(?:reviewCount|numberOfRatings|ratingCount|numberOfReviews)"\s*:\s*"?(\d[\d,]*)"?', content)
+    if m_s and float(m_s.group(1)) > 0:
+        return round(float(m_s.group(1)), 1), _int(m_c.group(1) if m_c else 0)
+    return 0.0, 0
 
-    # 3. DOM — Trustpilot data-* attributes
+def _extract_tp(page):
+    """Browser version: parse the page HTML, then a DOM fallback."""
+    s, c = _parse_tp_html(page.content())
+    if s > 0:
+        return s, c
     try:
-        r = page.eval_on_selector('[data-rating-typography="true"]',
-                                   'el => el.textContent.trim()')
+        r = page.eval_on_selector('[data-rating-typography="true"]', 'el => el.textContent.trim()')
         if r:
             score = float(r.replace(',', '.'))
             if 1 <= score <= 5:
                 ct = 0
                 try:
-                    ct_t = page.eval_on_selector('[data-reviews-count-typography="true"]',
-                                                  'el => el.textContent.trim()')
+                    ct_t = page.eval_on_selector('[data-reviews-count-typography="true"]', 'el => el.textContent.trim()')
                     ct = _int(ct_t or 0)
                 except Exception: pass
                 return round(score, 1), ct
     except Exception: pass
-
-    # 4. Regex sweep
-    m_s = re.search(r'"ratingValue"\s*:\s*"?([\d.]+)"?', content)
-    m_c = re.search(r'"(?:reviewCount|numberOfRatings|ratingCount|numberOfReviews)"\s*:\s*"?(\d[\d,]*)"?', content)
-    if m_s and float(m_s.group(1)) > 0:
-        return round(float(m_s.group(1)), 1), _int(m_c.group(1) if m_c else 0)
-
     return 0.0, 0
 
 def fetch_trustpilot(page, company_name, website):
@@ -680,7 +677,111 @@ def discover_emerging_companies(page, existing_results, min_opinions=500, max_pa
 # ─────────────────────────────────────────────────────────────
 # MAIN
 # ─────────────────────────────────────────────────────────────
-def run_fetch(companies=None, progress_cb=None, discover=True):
+_HTTP_HEADERS = {
+    "User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                   "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"),
+    "Accept-Language": "en-US,en;q=0.9",
+    "Accept": "text/html,application/xhtml+xml",
+}
+
+def _http_get(url, timeout=20):
+    req = urllib.request.Request(url, headers=_HTTP_HEADERS)
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        return r.getcode(), r.read().decode("utf-8", "ignore")
+
+def fetch_trustpilot_http(company_name, website):
+    """Browser-free Trustpilot fetch (for the cloud server).
+    Returns (status, score, reviews, url)."""
+    domains = []
+    if website:
+        d = re.sub(r'^https?://', '', website).rstrip('/').split('/')[0]
+        domains.append(d)
+        domains.append(d[4:] if d.startswith('www.') else 'www.' + d)
+    reached = False
+    for dom in domains:
+        url = f"https://www.trustpilot.com/review/{dom}"
+        try:
+            code, html = _http_get(url)
+            reached = True
+        except urllib.error.HTTPError as e:
+            reached = True
+            continue
+        except Exception:
+            continue
+        s, c = _parse_tp_html(html)
+        if s > 0:
+            return "ok", s, c, url
+    return ("not_listed" if reached else "error"), 0.0, 0, ""
+
+def discover_emerging_companies_http(existing_results, min_opinions=501, max_pages=4):
+    """Browser-free version of emerging-company discovery (Trustpilot category)."""
+    log(f"\n🔍 Discovering emerging companies online (> {min_opinions-1} reviews)…")
+    known = _known_names()
+    found = []
+    base  = "https://www.trustpilot.com/categories/pet_insurance_agency"
+    for pg in range(1, max_pages + 1):
+        url = base if pg == 1 else f"{base}?page={pg}"
+        try:
+            code, content = _http_get(url, timeout=20)
+        except Exception as e:
+            log(f"   ⚠️  category page {pg} error: {e}")
+            continue
+        cards = []
+        mnd = re.search(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', content, re.DOTALL)
+        if mnd:
+            try:
+                nd = json.loads(mnd.group(1)); tmp = []; _walk_business_units(nd, tmp)
+                seen = set()
+                for bu in tmp:
+                    k = bu["name"].lower()
+                    if k in seen: continue
+                    seen.add(k); cards.append(bu)
+            except Exception: pass
+        for card in cards:
+            name = (card.get("name") or "").strip()
+            reviews = int(card.get("reviews") or 0)
+            score = float(card.get("score") or 0)
+            web = (card.get("website") or "").strip()
+            if not name or name.lower() in known: continue
+            if reviews < min_opinions: continue
+            log(f"   ✨ New: {name} ({reviews:,} reviews)")
+            known.add(name.lower())
+            found.append({
+                "country": "Unknown", "company": name, "website": web, "opType": "Only Sale",
+                "group": "", "link": "", "underwriter": "",
+                "tpScore": round(score, 1), "tpReviews": reviews,
+                "gScore": 0.0, "gReviews": 0, "tpStatus": "ok", "gStatus": "not_listed",
+                "tpUrl": (f"https://www.trustpilot.com/review/{web}" if web else ""), "gUrl": "",
+                "pondScore": round(score, 1), "avgScore": round(score, 1),
+                "totalOpinions": reviews, "date": datetime.now().strftime("%Y-%m-%d"),
+                "_auto_discovered": True,
+            })
+    log(f"🔍 Discovery done — {len(found)} new emerging companies added.")
+    return found
+
+def _finalize(c, tp_res, g_res, old, today):
+    """Apply not_listed/error rules + recompute scores. Returns (result, tp_status, g_status)."""
+    tp_status, tp_s, tp_r, tp_url = tp_res
+    if tp_status == "not_listed":
+        tp_s, tp_r, tp_url = 0.0, 0, ""
+    elif tp_status == "error":
+        ps = old.get("tpScore", 0) or 0; pr = old.get("tpReviews", 0) or 0
+        if ps > 0: tp_status, tp_s, tp_r, tp_url = "ok", ps, pr, (old.get("tpUrl", "") or "")
+        else: tp_status, tp_s, tp_r, tp_url = "error", 0.0, 0, ""
+    g_status, g_s, g_r, g_url = g_res
+    if g_status == "not_listed":
+        g_s, g_r, g_url = 0.0, 0, ""
+    elif g_status == "error":
+        ps = old.get("gScore", 0) or 0; pr = old.get("gReviews", 0) or 0
+        if ps > 0: g_status, g_s, g_r, g_url = "ok", ps, pr, (old.get("gUrl", "") or "")
+        else: g_status, g_s, g_r, g_url = "error", 0.0, 0, ""
+    pond, avg, total = calc(tp_s, tp_r, g_s, g_r)
+    return ({**c, "tpScore": tp_s, "tpReviews": tp_r, "gScore": g_s, "gReviews": g_r,
+             "tpStatus": tp_status, "gStatus": g_status, "tpUrl": tp_url, "gUrl": g_url,
+             "pondScore": pond, "avgScore": avg, "totalOpinions": total, "date": today},
+            tp_status, g_status)
+
+def run_fetch(companies=None, progress_cb=None, discover=True, use_browser=True):
     """
     Main fetch loop.
     - companies : list of company dicts (default: COMPANIES)
@@ -718,103 +819,129 @@ def run_fetch(companies=None, progress_cb=None, discover=True):
     results = []
     tp_ok = tp_fail = gm_ok = gm_fail = 0
 
-    with sync_playwright() as pw:
-        browser = pw.chromium.launch(
-            headless=True,
-            args=["--no-sandbox", "--disable-setuid-sandbox",
-                  "--disable-blink-features=AutomationControlled",
-                  "--window-size=1400,900"]
-        )
-        ctx = browser.new_context(
-            user_agent=("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                        "AppleWebKit/537.36 (KHTML, like Gecko) "
-                        "Chrome/124.0.0.0 Safari/537.36"),
-            viewport={"width": 1400, "height": 900},
-            locale="en-US",
-            timezone_id="America/New_York",
-        )
-        tp_page  = ctx.new_page()
-        disc_page = ctx.new_page()   # separate page for discovery, doesn't interfere
-        log("Browser ready (Trustpilot / Discovery). Google uses the Places API.")
+    if use_browser:
+        from playwright.sync_api import sync_playwright
+        with sync_playwright() as pw:
+            browser = pw.chromium.launch(
+                headless=True,
+                args=["--no-sandbox", "--disable-setuid-sandbox",
+                      "--disable-blink-features=AutomationControlled",
+                      "--window-size=1400,900"]
+            )
+            ctx = browser.new_context(
+                user_agent=("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                            "AppleWebKit/537.36 (KHTML, like Gecko) "
+                            "Chrome/124.0.0.0 Safari/537.36"),
+                viewport={"width": 1400, "height": 900},
+                locale="en-US",
+                timezone_id="America/New_York",
+            )
+            tp_page  = ctx.new_page()
+            disc_page = ctx.new_page()   # separate page for discovery, doesn't interfere
+            log("Browser ready (Trustpilot / Discovery). Google uses the Places API.")
 
+            for i, c in enumerate(companies, 1):
+                name    = c["company"]
+                website = c.get("website", "")
+                country = c.get("country", "")
+                old     = prev.get(name, {})
+
+                log(f"\n[{i:3d}/{len(companies)}] {name}  ({country})")
+
+                # ── Trustpilot ────────────────────────────────────────────
+                tp_status, tp_s, tp_r, tp_url = fetch_trustpilot(tp_page, name, website)
+                if tp_status == "ok":
+                    tp_ok += 1
+                    old_s = old.get("tpScore", 0)
+                    changed = f"  [was {old_s}]" if old_s and old_s != tp_s else ""
+                    log(f"         ✅ TP  score={tp_s}  reviews={tp_r:,}{changed}")
+                elif tp_status == "not_listed":
+                    tp_s, tp_r, tp_url = 0.0, 0, ""
+                    tp_fail += 1
+                    log(f"         🚫 TP  Not on Trustpilot")
+                else:  # error — keep previous value only if we actually have one
+                    prev_s = old.get("tpScore", 0) or 0
+                    prev_r = old.get("tpReviews", 0) or 0
+                    if prev_s > 0:
+                        tp_status, tp_s, tp_r = "ok", prev_s, prev_r
+                        tp_url = old.get("tpUrl", "") or ""
+                        log(f"         ⚠️  TP  fetch error — kept previous {tp_s} / {tp_r:,}")
+                    else:
+                        tp_status, tp_s, tp_r, tp_url = "error", 0.0, 0, ""
+                        log(f"         ⚠️  TP  fetch error — no data")
+                    tp_fail += 1
+                time.sleep(random.uniform(0.4, 0.8))
+
+                # ── Google Maps (official Places API) ──────────────────────
+                g_status, g_s, g_r, g_url = fetch_google_maps(name, country, website=website)
+                if g_status == "ok":
+                    gm_ok += 1
+                    old_gs = old.get("gScore", 0)
+                    changed = f"  [was {old_gs}]" if old_gs and old_gs != g_s else ""
+                    log(f"         ✅ GM  score={g_s}  reviews={g_r:,}{changed}")
+                elif g_status == "not_listed":
+                    g_s, g_r, g_url = 0.0, 0, ""
+                    gm_fail += 1
+                    log(f"         🚫 GM  Not on Google Maps")
+                else:  # error — keep previous value only if we actually have one
+                    prev_gs = old.get("gScore", 0) or 0
+                    prev_gr = old.get("gReviews", 0) or 0
+                    if prev_gs > 0:
+                        g_status, g_s, g_r = "ok", prev_gs, prev_gr
+                        g_url = old.get("gUrl", "") or ""
+                        log(f"         ⚠️  GM  fetch error — kept previous {g_s} / {g_r:,}")
+                    else:
+                        g_status, g_s, g_r, g_url = "error", 0.0, 0, ""
+                        log(f"         ⚠️  GM  fetch error / no API key — no data")
+                    gm_fail += 1
+                time.sleep(random.uniform(0.2, 0.4))
+
+                pond, avg, total = calc(tp_s, tp_r, g_s, g_r)
+                log(f"         📊 Pond={pond}  Avg={avg}  Total={total:,}")
+
+                results.append({**c,
+                    "tpScore": tp_s,   "tpReviews": tp_r,
+                    "gScore":  g_s,    "gReviews":  g_r,
+                    "tpStatus": tp_status, "gStatus": g_status,
+                    "tpUrl": tp_url,   "gUrl": g_url,
+                    "pondScore": pond, "avgScore": avg,
+                    "totalOpinions": total, "date": today,
+                })
+
+            # ── Emerging companies discovery ───────────────────────────
+            if discover:
+                emerging = discover_emerging_companies(
+                    disc_page, results, min_opinions=501, max_pages=4
+                )
+                if emerging:
+                    results = emerging + results
+                    log(f"✨ {len(emerging)} emerging companies appended to dataset.")
+
+            browser.close()
+    else:
+        log("Server mode: browser-free fetch (Trustpilot via HTTPS, Google via Places API).")
         for i, c in enumerate(companies, 1):
             name    = c["company"]
             website = c.get("website", "")
             country = c.get("country", "")
             old     = prev.get(name, {})
-
             log(f"\n[{i:3d}/{len(companies)}] {name}  ({country})")
-
-            # ── Trustpilot ────────────────────────────────────────────
-            tp_status, tp_s, tp_r, tp_url = fetch_trustpilot(tp_page, name, website)
-            if tp_status == "ok":
-                tp_ok += 1
-                old_s = old.get("tpScore", 0)
-                changed = f"  [was {old_s}]" if old_s and old_s != tp_s else ""
-                log(f"         ✅ TP  score={tp_s}  reviews={tp_r:,}{changed}")
-            elif tp_status == "not_listed":
-                tp_s, tp_r, tp_url = 0.0, 0, ""
-                tp_fail += 1
-                log(f"         🚫 TP  Not on Trustpilot")
-            else:  # error — keep previous value only if we actually have one
-                prev_s = old.get("tpScore", 0) or 0
-                prev_r = old.get("tpReviews", 0) or 0
-                if prev_s > 0:
-                    tp_status, tp_s, tp_r = "ok", prev_s, prev_r
-                    tp_url = old.get("tpUrl", "") or ""
-                    log(f"         ⚠️  TP  fetch error — kept previous {tp_s} / {tp_r:,}")
-                else:
-                    tp_status, tp_s, tp_r, tp_url = "error", 0.0, 0, ""
-                    log(f"         ⚠️  TP  fetch error — no data")
-                tp_fail += 1
-            time.sleep(random.uniform(0.4, 0.8))
-
-            # ── Google Maps (official Places API) ──────────────────────
-            g_status, g_s, g_r, g_url = fetch_google_maps(name, country, website=website)
-            if g_status == "ok":
-                gm_ok += 1
-                old_gs = old.get("gScore", 0)
-                changed = f"  [was {old_gs}]" if old_gs and old_gs != g_s else ""
-                log(f"         ✅ GM  score={g_s}  reviews={g_r:,}{changed}")
-            elif g_status == "not_listed":
-                g_s, g_r, g_url = 0.0, 0, ""
-                gm_fail += 1
-                log(f"         🚫 GM  Not on Google Maps")
-            else:  # error — keep previous value only if we actually have one
-                prev_gs = old.get("gScore", 0) or 0
-                prev_gr = old.get("gReviews", 0) or 0
-                if prev_gs > 0:
-                    g_status, g_s, g_r = "ok", prev_gs, prev_gr
-                    g_url = old.get("gUrl", "") or ""
-                    log(f"         ⚠️  GM  fetch error — kept previous {g_s} / {g_r:,}")
-                else:
-                    g_status, g_s, g_r, g_url = "error", 0.0, 0, ""
-                    log(f"         ⚠️  GM  fetch error / no API key — no data")
-                gm_fail += 1
-            time.sleep(random.uniform(0.2, 0.4))
-
-            pond, avg, total = calc(tp_s, tp_r, g_s, g_r)
-            log(f"         📊 Pond={pond}  Avg={avg}  Total={total:,}")
-
-            results.append({**c,
-                "tpScore": tp_s,   "tpReviews": tp_r,
-                "gScore":  g_s,    "gReviews":  g_r,
-                "tpStatus": tp_status, "gStatus": g_status,
-                "tpUrl": tp_url,   "gUrl": g_url,
-                "pondScore": pond, "avgScore": avg,
-                "totalOpinions": total, "date": today,
-            })
-
-        # ── Emerging companies discovery ───────────────────────────
+            tp_res = fetch_trustpilot_http(name, website)
+            g_res  = fetch_google_maps(name, country, website=website)
+            res, ts, gs = _finalize(c, tp_res, g_res, old, today)
+            results.append(res)
+            if ts == "ok": tp_ok += 1
+            else: tp_fail += 1
+            if gs == "ok": gm_ok += 1
+            else: gm_fail += 1
+            log(f"         TP {res['tpStatus']} {res['tpScore']}/{res['tpReviews']:,}  |  "
+                f"G {res['gStatus']} {res['gScore']}/{res['gReviews']:,}")
+            time.sleep(0.15)
         if discover:
-            emerging = discover_emerging_companies(
-                disc_page, results, min_opinions=501, max_pages=4
-            )
+            emerging = discover_emerging_companies_http(results, min_opinions=501)
             if emerging:
                 results = emerging + results
                 log(f"✨ {len(emerging)} emerging companies appended to dataset.")
-
-        browser.close()
 
     log("\n" + "=" * 60)
     log(f"Trustpilot  : {tp_ok} live  |  {tp_fail} kept previous")
