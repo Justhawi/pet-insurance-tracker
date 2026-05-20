@@ -4,7 +4,7 @@ Pet Insurance Tracker - Cloud Server (Render.com)
 Serves the dashboard 24/7.
 Data is pushed from the local fetch script after each run.
 """
-import json, os, re
+import json, os, re, time, threading
 from datetime import datetime
 from flask import Flask, jsonify, request, abort, Response
 
@@ -87,6 +87,48 @@ def api_upload():
                         "updated": datetime.now().isoformat()})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+# -- live refresh (triggered by the dashboard's Refresh button) -------
+# Runs the fetch in a background thread so the HTTP request returns instantly.
+_refresh = {"running": False, "started": None, "finished": None,
+            "message": "idle", "count": 0, "error": None}
+_MIN_INTERVAL = 60   # seconds; ignore refreshes fired closer than this (cost guard)
+
+def _do_refresh():
+    _refresh.update(running=True, error=None, message="Starting live fetch…")
+    try:
+        import fetch_live_data as fld
+        def cb(line):
+            _refresh["message"] = str(line)[-160:]
+        results = fld.run_fetch(progress_cb=cb, discover=True)
+        # run_fetch already wrote companies_data.json + baked the HTML in this folder
+        _refresh.update(count=len(results), message="Done")
+    except Exception as e:
+        _refresh.update(error=str(e), message=f"Error: {e}")
+    finally:
+        _refresh.update(running=False, finished=datetime.now().isoformat())
+
+@app.route("/api/refresh", methods=["POST"])
+def api_refresh():
+    """Kick off a live re-fetch of Trustpilot + Google Maps in the background."""
+    if _refresh["running"]:
+        return jsonify({"ok": True, "already_running": True, "message": _refresh["message"]})
+    # cost guard: don't allow rapid repeated refreshes
+    if _refresh["finished"]:
+        try:
+            last = datetime.fromisoformat(_refresh["finished"])
+            if (datetime.now() - last).total_seconds() < _MIN_INTERVAL:
+                return jsonify({"ok": True, "throttled": True,
+                                "message": "Just refreshed — please wait a moment."})
+        except Exception:
+            pass
+    _refresh.update(started=datetime.now().isoformat(), message="Queued…")
+    threading.Thread(target=_do_refresh, daemon=True).start()
+    return jsonify({"ok": True, "started": True})
+
+@app.route("/api/refresh-status")
+def api_refresh_status():
+    return jsonify(_refresh)
 
 # -- entry point ------------------------------------------------------
 if __name__ == "__main__":
