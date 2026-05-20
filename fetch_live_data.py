@@ -821,6 +821,117 @@ def _finalize(c, tp_res, g_res, old, today):
              "pondScore": pond, "avgScore": avg, "totalOpinions": total, "date": today},
             tp_status, g_status)
 
+_GM_JS = r"""
+() => {
+    function num(s){ return parseFloat((s||'').replace(',','.').replace(/[^\d.]/g,'')) || 0; }
+    function cnt(s){ return parseInt((s||'').replace(/[^\d]/g,'')) || 0; }
+    const main = document.querySelector('[role="main"]') || document.body;
+    const h1 = main.querySelector('h1');
+    const title = (h1 ? h1.textContent : (document.title || '')).trim();
+    const f7 = main.querySelector('.F7nice');
+    if (f7) {
+        let rating = 0;
+        for (const sp of f7.querySelectorAll('span[aria-hidden="true"]')) {
+            const v = num(sp.textContent);
+            if (v >= 1 && v <= 5) { rating = v; break; }
+        }
+        let count = 0;
+        const row = f7.parentElement;
+        if (row) {
+            for (const child of row.children) {
+                if (child === f7) continue;
+                const btn = child.querySelector('button[aria-label], [aria-label*="review"]') || child;
+                const lbl = (btn.getAttribute ? btn.getAttribute('aria-label') : null) || btn.innerText || '';
+                if (/review|avis|rese|bewertung|recensione|avalia/i.test(lbl)) {
+                    const m = lbl.match(/(\d[\d,\.\s]*)/);
+                    if (m) { count = cnt(m[1]); break; }
+                }
+            }
+            if (!count) { const m = row.innerText.match(/\((\d[\d,]+)\)/); if (m) count = cnt(m[1]); }
+        }
+        if (rating >= 1 && rating <= 5) return {rating, count, title};
+    }
+    const starEl = main.querySelector('[aria-label$=" stars"]') || main.querySelector('[role="img"][aria-label*="star"]');
+    if (starEl) {
+        const lbl = starEl.getAttribute('aria-label') || '';
+        const mR  = lbl.match(/([1-5][.,]\d)/);
+        if (mR) {
+            const rating = num(mR[1]); let count = 0; let node = starEl.parentElement;
+            for (let i = 0; i < 5 && node; i++) {
+                const mT = node.innerText.match(/\((\d[\d,]+)\)/);
+                if (mT) { count = cnt(mT[1]); break; }
+                node = node.parentElement;
+            }
+            if (rating >= 1 && rating <= 5) return {rating, count, title};
+        }
+    }
+    const mC = main.innerText.match(/\b([1-5][.,]\d)\s*[\(\[](\d[\d,\.\s]{0,9})[\)\]]/);
+    if (mC) return {rating: num(mC[1]), count: cnt(mC[2]), title};
+    return null;
+}
+"""
+
+def _pick_best_maps_listing(page, company_name, website=""):
+    """Index of the search result whose label matches the company by a brand
+    token; -1 if none match (so we never click an unrelated listing)."""
+    try:
+        labels = page.evaluate("""
+            () => Array.from(document.querySelectorAll('a.hfpxzc, .Nv2PK a, [role="article"] a'))
+                    .slice(0,8).map((el,i)=>({i, label:(el.getAttribute('aria-label')||el.innerText||'').toLowerCase()}))
+        """) or []
+    except Exception:
+        return -1
+    for item in labels:
+        if label_matches_company(item.get('label',''), company_name, website):
+            return item.get('i', 0)
+    return -1
+
+def fetch_google_maps_browser(page, company_name, country, website=""):
+    """Free Google Maps fetch via the browser (PC mode), with validation.
+    Returns (status, score, reviews, url). Only accepts a listing that matches
+    the company; otherwise reports not_listed ('Not on Google Maps')."""
+    domain = ""
+    if website:
+        domain = re.sub(r'^https?://', '', website).rstrip('/').split('/')[0]
+    queries = []
+    if domain:
+        queries.append(domain)
+    queries.append(f'"{company_name}" {country} pet insurance')
+    reached = False
+    for query in queries:
+        url = f"https://www.google.com/maps/search/{urllib.parse.quote_plus(query)}"
+        try:
+            page.goto(url, wait_until="domcontentloaded", timeout=20000)
+            reached = True
+            accept_consent(page)
+            page.wait_for_timeout(1500)
+            has_panel = bool(page.query_selector('.F7nice, [data-item-id="rating"]'))
+            if not has_panel:
+                best_idx = _pick_best_maps_listing(page, company_name, website)
+                listings = page.query_selector_all('a.hfpxzc, .Nv2PK a, [role="article"] a')
+                if not listings:
+                    continue
+                if best_idx < 0 or best_idx >= len(listings):
+                    continue
+                listings[best_idx].click()
+                try:
+                    page.wait_for_selector('.F7nice, [aria-label$=" stars"]', timeout=5000)
+                except Exception:
+                    page.wait_for_timeout(2500)
+            result = page.evaluate(_GM_JS)
+            if result:
+                r = float(result.get('rating', 0)); c = int(result.get('count', 0))
+                title = result.get('title', '') or ''
+                if not label_matches_company(title, company_name, website):
+                    log(f"            Maps: '{title[:40]}' != {company_name} — rejecting")
+                    continue
+                if 1.0 <= r <= 5.0:
+                    return "ok", round(r, 1), c, page.url
+        except Exception as e:
+            log(f"            Maps error: {e}")
+    return ("not_listed" if reached else "error"), 0.0, 0, ""
+
+
 def run_fetch(companies=None, progress_cb=None, discover=True, use_browser=True):
     """
     Main fetch loop.
@@ -849,12 +960,13 @@ def run_fetch(companies=None, progress_cb=None, discover=True, use_browser=True)
     log("=" * 60)
     log(f"LIVE FETCH  {today}  |  {len(companies)} companies")
     log("=" * 60)
-    if GOOGLE_API_KEY:
+    if use_browser:
+        log("Google: free browser check (validated). No API key needed in PC mode.")
+    elif GOOGLE_API_KEY:
         log("Google: using Places API key ✅")
     else:
-        log("⚠️  Google: NO Places API key found — Google columns will keep "
-            "previous values. Add your key to google_api_key.txt (or set "
-            "GOOGLE_PLACES_API_KEY) to fetch live Google data.")
+        log("⚠️  Server mode without a Places API key — Google will keep previous "
+            "values. Run the fetch on your PC (browser mode) for free Google data.")
 
     results = []
     tp_ok = tp_fail = gm_ok = gm_fail = 0
@@ -877,8 +989,9 @@ def run_fetch(companies=None, progress_cb=None, discover=True, use_browser=True)
                 timezone_id="America/New_York",
             )
             tp_page  = ctx.new_page()
+            gm_page  = ctx.new_page()
             disc_page = ctx.new_page()   # separate page for discovery, doesn't interfere
-            log("Browser ready (Trustpilot / Discovery). Google uses the Places API.")
+            log("Browser ready (Trustpilot + Google Maps + Discovery) — free PC fetch.")
 
             for i, c in enumerate(companies, 1):
                 name    = c["company"]
@@ -912,8 +1025,8 @@ def run_fetch(companies=None, progress_cb=None, discover=True, use_browser=True)
                     tp_fail += 1
                 time.sleep(random.uniform(0.4, 0.8))
 
-                # ── Google Maps (official Places API) ──────────────────────
-                g_status, g_s, g_r, g_url = fetch_google_maps(name, country, website=website)
+                # ── Google Maps (free browser fetch, validated) ────────────
+                g_status, g_s, g_r, g_url = fetch_google_maps_browser(gm_page, name, country, website=website)
                 if g_status == "ok":
                     gm_ok += 1
                     old_gs = old.get("gScore", 0)
