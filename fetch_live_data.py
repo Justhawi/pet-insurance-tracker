@@ -203,6 +203,19 @@ _GENERIC_WORDS = {
     "haustier","haustierversicherung","tierversicherung","tierkrankenversicherung",
     "the","and","for","por","para","della","delle","cane","gatto","dog","dogs",
     "cat","cats","group","ltd","limited","plc","inc","sa","srl","gmbh","by",
+    # generic business/sector words that wrongly matched unrelated companies
+    "direct","online","plus","vet","vets","veterinario","veterinaria",
+    "veterinary","veterinaire","salud","saude","sante","santé","tier","tiere",
+    "shelter","quotes","quote","comparador","comparateur","seguri","aseguradora",
+    # geographic words — a country/region name must NEVER confirm a match
+    # (this caused "Pshoken JAPAN"->"JAPAN Experience", "Paw Protect GERMANY"->"Lebara GERMANY")
+    "japan","germany","deutschland","france","spain","espana","espagne",
+    "italy","italia","ireland","eire","sweden","sverige","norway","norge",
+    "denmark","danmark","netherlands","nederland","holland","belgium","belgique",
+    "belgie","switzerland","suisse","schweiz","svizzera","austria","osterreich",
+    "canada","australia","aussie","mexico","peru","colombia","chile","brazil",
+    "brasil","argentina","portugal","usa","uk","europe","european","czech",
+    "czechia","cesko","poland","polska","newzealand","zealand","africa",
 }
 
 def _deaccent(s):
@@ -234,21 +247,80 @@ def domain_tokens(website):
 def label_matches_company(label, company_name, website=""):
     """
     True when an aria-label / title plausibly belongs to this company.
-    Requires at least one DISTINCTIVE brand token (or the domain core) to appear.
+
+    Matching rules (deliberately strict, to avoid wrong-company matches such as
+    "Pshoken Japan"->"Japan Experience" or "PHI Direct"->"Philip Morris Direct"):
+      1. A DISTINCTIVE brand/domain token must appear as a WHOLE WORD in the label
+         (exact word match, not a substring — so 'phi' no longer matches 'philip',
+         and 'direct' no longer matches 'philipmorrisdirect').
+      2. Generic and geographic words ('japan', 'germany', 'direct', 'pet', …)
+         never count toward a match.
+      3. A long compound brand (>=6 chars, e.g. 'lifetimepetcover') may match the
+         label with spacing removed, and the full collapsed name (>=8 chars) may
+         match too — both safe because they are long and specific.
     """
     if not label:
         return False
     nlabel = _deaccent(label)
-    collapsed_label = re.sub(r'[^a-z0-9]', '', nlabel)   # "Lifetime Pet Cover" -> "lifetimepetcover"
+    label_words = set(re.findall(r"[a-z0-9]+", nlabel))     # whole words in the label
+    collapsed_label = re.sub(r'[^a-z0-9]', '', nlabel)      # spacing/punct removed
+
     btoks = brand_tokens(company_name)
-    dtoks = domain_tokens(website)
-    for t in btoks + dtoks:
-        if t and (t in nlabel or t in collapsed_label):
+    dtoks = [t for t in domain_tokens(website) if t not in _GENERIC_WORDS]
+    for t in set(btoks + dtoks):
+        if not t:
+            continue
+        # exact whole-word match — the reliable signal
+        if t in label_words:
             return True
-    # Spacing/punctuation-tolerant full-name match so e.g.
-    # "Lifetime Pet Cover" matches the company "Lifetimepetcover".
+        # long, specific tokens may match a spaced-out compound label
+        if len(t) >= 6 and t in collapsed_label:
+            return True
+
+    # Spacing/punctuation-tolerant full-name match, e.g. company "Lifetimepetcover"
+    # vs label "Lifetime Pet Cover". Raised to >=8 chars so short generic names
+    # can't produce accidental matches.
     collapsed_company = re.sub(r'[^a-z0-9]', '', _deaccent(company_name))
-    if len(collapsed_company) >= 6 and collapsed_company in collapsed_label:
+    if len(collapsed_company) >= 8 and collapsed_company in collapsed_label:
+        return True
+    return False
+
+def _domain_core(s):
+    """Registrable-name core of a URL or domain: 'www.agria.dk' -> 'agria'."""
+    if not s:
+        return ""
+    d = re.sub(r'^https?://', '', str(s)).rstrip('/').split('/')[0]
+    d = re.sub(r'^www\.', '', d)
+    return (d.split('.')[0] if d else "").lower()
+
+def _tp_profile_domain(tp_url):
+    """Reviewed-domain core inside a Trustpilot URL:
+    '.../review/www.agria.dk' -> 'agria'."""
+    m = re.search(r'/review/([^/?#]+)', str(tp_url or ""))
+    return _domain_core(m.group(1)) if m else ""
+
+def tp_profile_belongs_to(tp_url, website):
+    """Strict guard for search-fallback matches: a Trustpilot profile is only
+    accepted if its reviewed domain core EQUALS the company's own website core.
+    This stops same-name profiles from another country/parent being attached
+    (e.g. Pawer Perú must not borrow 'pawer.fr', Colombia 'SURA' must not borrow
+    'sura.co.uk', Petexpert BE/CZ must not borrow 'trupanion.com').
+    When the company has no website on file we cannot domain-check, so we allow
+    the name match to stand."""
+    wc = _domain_core(website)
+    if not wc:
+        return True
+    pc = _tp_profile_domain(tp_url)
+    if not pc:
+        return False
+    if pc == wc:
+        return True
+    # Accept a MORE-SPECIFIC sub-brand domain that contains the website core,
+    # e.g. website 'agria.ie' vs profile 'agriapetinsure.ie' (the real Irish
+    # sub-brand). Still rejects shorter/foreign same-name domains: a Perú site
+    # 'somospawer.com' will NOT match 'pawer.fr', and 'aseguratupeludo.com'
+    # will NOT match 'sura.co.uk'.
+    if len(wc) >= 4 and wc in pc:
         return True
     return False
 
@@ -391,6 +463,13 @@ def fetch_trustpilot(page, company_name, website):
                 href = best_link.get_attribute('href') or ''
                 if '/review/' in href:
                     full = href if href.startswith('http') else 'https://www.trustpilot.com' + href
+                    # Strict: the matched profile's domain must be THIS company's
+                    # own domain — otherwise it's a same-name profile from another
+                    # country/parent and we must not attach it.
+                    if not tp_profile_belongs_to(full, website):
+                        log(f"            TP search: {full.split('/review/')[-1]} "
+                            f"!= {website} — rejecting (wrong domain)")
+                        continue
                     page.goto(full, wait_until="domcontentloaded", timeout=18000)
                     page.wait_for_timeout(random.randint(800, 1400))
                     s, c = _extract_tp(page)
@@ -741,8 +820,12 @@ def fetch_trustpilot_http(company_name, website):
                 _walk_business_units(json.loads(mnd.group(1)), units)
                 for u in units:
                     if label_matches_company(u.get("name", ""), company_name, website):
-                        sc = float(u.get("score") or 0); ct = int(u.get("reviews") or 0)
                         dom = (u.get("website") or "").strip()
+                        # Strict: the matched profile's domain must be THIS
+                        # company's own domain (reject same-name foreign/parent).
+                        if not tp_profile_belongs_to(f"/review/{dom}", website):
+                            continue
+                        sc = float(u.get("score") or 0); ct = int(u.get("reviews") or 0)
                         url = f"https://www.trustpilot.com/review/{dom}" if dom else \
                               "https://www.trustpilot.com/search?query=" + urllib.parse.quote_plus(company_name)
                         if sc > 0:
@@ -935,6 +1018,15 @@ def fetch_google_maps_browser(page, company_name, country, website=""):
                 if not label_matches_company(title, company_name, website):
                     log(f"            Maps: '{title[:40]}' != {company_name} — rejecting")
                     continue
+                # Reject single branch/office listings (e.g. "Oficina Sanitas
+                # Sevilla Bellavista") — these are one local office, not the
+                # company's representative rating. Big multi-branch insurers
+                # therefore correctly show "Not on Google Maps".
+                _t = _deaccent(title)
+                _branch = ("oficina", "sucursal", "agencia ", "agence ", "filiale")
+                if _t.startswith(_branch) and not _deaccent(company_name).startswith(_branch):
+                    log(f"            Maps: '{title[:40]}' is a branch office — rejecting")
+                    continue
                 if 1.0 <= r <= 5.0:
                     return "ok", round(r, 1), c, page.url
         except Exception as e:
@@ -942,12 +1034,20 @@ def fetch_google_maps_browser(page, company_name, country, website=""):
     return ("not_listed" if reached else "error"), 0.0, 0, ""
 
 
-def run_fetch(companies=None, progress_cb=None, discover=True, use_browser=True):
+def run_fetch(companies=None, progress_cb=None, discover=True, use_browser=True,
+              google_only=False):
     """
     Main fetch loop.
     - companies : list of company dicts (default: COMPANIES)
     - progress_cb : callable(str) for live log streaming
     - discover : whether to auto-discover emerging companies (≥500 opinions)
+    - use_browser : True = PC mode (browser scrape both sources, free).
+                    False = server mode (HTTP / Places API).
+    - google_only : server mode only. Refresh GOOGLE live via the Places API and
+                    KEEP the existing Trustpilot numbers untouched (with their
+                    original 'as of' date). This is the hands-off cloud setup:
+                    Trustpilot can't be scraped reliably from a data-center, so
+                    we never overwrite good Trustpilot data with a blocked fetch.
     """
     if progress_cb:
         set_progress_callback(progress_cb)
@@ -1069,6 +1169,7 @@ def run_fetch(companies=None, progress_cb=None, discover=True, use_browser=True)
                     "tpUrl": tp_url,   "gUrl": g_url,
                     "pondScore": pond, "avgScore": avg,
                     "totalOpinions": total, "date": today,
+                    "tpDate": today,   "gDate": today,
                 })
 
             # ── Emerging companies discovery ───────────────────────────
@@ -1081,6 +1182,55 @@ def run_fetch(companies=None, progress_cb=None, discover=True, use_browser=True)
                     log(f"✨ {len(emerging)} emerging companies appended to dataset.")
 
             browser.close()
+    elif google_only:
+        # ── Hands-off cloud refresh: Google live, Trustpilot kept as snapshot ──
+        log("Server mode (Google-only): refreshing Google live via Places API; "
+            "Trustpilot kept as its existing dated snapshot.")
+        for i, c in enumerate(companies, 1):
+            name    = c["company"]
+            website = c.get("website", "")
+            country = c.get("country", "")
+            old     = prev.get(name, {})
+            log(f"\n[{i:3d}/{len(companies)}] {name}  ({country})")
+
+            # Trustpilot: preserve previous values + their original 'as of' date.
+            tp_s   = old.get("tpScore", c.get("tpScore", 0)) or 0
+            tp_r   = old.get("tpReviews", c.get("tpReviews", 0)) or 0
+            tp_url = old.get("tpUrl", c.get("tpUrl", "")) or ""
+            tp_status = old.get("tpStatus", c.get("tpStatus", "ok")) or "ok"
+            tp_date = old.get("tpDate") or old.get("date") or c.get("tpDate") or today
+
+            # Google: live via Places API.
+            g_res = fetch_google_maps(name, country, website=website)
+            g_status, g_s, g_r, g_url = g_res
+            if g_status == "not_listed":
+                g_s, g_r, g_url = 0.0, 0, ""
+            elif g_status == "error":   # API/network problem → keep previous Google value
+                pgs = old.get("gScore", 0) or 0; pgr = old.get("gReviews", 0) or 0
+                if pgs > 0:
+                    g_status, g_s, g_r, g_url = "ok", pgs, pgr, (old.get("gUrl", "") or "")
+                else:
+                    g_status, g_s, g_r, g_url = "error", 0.0, 0, ""
+            if g_status == "ok": gm_ok += 1
+            else: gm_fail += 1
+            if tp_status == "ok" and tp_s > 0: tp_ok += 1
+            else: tp_fail += 1
+
+            pond, avg, total = calc(tp_s, tp_r, g_s, g_r)
+            results.append({**c,
+                "tpScore": tp_s,   "tpReviews": tp_r,
+                "gScore":  g_s,    "gReviews":  g_r,
+                "tpStatus": tp_status, "gStatus": g_status,
+                "tpUrl": tp_url,   "gUrl": g_url,
+                "pondScore": pond, "avgScore": avg,
+                "totalOpinions": total, "date": today,
+                "tpDate": tp_date, "gDate": today,
+            })
+            log(f"         TP(kept {tp_date}) {tp_status} {tp_s}/{tp_r:,}  |  "
+                f"G(live) {g_status} {g_s}/{g_r:,}")
+            time.sleep(0.1)
+        # No discovery in google_only mode (category scraping is also blocked on
+        # data-center hosts and would just waste time).
     else:
         log("Server mode: browser-free fetch (Trustpilot via HTTPS, Google via Places API).")
         for i, c in enumerate(companies, 1):
@@ -1092,6 +1242,7 @@ def run_fetch(companies=None, progress_cb=None, discover=True, use_browser=True)
             tp_res = fetch_trustpilot_http(name, website)
             g_res  = fetch_google_maps(name, country, website=website)
             res, ts, gs = _finalize(c, tp_res, g_res, old, today)
+            res["tpDate"] = today; res["gDate"] = today
             results.append(res)
             if ts == "ok": tp_ok += 1
             else: tp_fail += 1
@@ -1155,3 +1306,4 @@ def run_fetch(companies=None, progress_cb=None, discover=True, use_browser=True)
 
 if __name__ == "__main__":
     run_fetch()
+# end of file
