@@ -36,6 +36,38 @@ def log(msg):
         _progress_cb(line)
 
 # ─────────────────────────────────────────────────────────────
+# MANUAL OVERRIDES  (per-company corrections — applied by all fetch paths)
+# Use these when auto-discovery picks the wrong listing or misses one.
+# Keyed by company name (must match COMPANIES[].company exactly).
+# ─────────────────────────────────────────────────────────────
+# Force the Trustpilot profile URL (skip domain/search discovery).
+MANUAL_TP_URL = {
+    # PD Insurance NZ is registered on Trustpilot as pd.co.nz, not
+    # pdinsurance.co.nz — auto-lookup by website domain misses it.
+    "PD Insurance": "https://www.trustpilot.com/review/pd.co.nz",
+}
+
+# Force the Google Maps listing URL (navigate directly, skip search).
+# Use the canonical /maps/place/.../data=... URL for a specific place.
+MANUAL_G_URL = {
+    # Prudent Pet — the auto search returns a near-empty card.
+    # This is the actual company listing in Naperville, IL.
+    "Prudent Pet Insurance":
+        "https://www.google.com/maps/place/Prudent+Pet+Insurance/"
+        "@41.8317925,-88.0395754,17z/data=!3m1!4b1!4m6!3m5"
+        "!1s0x880e4b5467379593:0x196b48cc0ff64bee"
+        "!8m2!3d41.8317925!4d-88.0369951!16s%2Fg%2F11gn1w8t7s",
+}
+
+# Companies whose Google Maps results must NEVER be attached
+# (the only matches are for an unrelated parent / branch / namesake).
+BLOCK_GOOGLE = {
+    # The Kennel Club's Google Maps listings are for the parent dog-breed
+    # organisation, not for its Kennel Club Pet Insurance product (Agria).
+    "Kennel Club Pet Insurance",
+}
+
+# ─────────────────────────────────────────────────────────────
 # COMPANY LIST  (website = used as hint only; search is primary)
 # ─────────────────────────────────────────────────────────────
 COMPANIES = [
@@ -408,6 +440,22 @@ def fetch_trustpilot(page, company_name, website):
     """
     reached_page = False
 
+    # Manual override — preferred URL wins over auto-discovery.
+    manual = MANUAL_TP_URL.get(company_name)
+    if manual:
+        try:
+            resp = page.goto(manual, wait_until="domcontentloaded", timeout=20000)
+            if resp is not None:
+                reached_page = True
+                if resp.status in (200, 304):
+                    page.wait_for_timeout(random.randint(800, 1400))
+                    s, c = _extract_tp(page)
+                    if s > 0:
+                        log(f"            TP override: {manual.split('/review/')[-1]}")
+                        return "ok", s, c, manual
+        except Exception:
+            pass
+
     # Build candidate domains from website
     domains = []
     if website:
@@ -569,6 +617,11 @@ def fetch_google_maps(company_name, country, website=""):
                     (or the company has no Google place) → "Not on Google Maps"
       "error"       no API key, or an API/network error → keep previous value
     """
+    # Manual block — must match BLOCK_GOOGLE behaviour in browser mode.
+    if company_name in BLOCK_GOOGLE:
+        log(f"            Google Places: '{company_name}' is in BLOCK_GOOGLE — not_listed")
+        return "not_listed", 0.0, 0, ""
+
     if not GOOGLE_API_KEY:
         return "error", 0.0, 0, ""
 
@@ -802,6 +855,13 @@ def fetch_trustpilot_http(company_name, website):
         sc, ct = _parse_tp_html(html)
         return (sc, ct) if sc > 0 else None
 
+    # 0) Manual override — preferred URL wins over auto-discovery.
+    manual = MANUAL_TP_URL.get(company_name)
+    if manual:
+        r = _try(manual)
+        if r:
+            return "ok", r[0], r[1], manual
+
     # 1) Direct profile by website domain
     for dom in domains:
         url = f"https://www.trustpilot.com/review/{dom}"
@@ -983,6 +1043,30 @@ def fetch_google_maps_browser(page, company_name, country, website=""):
     """Free Google Maps fetch via the browser (PC mode), with validation.
     Returns (status, score, reviews, url). Only accepts a listing that matches
     the company; otherwise reports not_listed ('Not on Google Maps')."""
+    # Manual block — companies whose only matches are wrong (parent org,
+    # local branch, namesake) must report not_listed every time.
+    if company_name in BLOCK_GOOGLE:
+        log(f"            Maps: '{company_name}' is in BLOCK_GOOGLE — reporting not_listed")
+        return "not_listed", 0.0, 0, ""
+
+    # Manual override — navigate to a known-good place URL and skip search.
+    manual_url = MANUAL_G_URL.get(company_name)
+    if manual_url:
+        try:
+            page.goto(manual_url, wait_until="domcontentloaded", timeout=20000)
+            accept_consent(page)
+            page.wait_for_timeout(2000)
+            result = page.evaluate(_GM_JS)
+            if result:
+                r = float(result.get('rating', 0)); c = int(result.get('count', 0))
+                if 1.0 <= r <= 5.0:
+                    log(f"            Maps override: '{result.get('title','')[:40]}' "
+                        f"score={r} reviews={c}")
+                    return "ok", round(r, 1), c, page.url
+            log(f"            Maps override failed to extract — falling back to search")
+        except Exception as e:
+            log(f"            Maps override error: {e} — falling back to search")
+
     domain = ""
     if website:
         domain = re.sub(r'^https?://', '', website).rstrip('/').split('/')[0]
@@ -1228,82 +1312,69 @@ def run_fetch(companies=None, progress_cb=None, discover=True, use_browser=True,
             })
             log(f"         TP(kept {tp_date}) {tp_status} {tp_s}/{tp_r:,}  |  "
                 f"G(live) {g_status} {g_s}/{g_r:,}")
-            time.sleep(0.1)
-        # No discovery in google_only mode (category scraping is also blocked on
-        # data-center hosts and would just waste time).
     else:
-        log("Server mode: browser-free fetch (Trustpilot via HTTPS, Google via Places API).")
+        # ── HTTP-only mode (no browser, no Places API key) ──
+        log("HTTP-only mode: Trustpilot via plain HTTP (may hit blocks); "
+            "Google kept from previous snapshot.")
         for i, c in enumerate(companies, 1):
             name    = c["company"]
             website = c.get("website", "")
             country = c.get("country", "")
             old     = prev.get(name, {})
             log(f"\n[{i:3d}/{len(companies)}] {name}  ({country})")
+
             tp_res = fetch_trustpilot_http(name, website)
-            g_res  = fetch_google_maps(name, country, website=website)
-            res, ts, gs = _finalize(c, tp_res, g_res, old, today)
-            res["tpDate"] = today; res["gDate"] = today
-            results.append(res)
+            # Google: preserve old values (HTTP-only mode can't query Maps).
+            g_status = old.get("gStatus", "error") or "error"
+            g_s   = old.get("gScore", 0) or 0
+            g_r   = old.get("gReviews", 0) or 0
+            g_url = old.get("gUrl", "") or ""
+            row, ts, gs = _finalize(c, tp_res, (g_status, g_s, g_r, g_url),
+                                    old, today)
+            row["tpDate"] = today
+            row["gDate"]  = old.get("gDate") or today
+            results.append(row)
             if ts == "ok": tp_ok += 1
             else: tp_fail += 1
             if gs == "ok": gm_ok += 1
             else: gm_fail += 1
-            log(f"         TP {res['tpStatus']} {res['tpScore']}/{res['tpReviews']:,}  |  "
-                f"G {res['gStatus']} {res['gScore']}/{res['gReviews']:,}")
-            time.sleep(0.15)
-        if discover:
-            emerging = discover_emerging_companies_http(results, min_opinions=501)
-            if emerging:
-                results = emerging + results
-                log(f"✨ {len(emerging)} emerging companies appended to dataset.")
+            log(f"         TP {ts} {row['tpScore']}/{row['tpReviews']:,}  |  "
+                f"G(kept) {gs} {row['gScore']}/{row['gReviews']:,}")
 
-    log("\n" + "=" * 60)
-    log(f"Trustpilot  : {tp_ok} live  |  {tp_fail} kept previous")
-    log(f"Google Maps : {gm_ok} live  |  {gm_fail} kept previous")
-    log("=" * 60)
 
-    with open(JSON_PATH, "w", encoding="utf-8") as f:
-        json.dump(results, f, ensure_ascii=False, indent=2)
-    log(f"✅ Saved {len(results)} companies → {JSON_PATH}")
+    # ── Save to JSON ────────────────────────────────────────────
+    try:
+        with open(JSON_PATH, "w", encoding="utf-8") as f:
+            json.dump(results, f, ensure_ascii=False, indent=2)
+        log("Saved " + str(len(results)) + " companies -> " + JSON_PATH)
+    except Exception as e:
+        log("Could not save JSON: " + str(e))
 
-    if os.path.exists(HTML_PATH):
-        with open(HTML_PATH, "r", encoding="utf-8") as f:
-            html = f.read()
-        new_js = "const SEED_DATA = " + json.dumps(results, ensure_ascii=False, separators=(",", ":")) + ";"
-        html   = re.sub(r"const SEED_DATA\s*=\s*\[.*?\];", new_js, html, flags=re.DOTALL)
-        stamp  = datetime.now().strftime("%Y-%m-%d %H:%M")
-        html   = re.sub(
-            r"(getElementById\(\'lastUpdated\'\)\.textContent\s*=\s*')[^\']*(\')",
-            f"\\1Updated: {stamp} (live)\\2", html)
-        with open(HTML_PATH, "w", encoding="utf-8") as f:
-            f.write(html)
-        log(f"✅ HTML updated with live data ({stamp})")
-
-    log("🎉 Fetch complete!")
-
-    # ── Auto-upload to cloud server ───────────────────────────
+    # ── Cloud upload ────────────────────────────────────────────
     if CLOUD_URL and CLOUD_KEY:
+        log("Uploading to cloud: " + CLOUD_URL + " ...")
         try:
-            log(f"☁️  Uploading to cloud: {CLOUD_URL} …")
             payload = json.dumps(results, ensure_ascii=False).encode("utf-8")
             req = urllib.request.Request(
-                f"{CLOUD_URL.rstrip('/')}/api/upload",
-                data=payload,
+                CLOUD_URL.rstrip("/") + "/api/upload",
+                data=payload, method="POST",
                 headers={"Content-Type": "application/json",
-                         "X-Upload-Key": CLOUD_KEY},
-                method="POST"
-            )
-            with urllib.request.urlopen(req, timeout=30) as resp:
+                         "X-Upload-Key": CLOUD_KEY})
+            with urllib.request.urlopen(req, timeout=60) as resp:
                 reply = json.loads(resp.read())
-            log(f"☁️  Cloud updated ✅  companies={reply.get('companies')}  at {reply.get('updated','')[:16]}")
+            log("Cloud updated  companies=" + str(reply.get("companies")) +
+                "  at " + (reply.get("updated","") or "")[:16])
         except Exception as e:
-            log(f"☁️  Cloud upload failed (data saved locally): {e}")
+            log("Cloud upload failed: " + str(e))
     else:
-        log("ℹ️  CLOUD_URL/CLOUD_KEY not set — skipping cloud upload")
+        log("(skipping cloud upload - CLOUD_URL/CLOUD_KEY not set)")
 
+    log("=" * 60)
+    log("DONE  |  TP ok=" + str(tp_ok) + "/fail=" + str(tp_fail) +
+        "  |  GM ok=" + str(gm_ok) + "/fail=" + str(gm_fail))
+    log("=" * 60)
     return results
 
 
 if __name__ == "__main__":
     run_fetch()
-# end of file
