@@ -74,6 +74,13 @@ BLOCK_GOOGLE = {
     "Kennel Club Pet Insurance",
 }
 
+# Optional fallback review count when MANUAL_G_URL extraction returns rating
+# but no count (some listings on Linux Chromium don't expose the count node).
+# Only used when the script DID extract a valid rating from the override URL.
+MANUAL_G_REVIEWS_FALLBACK = {
+    "Prudent Pet Insurance": 694,
+}
+
 # ─────────────────────────────────────────────────────────────
 # COMPANY LIST  (website = used as hint only; search is primary)
 # ─────────────────────────────────────────────────────────────
@@ -1067,6 +1074,13 @@ def fetch_google_maps_browser(page, company_name, country, website=""):
             if result:
                 r = float(result.get('rating', 0)); c = int(result.get('count', 0))
                 if 1.0 <= r <= 5.0:
+                    # Some listings (on Linux Chromium) show the rating but
+                    # not the count node. Use a hand-set fallback if known
+                    # so the row keeps its review count across refreshes.
+                    if c == 0 and company_name in MANUAL_G_REVIEWS_FALLBACK:
+                        c = MANUAL_G_REVIEWS_FALLBACK[company_name]
+                        log(f"            Maps override: count extraction "
+                            f"returned 0, using fallback {c}")
                     log(f"            Maps override: '{result.get('title','')[:40]}' "
                         f"score={r} reviews={c}")
                     return "ok", round(r, 1), c, page.url
