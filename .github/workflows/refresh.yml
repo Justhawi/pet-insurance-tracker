@@ -1,0 +1,65 @@
+name: Refresh tracker data
+
+# Runs a full fetch (browser-mode) on GitHub's runners every 6 hours,
+# commits the updated companies_data.json + HTML back to main, and POSTs
+# the fresh data to /api/upload so the live site updates immediately.
+#
+# Can also be triggered manually from the Actions tab ("Run workflow").
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'   # every 6 hours, on the hour (UTC)
+  workflow_dispatch: {}      # manual trigger
+
+# Concurrency: never run two refreshes at once.
+concurrency:
+  group: refresh
+  cancel-in-progress: false
+
+permissions:
+  contents: write   # we need to push the updated data file back to main
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      CLOUD_URL: https://pet-insurance-tracker.onrender.com
+      CLOUD_KEY: ${{ secrets.CLOUD_KEY }}
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install playwright reportlab flask
+          python -m playwright install --with-deps chromium
+
+      - name: Run live fetch (PC-mode)
+        run: |
+          # Fetch Trustpilot + Google live for all 145 companies, save to
+          # companies_data.json and bake into the HTML, then POST to /api/upload.
+          # CLOUD_URL/CLOUD_KEY are in env so the script publishes automatically.
+          python fetch_live_data.py
+        # Don't fail the whole job if any individual company fetch hiccups —
+        # the script handles per-row errors gracefully and keeps previous values.
+
+      - name: Commit updated data back to main
+        run: |
+          git config --global user.name  'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add companies_data.json pet_insurance_tracker.html
+          if git diff --quiet --staged; then
+            echo "No changes to commit."
+          else
+            STAMP=$(date -u +'%Y-%m-%d %H:%M UTC')
+            git commit -m "Auto-refresh data ${STAMP}"
+            git push
+          fi
