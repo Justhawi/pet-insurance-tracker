@@ -57,6 +57,13 @@ MANUAL_G_URL = {
         "@41.8317925,-88.0395754,17z/data=!3m1!4b1!4m6!3m5"
         "!1s0x880e4b5467379593:0x196b48cc0ff64bee"
         "!8m2!3d41.8317925!4d-88.0369951!16s%2Fg%2F11gn1w8t7s",
+    # Petplan UK — the auto search by domain (www.petplan.co.uk) was matching
+    # PetPlan Spain instead. Lock to the canonical Petplan place_id.
+    "Petplan UK":
+        "https://www.google.com/maps/place/Petplan/"
+        "@47.73855,12.5088275,4z/data=!3m1!4b1!4m6!3m5"
+        "!1s0x48760da7d0b93291:0xf772e4ffbf06f6e9"
+        "!8m2!3d47.73855!4d12.5088275!16s%2Fg%2F1tdrdvn4",
 }
 
 # Companies whose Google Maps results must NEVER be attached
