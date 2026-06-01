@@ -1,0 +1,33 @@
+name: Keep Render awake
+
+# Pings the live tracker every 5 minutes so Render's free-tier container
+# never goes idle long enough to sleep (the 15-min idle threshold).
+# Keeps the in-memory + on-disk state from /api/upload writes persistent.
+#
+# Each run is ~5 seconds, just a curl to /api/status.
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'   # every 5 minutes
+  workflow_dispatch: {}
+
+# Don't pile up overlapping pings.
+concurrency:
+  group: keepalive
+  cancel-in-progress: false
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Hit the tracker
+        run: |
+          # Just /api/status — the lightest endpoint that wakes Render.
+          STATUS=$(curl -s -o /tmp/body -w "%{http_code}" \
+            --max-time 60 --connect-timeout 30 --retry 2 --retry-delay 5 \
+            "https://pet-insurance-tracker.onrender.com/api/status")
+          echo "HTTP $STATUS"
+          if [ -s /tmp/body ]; then head -c 400 /tmp/body; echo; fi
+          # Don't fail if Render is briefly down — next 5-min run will retry.
+          test "$STATUS" -ge 200 && test "$STATUS" -lt 600
