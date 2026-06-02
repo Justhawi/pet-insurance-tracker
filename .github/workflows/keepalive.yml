@@ -1,33 +1,63 @@
 name: Keep Render awake
 
-# Pings the live tracker every 5 minutes so Render's free-tier container
-# never goes idle long enough to sleep (the 15-min idle threshold).
-# Keeps the in-memory + on-disk state from /api/upload writes persistent.
+# Render free-tier containers sleep after 15 min of no HTTP requests, and
+# when they wake their disk resets to the last build. To prevent both, this
+# workflow runs an hourly long-job that pings every 60 seconds, AND every
+# 5 minutes re-publishes the latest committed companies_data.json to
+# /api/upload so the live site always reflects the freshest data even right
+# after a (rare) restart.
 #
-# Each run is ~5 seconds, just a curl to /api/status.
+# Repo is public, so Actions minutes are unlimited.
 
 on:
   schedule:
-    - cron: '*/5 * * * *'   # every 5 minutes
+    - cron: '0 * * * *'      # start a fresh 58-min loop at the top of every hour
   workflow_dispatch: {}
 
-# Don't pile up overlapping pings.
 concurrency:
   group: keepalive
   cancel-in-progress: false
 
 jobs:
-  ping:
+  loop:
     runs-on: ubuntu-latest
-    timeout-minutes: 2
+    timeout-minutes: 59
+    env:
+      CLOUD_URL: https://pet-insurance-tracker.onrender.com
+      CLOUD_KEY: ${{ secrets.CLOUD_KEY }}
+
     steps:
-      - name: Hit the tracker
+      - name: Check out repo (for companies_data.json)
+        uses: actions/checkout@v4
+
+      - name: Ping + re-publish loop for ~58 minutes
         run: |
-          # Just /api/status — the lightest endpoint that wakes Render.
-          STATUS=$(curl -s -o /tmp/body -w "%{http_code}" \
-            --max-time 60 --connect-timeout 30 --retry 2 --retry-delay 5 \
-            "https://pet-insurance-tracker.onrender.com/api/status")
-          echo "HTTP $STATUS"
-          if [ -s /tmp/body ]; then head -c 400 /tmp/body; echo; fi
-          # Don't fail if Render is briefly down — next 5-min run will retry.
-          test "$STATUS" -ge 200 && test "$STATUS" -lt 600
+          set -u
+          END=$(( $(date +%s) + 58*60 ))
+          TICK=0
+          while [ "$(date +%s)" -lt "$END" ]; do
+            TICK=$((TICK+1))
+
+            # Ping /api/status every minute to keep the container awake
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+              --max-time 30 --connect-timeout 15 --retry 2 --retry-delay 3 \
+              "$CLOUD_URL/api/status" || echo "000")
+            echo "[$TICK] ping /api/status -> $STATUS"
+
+            # Every 5 minutes, also re-publish the latest committed data file
+            # so the live numbers immediately match GitHub after any restart.
+            if [ $((TICK % 5)) -eq 0 ] && [ -n "${CLOUD_KEY}" ]; then
+              if [ -s companies_data.json ]; then
+                UP=$(curl -s -o /tmp/up_body -w "%{http_code}" \
+                  --max-time 60 --connect-timeout 30 \
+                  -X POST -H 'Content-Type: application/json' \
+                  -H "X-Upload-Key: $CLOUD_KEY" \
+                  --data-binary @companies_data.json \
+                  "$CLOUD_URL/api/upload" || echo "000")
+                echo "[$TICK] re-publish -> $UP $(head -c 120 /tmp/up_body || true)"
+              fi
+            fi
+
+            sleep 60
+          done
+          echo "Loop finished."
