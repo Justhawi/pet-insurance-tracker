@@ -64,6 +64,13 @@ MANUAL_G_URL = {
         "@47.73855,12.5088275,4z/data=!3m1!4b1!4m6!3m5"
         "!1s0x48760da7d0b93291:0xf772e4ffbf06f6e9"
         "!8m2!3d47.73855!4d12.5088275!16s%2Fg%2F1tdrdvn4",
+    # SantéVet (France) — auto-search returned not_listed; Luis sent the
+    # canonical Lyon HQ listing.
+    "SantéVet":
+        "https://www.google.com/maps/place/Sant%C3%A9vet/"
+        "@45.7508125,4.8399863,17z/data=!3m1!4b1!4m6!3m5"
+        "!1s0x47f4eaf1c01e1d99:0x4d4e6d5b967aa81f"
+        "!8m2!3d45.7508125!4d4.8399863!16s%2Fg%2F1tmpd8fd",
 }
 
 # Companies whose Google Maps results must NEVER be attached
