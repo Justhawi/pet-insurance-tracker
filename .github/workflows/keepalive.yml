@@ -10,8 +10,10 @@ name: Keep Render awake
 # Repo is public, so Actions minutes are unlimited.
 
 on:
-  schedule:
-    - cron: '0 * * * *'      # start a fresh 58-min loop at the top of every hour
+  # Hourly keep-alive DISABLED (was cron '0 * * * *'): the ~58-min loop ran
+  # ~42,000 Actions min/month, ~20x over the private-repo free tier of 2,000.
+  # Keep Render awake with an external uptime pinger (e.g. UptimeRobot) hitting
+  # /api/status every ~10 min instead. Manual runs still allowed below.
   workflow_dispatch: {}
 
 concurrency:
