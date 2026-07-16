@@ -71,6 +71,21 @@ MANUAL_G_URL = {
         "@45.7508125,4.8399863,17z/data=!3m1!4b1!4m6!3m5"
         "!1s0x47f4eaf1c01e1d99:0x4d4e6d5b967aa81f"
         "!8m2!3d45.7508125!4d4.8399863!16s%2Fg%2F1tmpd8fd",
+    # Musky (Spain) — auto-search (musky.es) hit a generic card; Luis sent the
+    # canonical Barcelona listing that now carries Google reviews.
+    "Musky":
+        "https://www.google.com/maps/place/Musky/"
+        "@41.3833719,2.1877377,17z/data=!3m2!4b1"
+        "!5s0x12a4a306de79abd3:0x2ddf6a82e52c6b52!4m6!3m5"
+        "!1s0xc3dea602ea420af:0x658fa448c8063e11"
+        "!8m2!3d41.3833719!4d2.190318!16s%2Fg%2F11yggbcg80",
+    # Milopet (Spain) — auto-search returned not_listed; Luis sent the canonical
+    # "Milo Seguro para Perros" Barcelona listing that now carries Google reviews.
+    "Milopet":
+        "https://www.google.com/maps/place/Milo+Seguro+para+Perros/"
+        "@41.3961118,2.1486988,17z/data=!3m1!4b1!4m6!3m5"
+        "!1s0x12a4a3d7e99ff1ed:0xc5e24a1979df6479"
+        "!8m2!3d41.3961118!4d2.1512791!16s%2Fg%2F11ym3tvm80",
 }
 
 # Companies whose Google Maps results must NEVER be attached
