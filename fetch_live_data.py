@@ -86,6 +86,7 @@ MANUAL_G_URL = {
         "@41.3961118,2.1486988,17z/data=!3m1!4b1!4m6!3m5"
         "!1s0x12a4a3d7e99ff1ed:0xc5e24a1979df6479"
         "!8m2!3d41.3961118!4d2.1512791!16s%2Fg%2F11ym3tvm80",
+    "Calingo Insurance": "https://www.google.com/maps/place/Calingo+Insurance+AG/@47.3632788,8.551694,17z/data=!3m1!4b1!4m6!3m5!1s0x479aa730aa5fa4d7:0xaabf8fe5e766520!8m2!3d47.3632788!4d8.551694!16s%2Fg%2F11nwxkqng8",
 }
 
 # Companies whose Google Maps results must NEVER be attached
@@ -222,6 +223,7 @@ COMPANIES = [
     {"country":"France","company":"Zoola","website":"www.zoola.fr","opType":"Only Sale","group":"","link":"","underwriter":""},
     {"country":"Spain","company":"Kalibo","website":"www.kalibo.com","opType":"Only Sale","group":"","link":"","underwriter":""},
     {"country":"Switzerland","company":"SmartPaws CH","website":"www.smartpaws.ch","opType":"Only Sale","group":"","link":"","underwriter":""},
+    {"country":"Switzerland","company":"Calingo Insurance","website":"pet.calingo.ch","opType":"Full Service","group":"","link":"","underwriter":"Simpego"},
     {"country":"UK","company":"Heckin Good","website":"www.heckingood.co.uk","opType":"Only Sale","group":"","link":"","underwriter":""},
     {"country":"Germany","company":"SmartPaws Germany","website":"www.smartpaws.de","opType":"Only Sale","group":"","link":"","underwriter":""},
     {"country":"UK","company":"Buddies Pet Insurance","website":"www.buddies.co.uk","opType":"Only Sale","group":"","link":"","underwriter":""},
