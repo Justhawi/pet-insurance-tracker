@@ -8,7 +8,7 @@ name: Refresh tracker data
 
 on:
   schedule:
-    - cron: '0 6 * * *'   # once daily at 06:00 UTC (fits GitHub free Actions minutes on a private repo)
+    - cron: '0 8 * * *'  # once daily at 08:00 UTC (10:00 Paris; 09:00 in winter). Public repo = free unlimited Actions.
   workflow_dispatch: {}      # manual trigger
 
 # Concurrency: never run two refreshes at once.
