@@ -14,7 +14,7 @@ DATA   = os.path.join(HERE, "companies_data.json")
 HTML   = os.path.join(HERE, "pet_insurance_tracker.html")
 
 # Secret key -- set this as an environment variable on Render
-UPLOAD_KEY = os.environ.get("UPLOAD_KEY", "change-me-123")
+UPLOAD_KEY = os.environ.get("UPLOAD_KEY", "")
 
 # -- helpers ----------------------------------------------------------
 def load():
@@ -76,7 +76,7 @@ def api_upload():
     Requires the X-Upload-Key header to match UPLOAD_KEY.
     """
     key = request.headers.get("X-Upload-Key","") or request.args.get("key","")
-    if key != UPLOAD_KEY:
+    if not UPLOAD_KEY or key != UPLOAD_KEY:
         abort(401)
     try:
         body = request.get_json(force=True)
