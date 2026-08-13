@@ -129,6 +129,7 @@ COMPANIES = [
     {"country":"USA","company":"Pumpkin","website":"www.pumpkin.care","opType":"Only Sale","group":"JAB","link":"","underwriter":""},
     {"country":"UK","company":"Kennel Club Pet Insurance","website":"www.kcinsurance.co.uk","opType":"Only Sale","group":"","link":"https://www.petinsurancereview.co.uk/insurer/royal-kennel-club-pet-insurance","underwriter":"Agria"},
     {"country":"Italy","company":"Baboop Italy","website":"www.baboop.it","opType":"Only Sale","group":"","link":"","underwriter":""},
+    {"country":"Spain","company":"SegurosVeterinarios.com","website":"www.segurosveterinarios.com","opType":"Only Sale","group":"","link":"","underwriter":""},
     {"country":"UK","company":"Petplan UK","website":"www.petplan.co.uk","opType":"Full Service","group":"","link":"","underwriter":"Allianz"},
     {"country":"Ireland","company":"Agria PetInsure","website":"www.agria.ie","opType":"Full Service","group":"Agria","link":"","underwriter":""},
     {"country":"Sweden","company":"Lassie","website":"www.lassie.co","opType":"Full Service","group":"","link":"","underwriter":""},
