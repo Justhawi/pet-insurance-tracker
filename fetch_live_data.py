@@ -95,6 +95,11 @@ BLOCK_GOOGLE = {
     # The Kennel Club's Google Maps listings are for the parent dog-breed
     # organisation, not for its Kennel Club Pet Insurance product (Agria).
     "Kennel Club Pet Insurance",
+    "FPC",
+    "Buddy Pet Insurance",
+    "Nihon Pet",
+    "Little Family",
+    "SPCA Pet Insurance",
 }
 
 # Optional fallback review count when MANUAL_G_URL extraction returns rating
