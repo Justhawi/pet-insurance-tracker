@@ -108,6 +108,18 @@ MANUAL_G_REVIEWS_FALLBACK = {
 # COMPANY LIST  (website = used as hint only; search is primary)
 # ─────────────────────────────────────────────────────────────
 COMPANIES = [
+    {"country":"UK","company":"Petgevity","website":"www.petgevity.co.uk","opType":"Only Sale","group":"","link":"","underwriter":""},
+    {"country":"Australia","company":"Buddy Pet Insurance","website":"www.buddypetinsurance.com.au","opType":"Only Sale","group":"","link":"","underwriter":""},
+    {"country":"South Africa","company":"Oneplan Pet Insurance","website":"www.onepet.co.za","opType":"Only Sale","group":"","link":"","underwriter":""},
+    {"country":"Japan","company":"FPC","website":"www.fpc-pet.co.jp","opType":"Only Sale","group":"","link":"","underwriter":""},
+    {"country":"Japan","company":"Nihon Pet","website":"www.nihonpet.co.jp","opType":"Only Sale","group":"","link":"","underwriter":""},
+    {"country":"Japan","company":"Little Family","website":"www.littlefamily-ssi.com","opType":"Only Sale","group":"","link":"","underwriter":""},
+    {"country":"Canada","company":"Pet Shield","website":"www.petshield.ca","opType":"Only Sale","group":"","link":"","underwriter":""},
+    {"country":"New Zealand","company":"SPCA Pet Insurance","website":"www.spcapetinsurance.co.nz","opType":"Only Sale","group":"","link":"","underwriter":""},
+    {"country":"Sweden","company":"Sveland Djurforsakring","website":"www.sveland.se","opType":"Only Sale","group":"","link":"","underwriter":""},
+    {"country":"Denmark","company":"Dyrekassen","website":"www.dyrekassen.dk","opType":"Only Sale","group":"","link":"","underwriter":""},
+    {"country":"Brazil","company":"Seguro Pet Saude","website":"seguropetsaude.com.br","opType":"Only Sale","group":"","link":"","underwriter":""},
+    {"country":"Netherland","company":"PetSecur","website":"petsecur.nl","opType":"Only Sale","group":"","link":"","underwriter":""},
     {"country":"USA","company":"Prudent Pet Insurance","website":"www.prudentpet.com","opType":"Only Sale","group":"","link":"","underwriter":""},
     {"country":"USA","company":"Pumpkin","website":"www.pumpkin.care","opType":"Only Sale","group":"JAB","link":"","underwriter":""},
     {"country":"UK","company":"Kennel Club Pet Insurance","website":"www.kcinsurance.co.uk","opType":"Only Sale","group":"","link":"https://www.petinsurancereview.co.uk/insurer/royal-kennel-club-pet-insurance","underwriter":"Agria"},
