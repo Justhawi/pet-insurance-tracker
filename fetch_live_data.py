@@ -813,6 +813,27 @@ def _walk_business_units(obj, out):
         for v in obj:
             _walk_business_units(v, out)
 
+# Categories that mean "not a pet insurance company", whatever else it also sells.
+# Liability and accident are deliberately absent: a specialist animal insurer such
+# as Uelzener sells animal liability cover. Health IS blocked — it let general
+# health insurers through — at the cost of missing a pet division that sits under
+# a health insurer, which is the rarer case.
+NOT_A_PET_INSURER = {
+    # other consumer insurance lines
+    "auto_insurance_agency", "home_insurance_agency", "travel_insurance_company",
+    "renters_insurance_agency", "gadget_insurance_company", "cycle_insurance_company",
+    "sport_insurance_company", "legal_expenses_insurance_company",
+    "life_insurance_agency", "term_life_insurance_company", "dental_insurance_agency",
+    "business_insurance_company", "personal_insurance_company",
+    "mobility_insurance_company", "health_insurance_agency",
+    # sells other people's policies rather than its own
+    "insurance_broker",
+    # not an insurer at all
+    "pet_supply_store", "pet_store", "veterinarian", "animal_hospital",
+    "veterinary_pharmacy",
+}
+
+
 def discover_emerging_companies(page, existing_results, min_opinions=500, max_pages=4,
                                 countries=None):
     """
@@ -1000,11 +1021,20 @@ def discover_emerging_companies(page, existing_results, min_opinions=500, max_pa
                         continue
 
                     # Trustpilot tags every business with its own categories.
-                    # Require the pet-insurance tag rather than trusting that
-                    # everything on the page belongs there.
+                    # The pet-insurance tag alone is not enough: Admiral, Tesco,
+                    # Folksam and Direct Line all carry it while being car/home
+                    # insurers whose score covers their whole book. This is a
+                    # benchmark of pet insurance companies, so anything selling a
+                    # general consumer line, acting as a broker, or trading as a
+                    # vet or pet shop is not one.
                     cats = [str(x) for x in (card.get("cats") or [])]
                     if cats and not any("pet_insurance" in c for c in cats):
                         dropped_notpet += 1
+                        continue
+                    if any(c in NOT_A_PET_INSURER for c in cats):
+                        dropped_notpet += 1
+                        log(f"      ↷ {name or domain}: not a pet insurer "
+                            f"({', '.join(c for c in cats if c in NOT_A_PET_INSURER)})")
                         continue
 
                     if (name.lower() in known
