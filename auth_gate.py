@@ -162,8 +162,8 @@ button:hover{background:var(--pp-cta-dark)}
       <h1>Sign in</h1>
       __NOTE__
       <input type="hidden" name="next" value="__NEXT__">
-      <label for="password">Shared password</label>
-      <input type="password" id="password" name="password" autocomplete="current-password" autofocus required>
+      <input type="password" id="password" name="password" aria-label="Password"
+             autocomplete="current-password" autofocus required>
       <button type="submit">Sign in</button>
     </form>
     <p class="foot">Internal tool. It holds only public reputation data about
