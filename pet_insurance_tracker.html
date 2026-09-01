@@ -1335,9 +1335,14 @@ function chartInk() {
     surf: dark ? '#13212e' : '#ffffff',
     ink:  dark ? '#eaf2f7' : '#333333',
     mute: dark ? '#8598a6' : '#6b7a85',
+    // Nine countries get their own colour. The order matters: teal beside the
+    // slate fails colour-blind separation badly (ΔE 1.6), teal beside red is
+    // fine (12.3), and this sequence clears the check on both surfaces. Nine is
+    // where it stops — a tenth hue was indistinguishable from the slate — so
+    // everything past the ninth country shares grey.
     ramp: dark
-      ? ['#6badea', '#f79553', '#a98ada', '#a5d45e', '#e872b2', '#ffd84a']
-      : ['#0055a4', '#f47721', '#662d91', '#8ebe3f', '#d83d96', '#ffcb05'],
+      ? ['#6badea', '#f79553', '#a98ada', '#a5d45e', '#e872b2', '#ffd84a', '#4ec9c0', '#e8646a', '#9db9cd']
+      : ['#0055a4', '#f47721', '#662d91', '#8ebe3f', '#d83d96', '#ffcb05', '#14857c', '#c9252c', '#5c6b76'],
   };
 }
 const esc = t => String(t == null ? '' : t)
@@ -1348,7 +1353,7 @@ const esc = t => String(t == null ? '' : t)
 function countryColours() {
   const c = chartInk(), counts = {};
   (allData || []).forEach(x => { const k = (x.country || '').trim(); if (k) counts[k] = (counts[k] || 0) + 1; });
-  const top = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 6).map(e => e[0]);
+  const top = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 9).map(e => e[0]);
   const map = {};
   top.forEach((k, i) => map[k] = c.ramp[i]);
   return { map, top, of: k => map[(k || '').trim()] || c.grey };
@@ -1389,8 +1394,9 @@ function chPie(el) {
   if (!rows0.length) return noData(el);
   const cc = countryColours(), c = chartInk(), counts = {};
   rows0.forEach(x => { const k = (x.country || '').trim(); if (k) counts[k] = (counts[k] || 0) + 1; });
-  const top = cc.top.map(k => ({ k, n: counts[k] }));
-  const restN = Object.entries(counts).filter(([k]) => !cc.top.includes(k))
+  const named = cc.top.slice(0, 6);
+  const top = named.map(k => ({ k, n: counts[k] }));
+  const restN = Object.entries(counts).filter(([k]) => !named.includes(k))
                       .reduce((s, [, v]) => s + v, 0);
   const slices = restN ? [...top, { k: T('gr.other'), n: restN, rest: true }] : top;
   const total = slices.reduce((s, x) => s + x.n, 0);
