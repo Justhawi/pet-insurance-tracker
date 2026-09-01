@@ -8,7 +8,9 @@ name: Refresh tracker data
 
 on:
   schedule:
-    - cron: '0 8 * * *'  # once daily at 08:00 UTC (10:00 Paris; 09:00 in winter). Public repo = free unlimited Actions.
+    - cron: '37 6 * * *'  # 06:37 UTC (08:37 Madrid). Deliberately off the hour:
+      # GitHub queues scheduled jobs hardest at :00, which pushed this run to
+      # 16:19, 14:00 and 20:22 on recent days despite asking for 08:00.
   workflow_dispatch: {}      # manual trigger
 
 # Concurrency: never run two refreshes at once.
