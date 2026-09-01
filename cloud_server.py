@@ -49,7 +49,13 @@ def index():
         # Read as binary to handle any encoding in the file
         with open(HTML, "rb") as f:
             content = f.read()
-        return Response(content, mimetype="text/html; charset=utf-8")
+        resp = Response(content, mimetype="text/html; charset=utf-8")
+        # The dashboard is one big HTML file that changes with every deploy.
+        # Without this the browser keeps serving the copy it already has, so a
+        # deploy looks like it did nothing until someone hard-refreshes.
+        resp.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        resp.headers["Pragma"] = "no-cache"
+        return resp
     return "<h2>No data yet - run the fetch script on your PC first.</h2>"
 
 @app.route("/api/data")
