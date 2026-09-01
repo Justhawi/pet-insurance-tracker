@@ -105,7 +105,8 @@ a{color:var(--brand)}
 .rail-nav a:nth-child(3) .ic{color:var(--pp-green)}
 .rail-nav a:nth-child(4) .ic{color:var(--pp-magenta)}
 .rail-nav a:nth-child(5) .ic{color:var(--pp-blue)}
-.rail-nav a:nth-child(6) .ic{color:var(--pp-purple)}
+.rail-nav a:nth-child(6) .ic{color:var(--pp-blue-dark)}
+.rail-nav a:nth-child(7) .ic{color:var(--pp-purple)}
 html[data-theme="dark"] .rail-nav a:nth-child(5) .ic{color:var(--series-1)}
 
 /* ---- TOPBAR ------------------------------------------------------------- */
@@ -232,6 +233,8 @@ tbody tr:last-child{border-bottom:none}
 td{padding:10px 12px;font-size:.82rem;vertical-align:middle}
 td:nth-child(9){white-space:nowrap}
 .company-name{font-weight:700;color:var(--text-primary)}
+.company-link{color:inherit;text-decoration:none}
+.company-link:hover{color:var(--brand);text-decoration:underline}
 .company-website{font-size:.7rem;color:var(--brand);text-decoration:none}
 .country-flag{font-size:14px;margin-right:5px}
 
@@ -283,7 +286,7 @@ html[data-theme="dark"] .badge-op-full{color:var(--series-4)}
 .bars{display:flex;flex-direction:column;gap:9px}
 .bar-row{display:grid;grid-template-columns:120px 1fr 42px;align-items:center;gap:10px;font-size:.82rem}
 .bar-track{height:9px;background:var(--surface-2);border-radius:5px;overflow:hidden}
-.bar-fill{height:100%;background:var(--series-1);border-radius:5px}
+.bar-fill{height:100%;background:var(--seq-450);border-radius:5px}
 .steps{margin:0;padding-left:20px}
 .steps li{margin-bottom:8px;font-size:.88rem;color:var(--text-secondary)}
 .steps strong{color:var(--text-primary)}
@@ -347,6 +350,15 @@ html[data-theme="dark"] .badge-op-full{color:var(--series-4)}
   border-radius:999px;padding:4px 10px;font-size:.72rem;cursor:pointer;font-family:var(--sans)}
 .ask-sugg button:hover{border-color:var(--brand);color:var(--brand)}
 
+.chart{margin-top:4px}
+.chart svg{display:block;overflow:visible}
+.chart-legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px;font-size:.74rem;color:var(--text-secondary)}
+.chart-legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.chart-legend i.dash{height:3px;border-radius:2px;vertical-align:3px}
+.chart-tip{position:fixed;z-index:200;pointer-events:none;background:var(--surface-1);color:var(--text-primary);
+  border:1px solid var(--border-strong);border-radius:var(--radius);padding:7px 10px;font-size:.76rem;
+  line-height:1.45;box-shadow:0 6px 20px rgba(0,0,0,.28);max-width:260px}
+
 /* ---- SCROLLBAR / RESPONSIVE --------------------------------------------- */
 ::-webkit-scrollbar{width:8px;height:8px}
 ::-webkit-scrollbar-track{background:transparent}
@@ -394,6 +406,10 @@ html[data-theme="dark"] .badge-op-full{color:var(--series-4)}
         <a data-nav="download" onclick="go('download')">
           <span class="ic"><svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 3v10.6l3.3-3.3 1.4 1.4L12 17.4l-4.7-5.7 1.4-1.4L12 13.6V3h0zM4 19h16v2H4v-2z"/></svg></span>
           <span class="tx" data-i18n="nav.download">Download</span>
+        </a>
+        <a data-nav="graphs" onclick="go('graphs')">
+          <span class="ic"><svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M4 20h16v1H3V3h1v17zm3-2V10h3v8H7zm5 0V5h3v13h-3zm5 0v-6h3v6h-3z"/></svg></span>
+          <span class="tx" data-i18n="nav.graphs">Graphs</span>
         </a>
         <a data-nav="guide" onclick="go('guide')">
           <span class="ic"><svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M5 3h11l4 4v14H5V3zm10 1.5V8h3.5L15 4.5zM7 11h10v2H7v-2zm0 4h10v2H7v-2z"/></svg></span>
@@ -732,6 +748,48 @@ html[data-theme="dark"] .badge-op-full{color:var(--series-4)}
         </div>
       </div>
 
+      <!-- ===================== GRAPHS ===================== -->
+      <div id="tab-graphs" hidden>
+        <div class="pagebar">
+          <div>
+            <h1 data-i18n="gr.title">The book in pictures</h1>
+            <div class="sub" data-i18n="gr.sub">Every chart is drawn from the companies currently loaded</div>
+          </div>
+        </div>
+
+        <div class="grid two">
+          <div class="card">
+            <div class="card-head"><h2 data-i18n="gr.country.title">Average ponderated score by country</h2></div>
+            <p data-i18n="gr.country.note">Markets with at least three rated companies. The dashed line is the average across the whole book.</p>
+            <div class="chart" id="chCountry"></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h2 data-i18n="gr.dist.title">Where the scores sit</h2></div>
+            <p data-i18n="gr.dist.note">How many companies fall in each half-point band of ponderated score.</p>
+            <div class="chart" id="chDist"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h2 data-i18n="gr.pp.title">Petplan against its market</h2></div>
+          <p data-i18n="gr.pp.note">Each Petplan entry next to the average of every rated company in the same country.</p>
+          <div class="chart" id="chPetplan"></div>
+        </div>
+
+        <div class="grid two">
+          <div class="card">
+            <div class="card-head"><h2 data-i18n="gr.vol.title">Score against review volume</h2></div>
+            <p data-i18n="gr.vol.note">A high score on a handful of reviews is not the same claim as one on thousands. The volume axis is logarithmic.</p>
+            <div class="chart" id="chVolume"></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h2 data-i18n="gr.src.title">Trustpilot against Google</h2></div>
+            <p data-i18n="gr.src.note">Companies rated on both. Points below the line score worse on Google than on Trustpilot.</p>
+            <div class="chart" id="chSources"></div>
+          </div>
+        </div>
+      </div>
+
       <!-- ===================== GUIDE ===================== -->
       <div id="tab-guide" hidden>
         <div class="pagebar">
@@ -818,7 +876,16 @@ const I18N = {
   en: {
     'brand.licence':'Licence: Petplan Ibérica SL',
     'nav.overview':'Overview','nav.tracker':'Tracker','nav.new':'New companies',
-    'nav.add':'Add company','nav.download':'Download','nav.guide':'Guide',
+    'nav.add':'Add company','nav.download':'Download','nav.graphs':'Graphs','nav.guide':'Guide',
+    'gr.title':'The book in pictures','gr.sub':'Every chart is drawn from the companies currently loaded',
+    'gr.country.title':'Average ponderated score by country',
+    'gr.country.note':'Markets with at least three rated companies. The dashed line is the average across the whole book.',
+    'gr.dist.title':'Where the scores sit','gr.dist.note':'How many companies fall in each half-point band of ponderated score.',
+    'gr.pp.title':'Petplan against its market','gr.pp.note':'Each Petplan entry next to the average of every rated company in the same country.',
+    'gr.vol.title':'Score against review volume','gr.vol.note':'A high score on a handful of reviews is not the same claim as one on thousands. The volume axis is logarithmic.',
+    'gr.src.title':'Trustpilot against Google','gr.src.note':'Companies rated on both. Points below the line score worse on Google than on Trustpilot.',
+    'gr.companies':'companies','gr.market':'Market average','gr.petplan':'Petplan','gr.others':'Other companies',
+    'gr.reviews':'reviews','gr.none':'Not enough data to draw this yet.',
     'topbar.live':'LIVE','btn.refresh':'Refresh live data','btn.refreshing':'Refreshing…','msg.asking':'Asking the server to re-check Trustpilot and Google Maps…','btn.reset':'Reset',
     'msg.published':'This site shows the latest data published by the daily run — there is no live source on the server itself.',
     'msg.livePC':'Live from PC','msg.noChange':'no change',
@@ -888,7 +955,16 @@ const I18N = {
   es: {
     'brand.licence':'Licencia: Petplan Ibérica SL',
     'nav.overview':'Resumen','nav.tracker':'Seguimiento','nav.new':'Nuevas compañías',
-    'nav.add':'Añadir compañía','nav.download':'Descargas','nav.guide':'Guía',
+    'nav.add':'Añadir compañía','nav.download':'Descargas','nav.graphs':'Gráficos','nav.guide':'Guía',
+    'gr.title':'La cartera en imágenes','gr.sub':'Cada gráfico se dibuja con las compañías cargadas ahora mismo',
+    'gr.country.title':'Nota ponderada media por país',
+    'gr.country.note':'Mercados con al menos tres compañías puntuadas. La línea discontinua es la media de toda la cartera.',
+    'gr.dist.title':'Dónde se sitúan las notas','gr.dist.note':'Cuántas compañías caen en cada franja de medio punto de nota ponderada.',
+    'gr.pp.title':'Petplan frente a su mercado','gr.pp.note':'Cada entrada de Petplan junto a la media de las compañías puntuadas del mismo país.',
+    'gr.vol.title':'Nota frente a volumen de opiniones','gr.vol.note':'Un 5 con veinte opiniones no dice lo mismo que un 4,7 con miles. El eje de volumen es logarítmico.',
+    'gr.src.title':'Trustpilot frente a Google','gr.src.note':'Compañías puntuadas en ambas. Los puntos por debajo de la línea puntúan peor en Google que en Trustpilot.',
+    'gr.companies':'compañías','gr.market':'Media del mercado','gr.petplan':'Petplan','gr.others':'Otras compañías',
+    'gr.reviews':'opiniones','gr.none':'Aún no hay datos suficientes para dibujarlo.',
     'topbar.live':'EN VIVO','btn.refresh':'Actualizar datos','btn.refreshing':'Actualizando…','msg.asking':'Pidiendo al servidor que vuelva a comprobar Trustpilot y Google Maps…',
     'msg.published':'Este sitio muestra los últimos datos publicados por la ronda diaria: en el servidor no hay una fuente en vivo.',
     'msg.livePC':'En vivo desde el PC','msg.noChange':'sin cambios','btn.reset':'Limpiar',
@@ -978,6 +1054,7 @@ function applyI18n() {
   const t = document.getElementById('topbarTitle');
   if (t && window.__section) t.textContent = T('nav.' + navKey(window.__section));
   if (window.allData && window.allData.length) { try { applyFilters(); renderOverview(); renderNewCompanies(); } catch (e) {} }
+  if (window.__section === 'graphs') { try { renderGraphs(); } catch (e) {} }
 }
 
 function setLang(l) {
@@ -987,9 +1064,9 @@ function setLang(l) {
 }
 
 /* ---------- navigation ---------- */
-const SECTIONS = ['overview','tracker','new-companies','add-company','download','guide'];
+const SECTIONS = ['overview','tracker','new-companies','add-company','download','graphs','guide'];
 function navKey(s) {
-  return { 'overview':'overview','tracker':'tracker','new-companies':'new','add-company':'add','download':'download','guide':'guide' }[s] || 'overview';
+  return { 'overview':'overview','tracker':'tracker','new-companies':'new','add-company':'add','download':'download','graphs':'graphs','guide':'guide' }[s] || 'overview';
 }
 function go(name) {
   if (!SECTIONS.includes(name)) name = 'overview';
@@ -1004,6 +1081,7 @@ function go(name) {
   if (window.innerWidth <= 860) document.getElementById('rail').classList.remove('open');
   window.scrollTo({ top: 0, behavior: 'smooth' });
   if (name === 'overview') { try { renderOverview(); } catch (e) {} }
+  if (name === 'graphs')   { try { renderGraphs(); } catch (e) {} }
 }
 
 /* ---------- theme ---------- */
@@ -1047,7 +1125,7 @@ function renderOverview() {
   if (barsEl) barsEl.innerHTML = pairs.map(([c, n], i) => `
     <div class="bar-row">
       <div class="nm">${flagOf(c)} ${c}</div>
-      <div class="bar-track"><div class="bar-fill" style="width:${Math.round(n / max * 100)}%;background:var(--series-${(i % 8) + 1})"></div></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.round(n / max * 100)}%"></div></div>
       <div class="vl" style="text-align:right">${n}</div>
     </div>`).join('');
 
@@ -1217,6 +1295,226 @@ function askOpen(open) {
   if (open) document.getElementById('ask-input').focus();
 }
 
+/* ============================================================
+   Charts. Hand-drawn SVG so there is no chart library to load.
+
+   Colour follows the data-viz rules rather than the panel's series ramp:
+   every chart here plots ONE measure, so it uses one hue — countries and
+   score bands are nominal, and painting each bar a different colour would
+   double-encode length as hue. Where a second series exists it is emphasis
+   (Petplan in the hue, the market in grey), not a categorical pair.
+   The hue and grey were validated against both surfaces: lightness band,
+   CVD separation and contrast all pass.
+   ============================================================ */
+function chartInk() {
+  const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+  return {
+    hue:  dark ? '#2b74ba' : '#0055a4',
+    grey: dark ? '#8598a6' : '#5c6b76',
+    grid: dark ? '#23384a' : '#d8e3ea',
+    surf: dark ? '#13212e' : '#ffffff',
+    ink:  dark ? '#eaf2f7' : '#333333',
+    mute: dark ? '#8598a6' : '#6b7a85',
+  };
+}
+const esc = t => String(t == null ? '' : t)
+  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+function chartTip() {
+  let el = document.getElementById('chartTip');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'chartTip'; el.className = 'chart-tip'; el.hidden = true;
+    document.body.appendChild(el);
+    document.addEventListener('mousemove', (e) => {
+      const m = e.target.closest && e.target.closest('[data-tip]');
+      if (!m) { el.hidden = true; return; }
+      el.innerHTML = m.getAttribute('data-tip');
+      el.hidden = false;
+      const pad = 14, w = el.offsetWidth, h = el.offsetHeight;
+      let x = e.clientX + pad, y = e.clientY - h - pad;
+      if (x + w > innerWidth - 8) x = e.clientX - w - pad;
+      if (y < 8) y = e.clientY + pad;
+      el.style.left = x + 'px'; el.style.top = y + 'px';
+    }, true);
+  }
+  return el;
+}
+
+function rated() { return (allData || []).filter(c => (c.pondScore || 0) > 0); }
+function noData(el) { el.innerHTML = `<p class="no-data">${T('gr.none')}</p>`; }
+
+/* ---- horizontal bars: average score by country ---------------------------- */
+function chCountry(el) {
+  const by = {};
+  rated().forEach(c => { const k = (c.country || '').trim(); (by[k] = by[k] || []).push(c); });
+  const rows = Object.entries(by).filter(([, v]) => v.length >= 3)
+    .map(([k, v]) => ({ k, n: v.length, avg: v.reduce((s, c) => s + c.pondScore, 0) / v.length }))
+    .sort((a, b) => b.avg - a.avg);
+  if (!rows.length) return noData(el);
+  const all = rated();
+  const mean = all.reduce((s, c) => s + c.pondScore, 0) / all.length;
+
+  const c = chartInk(), L = 118, R = 46, T_ = 8, rowH = 26, h = T_ + rows.length * rowH + 24;
+  const w = Math.max(360, el.clientWidth || 460), pw = w - L - R;
+  const x = v => L + (v / 5) * pw;
+  let g = '';
+  for (let t = 0; t <= 5; t++) {
+    g += `<line x1="${x(t)}" y1="${T_}" x2="${x(t)}" y2="${T_ + rows.length * rowH}" stroke="${c.grid}" stroke-width="1"/>`
+       + `<text x="${x(t)}" y="${h - 8}" fill="${c.mute}" font-size="10" text-anchor="middle">${t}</text>`;
+  }
+  rows.forEach((r, i) => {
+    const y = T_ + i * rowH, bh = 14;
+    g += `<text x="${L - 8}" y="${y + bh - 2}" fill="${c.ink}" font-size="11" text-anchor="end">${esc(r.k)}</text>`
+       + `<rect x="${L}" y="${y}" width="${Math.max(2, x(r.avg) - L)}" height="${bh}" rx="4" fill="${c.hue}"
+            data-tip="<strong>${esc(r.k)}</strong><br>${r.avg.toFixed(2)} ${T('gr.market').toLowerCase()}<br>${r.n} ${T('gr.companies')}"/>`
+       + `<text x="${x(r.avg) + 6}" y="${y + bh - 2}" fill="${c.ink}" font-size="11" font-weight="700">${r.avg.toFixed(2)}</text>`;
+  });
+  g += `<line x1="${x(mean)}" y1="${T_ - 2}" x2="${x(mean)}" y2="${T_ + rows.length * rowH + 2}"
+          stroke="${c.grey}" stroke-width="2" stroke-dasharray="4 3"/>`;
+  el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" role="img"
+      aria-label="Average ponderated score by country">${g}</svg>
+    <div class="chart-legend"><span><i class="dash" style="background:${c.grey}"></i>${T('gr.market')} ${mean.toFixed(2)}</span></div>`;
+}
+
+/* ---- columns: distribution of scores -------------------------------------- */
+function chDist(el) {
+  const rows = rated();
+  if (!rows.length) return noData(el);
+  const bins = [];
+  for (let lo = 1; lo < 5; lo += 0.5) bins.push({ lo, hi: lo + 0.5, n: 0, names: [] });
+  rows.forEach(c => {
+    const b = bins.find(b => c.pondScore >= b.lo && (c.pondScore < b.hi || (b.hi === 5 && c.pondScore <= 5)));
+    if (b) { b.n++; if (b.names.length < 4) b.names.push(c.company); }
+  });
+  const max = Math.max(...bins.map(b => b.n), 1);
+  const c = chartInk(), w = Math.max(360, el.clientWidth || 460), h = 300, B = 40, T_ = 14;
+  const bw = (w - 30) / bins.length;
+  let g = `<line x1="14" y1="${h - B}" x2="${w - 14}" y2="${h - B}" stroke="${c.grid}" stroke-width="1"/>`;
+  bins.forEach((b, i) => {
+    const bh = Math.round((b.n / max) * (h - B - T_ - 16));
+    const bx = 16 + i * bw, bwid = Math.min(24, bw - 8);
+    g += `<rect x="${bx + (bw - 8 - bwid) / 2}" y="${h - B - bh}" width="${bwid}" height="${Math.max(bh, 1)}" rx="4"
+            fill="${c.hue}" data-tip="<strong>${b.lo.toFixed(1)}–${b.hi.toFixed(1)}</strong><br>${b.n} ${T('gr.companies')}${b.names.length ? '<br>' + esc(b.names.join(', ')) : ''}"/>`
+       + (b.n ? `<text x="${bx + (bw - 8) / 2}" y="${h - B - bh - 5}" fill="${c.ink}" font-size="11" font-weight="700" text-anchor="middle">${b.n}</text>` : '')
+       + `<text x="${bx + (bw - 8) / 2}" y="${h - B + 15}" fill="${c.mute}" font-size="10" text-anchor="middle">${b.lo.toFixed(1)}</text>`;
+  });
+  el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" role="img"
+      aria-label="Distribution of ponderated scores">${g}</svg>`;
+}
+
+/* ---- grouped bars: Petplan vs its market ---------------------------------- */
+function chPetplan(el) {
+  const pp = rated().filter(c => c.company.toLowerCase().includes('petplan'));
+  if (!pp.length) return noData(el);
+  const rows = pp.map(c => {
+    const peers = rated().filter(x => x.country === c.country);
+    const avg = peers.reduce((s, x) => s + x.pondScore, 0) / peers.length;
+    const rank = [...peers].sort((a, b) => b.pondScore - a.pondScore)
+      .findIndex(x => x.company === c.company) + 1;
+    return { name: c.company, country: (c.country || '').trim(), score: c.pondScore, avg, rank, of: peers.length };
+  }).sort((a, b) => b.score - a.score);
+
+  const c = chartInk(), L = 150, R = 54, rowH = 40, T_ = 10, h = T_ + rows.length * rowH + 24;
+  const w = Math.max(420, el.clientWidth || 700), pw = w - L - R;
+  const x = v => L + (v / 5) * pw;
+  let g = '';
+  for (let t = 0; t <= 5; t++) {
+    g += `<line x1="${x(t)}" y1="${T_}" x2="${x(t)}" y2="${T_ + rows.length * rowH}" stroke="${c.grid}" stroke-width="1"/>`
+       + `<text x="${x(t)}" y="${h - 8}" fill="${c.mute}" font-size="10" text-anchor="middle">${t}</text>`;
+  }
+  rows.forEach((r, i) => {
+    const y = T_ + i * rowH, bh = 14;   // 2px surface gap between the pair
+    g += `<text x="${L - 8}" y="${y + 14}" fill="${c.ink}" font-size="11" text-anchor="end">${esc(r.name)}</text>`
+       + `<text x="${L - 8}" y="${y + 28}" fill="${c.mute}" font-size="10" text-anchor="end">${T('gr.market').toLowerCase()}</text>`
+       + `<rect x="${L}" y="${y}" width="${Math.max(2, x(r.score) - L)}" height="${bh}" rx="4" fill="${c.hue}"
+            data-tip="<strong>${esc(r.name)}</strong><br>${r.score.toFixed(2)} · rank ${r.rank}/${r.of} in ${esc(r.country)}"/>`
+       + `<text x="${x(r.score) + 6}" y="${y + bh - 2}" fill="${c.ink}" font-size="11" font-weight="700">${r.score.toFixed(2)}</text>`
+       + `<rect x="${L}" y="${y + bh + 2}" width="${Math.max(2, x(r.avg) - L)}" height="${bh}" rx="4" fill="${c.grey}"
+            data-tip="${esc(r.country)} ${T('gr.market').toLowerCase()}<br>${r.avg.toFixed(2)} over ${r.of} ${T('gr.companies')}"/>`
+       + `<text x="${x(r.avg) + 6}" y="${y + bh * 2}" fill="${c.mute}" font-size="11">${r.avg.toFixed(2)}</text>`;
+  });
+  el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" role="img"
+      aria-label="Petplan against its market">${g}</svg>
+    <div class="chart-legend"><span><i style="background:${c.hue}"></i>${T('gr.petplan')}</span>
+      <span><i style="background:${c.grey}"></i>${T('gr.market')}</span></div>`;
+}
+
+/* ---- scatter: score against review volume (log x) ------------------------- */
+function chVolume(el) {
+  const rows = rated().filter(c => (c.totalOpinions || 0) > 0);
+  if (rows.length < 3) return noData(el);
+  const c = chartInk(), w = Math.max(360, el.clientWidth || 460), h = 260, L = 34, R = 14, T_ = 12, B = 34;
+  const lo = Math.log10(10), hi = Math.log10(Math.max(...rows.map(r => r.totalOpinions)) * 1.2);
+  const X = v => L + ((Math.log10(Math.max(v, 10)) - lo) / (hi - lo)) * (w - L - R);
+  const Y = v => T_ + (1 - (v - 1) / 4) * (h - T_ - B);
+  let g = '';
+  [1, 2, 3, 4, 5].forEach(t => {
+    g += `<line x1="${L}" y1="${Y(t)}" x2="${w - R}" y2="${Y(t)}" stroke="${c.grid}" stroke-width="1"/>`
+       + `<text x="${L - 6}" y="${Y(t) + 3}" fill="${c.mute}" font-size="10" text-anchor="end">${t}</text>`;
+  });
+  [10, 100, 1000, 10000, 100000].forEach(v => {
+    if (Math.log10(v) > hi) return;
+    const lbl = v >= 1000 ? (v / 1000) + 'k' : v;
+    g += `<text x="${X(v)}" y="${h - 12}" fill="${c.mute}" font-size="10" text-anchor="middle">${lbl}</text>`;
+  });
+  const isPP = r => r.company.toLowerCase().includes('petplan');
+  rows.filter(r => !isPP(r)).forEach(r => {
+    g += `<circle cx="${X(r.totalOpinions)}" cy="${Y(r.pondScore)}" r="4" fill="${c.grey}" fill-opacity="0.55"
+            stroke="${c.surf}" stroke-width="2"
+            data-tip="<strong>${esc(r.company)}</strong><br>${r.pondScore.toFixed(2)} · ${(r.totalOpinions).toLocaleString()} ${T('gr.reviews')}"/>`;
+  });
+  rows.filter(isPP).forEach(r => {
+    g += `<circle cx="${X(r.totalOpinions)}" cy="${Y(r.pondScore)}" r="6" fill="${c.hue}" stroke="${c.surf}" stroke-width="2"
+            data-tip="<strong>${esc(r.company)}</strong><br>${r.pondScore.toFixed(2)} · ${(r.totalOpinions).toLocaleString()} ${T('gr.reviews')}"/>`
+       + `<text x="${X(r.totalOpinions)}" y="${Y(r.pondScore) - 11}" fill="${c.ink}" font-size="10"
+             font-weight="700" text-anchor="middle" paint-order="stroke" stroke="${c.surf}" stroke-width="3">${esc(r.company.replace(/ Pet Insurance| Insurance/i, ''))}</text>`;
+  });
+  el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" role="img"
+      aria-label="Ponderated score against review volume">${g}</svg>
+    <div class="chart-legend"><span><i style="background:${c.hue}"></i>${T('gr.petplan')}</span>
+      <span><i style="background:${c.grey}"></i>${T('gr.others')}</span></div>`;
+}
+
+/* ---- scatter: Trustpilot vs Google ---------------------------------------- */
+function chSources(el) {
+  const rows = (allData || []).filter(c => (c.tpScore || 0) > 0 && (c.gScore || 0) > 0);
+  if (rows.length < 3) return noData(el);
+  const c = chartInk(), w = Math.max(360, el.clientWidth || 460), h = 260, L = 34, R = 14, T_ = 12, B = 34;
+  const X = v => L + ((v - 1) / 4) * (w - L - R);
+  const Y = v => T_ + (1 - (v - 1) / 4) * (h - T_ - B);
+  let g = '';
+  [1, 2, 3, 4, 5].forEach(t => {
+    g += `<line x1="${L}" y1="${Y(t)}" x2="${w - R}" y2="${Y(t)}" stroke="${c.grid}" stroke-width="1"/>`
+       + `<text x="${L - 6}" y="${Y(t) + 3}" fill="${c.mute}" font-size="10" text-anchor="end">${t}</text>`
+       + `<text x="${X(t)}" y="${h - 12}" fill="${c.mute}" font-size="10" text-anchor="middle">${t}</text>`;
+  });
+  g += `<line x1="${X(1)}" y1="${Y(1)}" x2="${X(5)}" y2="${Y(5)}" stroke="${c.grey}" stroke-width="2" stroke-dasharray="4 3"/>`;
+  rows.forEach(r => {
+    g += `<circle cx="${X(r.tpScore)}" cy="${Y(r.gScore)}" r="4" fill="${c.hue}" fill-opacity="0.7"
+            stroke="${c.surf}" stroke-width="2"
+            data-tip="<strong>${esc(r.company)}</strong><br>Trustpilot ${r.tpScore} · Google ${r.gScore}"/>`;
+  });
+  g += `<text x="${L + 6}" y="${T_ + 10}" fill="${c.mute}" font-size="10">Google ↑ · Trustpilot →</text>`;
+  el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" role="img"
+      aria-label="Trustpilot score against Google score">${g}</svg>`;
+}
+
+function renderGraphs() {
+  if (!(allData || []).length) return;
+  chartTip();
+  [['chCountry', chCountry], ['chDist', chDist], ['chPetplan', chPetplan],
+   ['chVolume', chVolume], ['chSources', chSources]].forEach(([id, fn]) => {
+    const el = document.getElementById(id);
+    if (el) { try { fn(el); } catch (e) { noData(el); } }
+  });
+}
+let _chartResize;
+window.addEventListener('resize', () => {
+  clearTimeout(_chartResize);
+  _chartResize = setTimeout(() => { if (window.__section === 'graphs') renderGraphs(); }, 200);
+});
+
 /* ---------- wiring ---------- */
 window.addEventListener('load', function () {
   document.getElementById('burger').onclick = () => {
@@ -1226,6 +1524,8 @@ window.addEventListener('load', function () {
   };
   document.getElementById('themeBtn').onclick = () => {
     setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    // the charts bake their colours into SVG, so they have to be redrawn
+    if (window.__section === 'graphs') { try { renderGraphs(); } catch (e) {} }
   };
   document.querySelectorAll('.langs .lang').forEach(b => { b.onclick = () => setLang(b.dataset.lang); });
 
@@ -1590,7 +1890,9 @@ function renderTable() {
     return `<tr>
       <td><span class="country-flag">${flag}</span>${c.country.trim()}</td>
       <td>
-        <div class="company-name">${c.company} ${isNew ? '<span class="badge badge-new">NEW</span>' : ''}</div>
+        <div class="company-name">${website
+              ? `<a href="${website}" target="_blank" rel="noopener" class="company-link">${c.company}</a>`
+              : c.company} ${isNew ? '<span class="badge badge-new">NEW</span>' : ''}</div>
         ${website ? `<a href="${website}" target="_blank" class="company-website">🌐 ${c.website}</a>` : `<span class="no-data" style="font-size:10px">${T('res.nowebsite')}</span>`}
       </td>
       <td><span class="badge ${c.opType === 'Full Service' ? 'badge-op-full' : 'badge-op-sale'}">${c.opType || '—'}</span></td>
@@ -1703,9 +2005,13 @@ function renderNewCompanies() {
     const flag = COUNTRY_FLAGS[c.country.trim()] || '🌐';
     // The card had no link at all, so clicking it did nothing. Open the profile
     // it was discovered on.
-    const url = c.tpUrl || c.link || '';
+    const tp = c.tpUrl || c.link || '';
+    const site = c.website ? (c.website.startsWith('http') ? c.website : 'https://' + c.website) : '';
+    const url = site || tp;   // clicking the company goes to the company
     return `<div class="new-company-card"${url ? ` onclick="window.open('${url}','_blank','noopener')" style="cursor:pointer"` : ''}>
-      <div class="nc-name">${c.company}</div>
+      <div class="nc-name">${site
+        ? `<a href="${site}" target="_blank" rel="noopener" class="company-link" onclick="event.stopPropagation()">${c.company}</a>`
+        : c.company}</div>
       <div class="nc-country">${flag} ${c.country} · ${c.date}</div>
       <div class="nc-scores">
         <div class="nc-score-item"><span class="nc-score-label">TP:</span><span class="nc-score-val ${scoreColor(c.tpScore)}">${c.tpScore || '—'}</span></div>
@@ -1713,7 +2019,7 @@ function renderNewCompanies() {
         <div class="nc-score-item"><span class="nc-score-label">Pond:</span><span class="nc-score-val ${scoreColor(c.pondScore)}">${c.pondScore || '—'}</span></div>
         <div class="nc-score-item"><span class="nc-score-label">Reviews:</span><span class="nc-score-val">${c.totalOpinions.toLocaleString()}</span></div>
       </div>
-      ${url ? `<a class="nc-link" href="${url}" target="_blank" rel="noopener"
+      ${tp ? `<a class="nc-link" href="${tp}" target="_blank" rel="noopener"
                  onclick="event.stopPropagation()">${T('nc.view')}</a>` : ''}
     </div>`;
   }).join('');
