@@ -302,8 +302,6 @@ html[data-theme="dark"] .badge-op-full{color:var(--series-4)}
 .nc-score-item{font-size:.76rem}
 .nc-score-label{color:var(--text-muted)}
 .nc-score-val{font-weight:700;margin-left:4px}
-.nc-warn{font-size:.7rem;color:var(--warning-ink);background:var(--warning-bg);
-  border-radius:var(--radius);padding:4px 8px;margin-bottom:8px;line-height:1.35}
 .nc-link{display:inline-block;margin-top:10px;font-size:.74rem;color:var(--brand);text-decoration:none}
 .nc-link:hover{text-decoration:underline}
 .download-options{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
@@ -851,8 +849,7 @@ const I18N = {
     'nc.found':'Found online','nc.note':'Companies discovered on Trustpilot with a meaningful number of reviews. Check one before adding it to the book.',
     'nc.add.title':'Add a discovered company','nc.add.note':'Found a new pet insurance company? Add it here and it appears in the tracker straight away.',
     'nc.empty':'The last daily run found no insurer that is not already in the book.',
-    'nc.view':'View on Trustpilot ↗',
-    'nc.multiline':'Multi-line insurer — this score covers all its business, not only pet cover.','nc.lastCheck':'Last checked','nc.how':'A company lands here when the daily run spots it on Trustpilot with 500+ reviews and it is not tracked yet.',
+    'nc.view':'View on Trustpilot ↗','nc.lastCheck':'Last checked','nc.how':'A company lands here when the daily run spots it on Trustpilot with 500+ reviews and it is not tracked yet.',
     'ac.title':'Add or edit a company','ac.sub':'Entries added here are kept in this browser and included in every export',
     'ac.details':'Company details',
     'f.country':'Country *','f.select':'Select...','f.name':'Company name *','f.website':'Website',
@@ -922,8 +919,7 @@ const I18N = {
     'nc.found':'Encontradas en línea','nc.note':'Compañías descubiertas en Trustpilot con un número relevante de opiniones. Revísalas antes de añadirlas.',
     'nc.add.title':'Añadir una compañía descubierta','nc.add.note':'¿Has encontrado una compañía nueva? Añádela aquí y aparecerá en el seguimiento al momento.',
     'nc.empty':'La última ronda diaria no encontró ninguna aseguradora que no esté ya en la cartera.',
-    'nc.view':'Ver en Trustpilot ↗',
-    'nc.multiline':'Aseguradora multirramo: esta nota cubre todo su negocio, no solo la póliza de mascotas.','nc.lastCheck':'Última comprobación','nc.how':'Una compañía aparece aquí cuando la ronda diaria la detecta en Trustpilot con más de 500 opiniones y aún no está en el seguimiento.',
+    'nc.view':'Ver en Trustpilot ↗','nc.lastCheck':'Última comprobación','nc.how':'Una compañía aparece aquí cuando la ronda diaria la detecta en Trustpilot con más de 500 opiniones y aún no está en el seguimiento.',
     'ac.title':'Añadir o editar una compañía','ac.sub':'Lo añadido aquí se guarda en este navegador y entra en todas las exportaciones',
     'ac.details':'Datos de la compañía',
     'f.country':'País *','f.select':'Selecciona...','f.name':'Nombre de la compañía *','f.website':'Web',
@@ -1711,7 +1707,6 @@ function renderNewCompanies() {
     return `<div class="new-company-card"${url ? ` onclick="window.open('${url}','_blank','noopener')" style="cursor:pointer"` : ''}>
       <div class="nc-name">${c.company}</div>
       <div class="nc-country">${flag} ${c.country} · ${c.date}</div>
-      ${c.petOnly === false ? `<div class="nc-warn">${T('nc.multiline')}</div>` : ''}
       <div class="nc-scores">
         <div class="nc-score-item"><span class="nc-score-label">TP:</span><span class="nc-score-val ${scoreColor(c.tpScore)}">${c.tpScore || '—'}</span></div>
         <div class="nc-score-item"><span class="nc-score-label">G:</span><span class="nc-score-val ${scoreColor(c.gScore)}">${c.gScore || '—'}</span></div>
