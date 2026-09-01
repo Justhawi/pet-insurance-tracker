@@ -819,6 +819,8 @@ const I18N = {
     'nav.overview':'Overview','nav.tracker':'Tracker','nav.new':'New companies',
     'nav.add':'Add company','nav.download':'Download','nav.guide':'Guide',
     'topbar.live':'LIVE','btn.refresh':'Refresh live data','btn.refreshing':'Refreshing…','msg.asking':'Asking the server to re-check Trustpilot and Google Maps…','btn.reset':'Reset',
+    'msg.published':'This site shows the latest data published by the daily run — there is no live source on the server itself.',
+    'msg.livePC':'Live from PC','msg.noChange':'no change',
     'btn.addTracker':'Add to tracker','btn.clear':'Clear',
     'ov.title':'The benchmark in one picture',
     'ov.sub':'Trustpilot and Google Maps reputation across 25 countries',
@@ -826,7 +828,7 @@ const I18N = {
     'kpi.tp':'Avg Trustpilot','kpi.g':'Avg Google score','kpi.avg.sub':'average of rated companies',
     'kpi.reviews':'Total reviews','kpi.reviews.sub':'combined opinions',
     'kpi.top':'Top rated','kpi.top.sub':'by ponderated score',
-    'kpi.new':'Newly discovered','kpi.new.sub':'companies found online',
+    'kpi.new':'Newly discovered','kpi.new.sub':'companies found online','kpi.new.none':'none in the last run',
     'ov.top.title':'Best rated companies','ov.top.chip':'Ponderated score',
     'ov.top.note':'The ponderated score weights each platform by how many reviews it holds, so a 4.9 from 40 people does not outrank a 4.7 from 12,000.',
     'ov.country.title':'Companies by country',
@@ -845,7 +847,8 @@ const I18N = {
     'nc.title':'Recently discovered companies','nc.sub':'Emerging insurers found online, not yet part of the core book',
     'nc.found':'Found online','nc.note':'Companies discovered on Trustpilot with a meaningful number of reviews. Check one before adding it to the book.',
     'nc.add.title':'Add a discovered company','nc.add.note':'Found a new pet insurance company? Add it here and it appears in the tracker straight away.',
-    'nc.empty':'No emerging companies discovered yet. They appear here after a discovery run.',
+    'nc.empty':'The last daily run found no insurer that is not already in the book.',
+    'nc.lastCheck':'Last checked','nc.how':'A company lands here when the daily run spots it on Trustpilot with 500+ reviews and it is not tracked yet.',
     'ac.title':'Add or edit a company','ac.sub':'Entries added here are kept in this browser and included in every export',
     'ac.details':'Company details',
     'f.country':'Country *','f.select':'Select...','f.name':'Company name *','f.website':'Website',
@@ -885,7 +888,9 @@ const I18N = {
     'brand.licence':'Licencia: Petplan Ibérica SL',
     'nav.overview':'Resumen','nav.tracker':'Seguimiento','nav.new':'Nuevas compañías',
     'nav.add':'Añadir compañía','nav.download':'Descargas','nav.guide':'Guía',
-    'topbar.live':'EN VIVO','btn.refresh':'Actualizar datos','btn.refreshing':'Actualizando…','msg.asking':'Pidiendo al servidor que vuelva a comprobar Trustpilot y Google Maps…','btn.reset':'Limpiar',
+    'topbar.live':'EN VIVO','btn.refresh':'Actualizar datos','btn.refreshing':'Actualizando…','msg.asking':'Pidiendo al servidor que vuelva a comprobar Trustpilot y Google Maps…',
+    'msg.published':'Este sitio muestra los últimos datos publicados por la ronda diaria: en el servidor no hay una fuente en vivo.',
+    'msg.livePC':'En vivo desde el PC','msg.noChange':'sin cambios','btn.reset':'Limpiar',
     'btn.addTracker':'Añadir al seguimiento','btn.clear':'Vaciar',
     'ov.title':'El benchmark en una imagen',
     'ov.sub':'Reputación en Trustpilot y Google Maps en 25 países',
@@ -893,7 +898,7 @@ const I18N = {
     'kpi.tp':'Media Trustpilot','kpi.g':'Media Google','kpi.avg.sub':'media de las compañías puntuadas',
     'kpi.reviews':'Opiniones totales','kpi.reviews.sub':'opiniones combinadas',
     'kpi.top':'Mejor valorada','kpi.top.sub':'por nota ponderada',
-    'kpi.new':'Recién descubiertas','kpi.new.sub':'compañías encontradas en línea',
+    'kpi.new':'Recién descubiertas','kpi.new.sub':'compañías encontradas en línea','kpi.new.none':'ninguna en la última ronda',
     'ov.top.title':'Compañías mejor valoradas','ov.top.chip':'Nota ponderada',
     'ov.top.note':'La nota ponderada pesa cada plataforma por el número de opiniones: un 4,9 de 40 personas no adelanta a un 4,7 de 12.000.',
     'ov.country.title':'Compañías por país',
@@ -912,7 +917,8 @@ const I18N = {
     'nc.title':'Compañías descubiertas recientemente','nc.sub':'Aseguradoras emergentes encontradas en línea, aún fuera de la cartera',
     'nc.found':'Encontradas en línea','nc.note':'Compañías descubiertas en Trustpilot con un número relevante de opiniones. Revísalas antes de añadirlas.',
     'nc.add.title':'Añadir una compañía descubierta','nc.add.note':'¿Has encontrado una compañía nueva? Añádela aquí y aparecerá en el seguimiento al momento.',
-    'nc.empty':'Aún no se ha descubierto ninguna compañía emergente. Aparecerán aquí tras una ronda de descubrimiento.',
+    'nc.empty':'La última ronda diaria no encontró ninguna aseguradora que no esté ya en la cartera.',
+    'nc.lastCheck':'Última comprobación','nc.how':'Una compañía aparece aquí cuando la ronda diaria la detecta en Trustpilot con más de 500 opiniones y aún no está en el seguimiento.',
     'ac.title':'Añadir o editar una compañía','ac.sub':'Lo añadido aquí se guarda en este navegador y entra en todas las exportaciones',
     'ac.details':'Datos de la compañía',
     'f.country':'País *','f.select':'Selecciona...','f.name':'Nombre de la compañía *','f.website':'Web',
@@ -1350,7 +1356,11 @@ function showLastRefreshed(s) {
   const stampEl = document.getElementById('lastFetchStamp');
   const updEl   = document.getElementById('lastUpdated');
   let when = '';
-  try { when = new Date(s.finished).toLocaleString(); } catch (e) { when = s.finished || ''; }
+  if (s.finished) {
+    const d = new Date(s.finished);
+    when = isNaN(d.getTime()) ? String(s.finished) : d.toLocaleString();
+  }
+  if (!when) return;   // nothing has finished yet — say nothing rather than 1/1/1970
   if (s.mode === 'browser') {
     if (stampEl) stampEl.innerHTML = '✅ Last refreshed live from your PC at ' + when +
       ' — Trustpilot ' + (s.tp_live || 0) + ' live, Google ' + (s.g_live || 0) + ' live';
@@ -1385,13 +1395,23 @@ function refreshLiveData() {
     if (status) status.textContent = 'Refresh runs on the live site. Opening this file locally? Run fetch_live_data.py instead.';
     reset();
   });
+  let pollTries = 0;
   function poll() {
     fetch('/api/refresh-status').then(r => r.json()).then(s => {
-      if (s.running) { if (status) status.textContent = s.message || 'Working…'; setTimeout(poll, 3000); }
-      else {
+      if (s.running) { pollTries = 0; if (status) status.textContent = s.message || 'Working…'; setTimeout(poll, 3000); return; }
+      // Not running and never finished = the worker has not picked it up yet.
+      if (!s.finished && pollTries < 5) { pollTries++; setTimeout(poll, 1200); return; }
+      {
         if (s.error) { if (status) status.textContent = 'Error: ' + s.error; }
+        else if (s.mode === 'published') {
+          // No browser and no Google key on this host: nothing to fetch live here.
+          if (status) status.textContent = T('msg.published');
+          showLastRefreshed(s);
+        }
         else {
-          if (status) status.textContent = (s.mode === 'browser' ? '✓ Live from PC — ' : '✓ ') + (s.count || '') + ' companies';
+          const n = (s.count || 0);
+          if (status) status.textContent = (s.mode === 'browser' ? '✓ ' + T('msg.livePC') + ' — ' : '✓ ') +
+                                           (n ? n + ' ' + T('res.companies') : T('msg.noChange'));
           showLastRefreshed(s);
         }
         fetch('/api/data').then(r => r.json()).then(d => {
@@ -1659,6 +1679,8 @@ function updateStats() {
   document.getElementById('stat-reviews').textContent = totalReviews > 1000000 ? (totalReviews/1000000).toFixed(1)+'M' : totalReviews > 1000 ? (totalReviews/1000).toFixed(0)+'K' : totalReviews;
   document.getElementById('stat-top').textContent = top ? top.company : '—';
   document.getElementById('stat-new').textContent = newCount;
+  const newSub = document.querySelector('.stats-bar .stat-card:nth-child(6) .stat-sub');
+  if (newSub) newSub.textContent = newCount ? T('kpi.new.sub') : T('kpi.new.none');
   try { renderOverview(); } catch (e) {}
 }
 
@@ -1669,7 +1691,11 @@ function renderNewCompanies() {
   const newOnes = allData.filter(c => c._auto_discovered === true && (c.totalOpinions || 0) > 500).sort((a,b) => (b.totalOpinions || 0) - (a.totalOpinions || 0));
   const grid = document.getElementById('newCompanyGrid');
   if (newOnes.length === 0) {
-    grid.innerHTML = '<div class="no-data" style="grid-column:1/-1">' + T('nc.empty') + '</div>';
+    let asOf = '';
+    (allData || []).forEach(c => { const d = c.date || ''; if (d > asOf) asOf = d; });
+    grid.innerHTML = '<div class="no-data" style="grid-column:1/-1;font-style:normal">' +
+      T('nc.empty') + (asOf ? ' <strong>' + T('nc.lastCheck') + ' ' + asOf + '.</strong>' : '') +
+      '<br><span style="opacity:.75">' + T('nc.how') + '</span></div>';
     return;
   }
   grid.innerHTML = newOnes.map(c => {

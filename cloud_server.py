@@ -184,7 +184,11 @@ def api_refresh():
                                 "message": "Just refreshed — please wait a moment."})
         except Exception:
             pass
-    _refresh.update(started=datetime.now().isoformat(), message="Queued…")
+    # Mark it running *before* returning: the dashboard polls immediately, and if
+    # the worker thread has not started yet it used to read running=False with no
+    # finished timestamp and report a bogus "done" with a 1970 date.
+    _refresh.update(running=True, finished=None, error=None,
+                    started=datetime.now().isoformat(), message="Queued…")
     threading.Thread(target=_do_refresh, daemon=True).start()
     return jsonify({"ok": True, "started": True})
 
