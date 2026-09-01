@@ -1331,6 +1331,11 @@ function chartInk() {
   return {
     hue:  dark ? '#2b74ba' : '#0055a4',
     grey: dark ? '#8598a6' : '#5c6b76',
+    // Countries past the ninth share this. It has to sit well clear of the
+    // ninth slot's slate: the old tail grey was ΔE 10.3 from it, which is below
+    // the level at which full-colour vision can separate two tones — Italy and
+    // New Zealand came out looking identical.
+    tail: dark ? '#63737f' : '#a3b0b8',
     grid: dark ? '#23384a' : '#d8e3ea',
     surf: dark ? '#13212e' : '#ffffff',
     ink:  dark ? '#eaf2f7' : '#333333',
@@ -1356,7 +1361,7 @@ function countryColours() {
   const top = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 9).map(e => e[0]);
   const map = {};
   top.forEach((k, i) => map[k] = c.ramp[i]);
-  return { map, top, of: k => map[(k || '').trim()] || c.grey };
+  return { map, top, of: k => map[(k || '').trim()] || c.tail };
 }
 window.countryColours = countryColours;
 
@@ -1408,7 +1413,7 @@ function chPie(el) {
     const big = frac > 0.5 ? 1 : 0;
     const pt = (ang, rad) => [cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad];
     const [x1, y1] = pt(a, R), [x2, y2] = pt(a2, R), [x3, y3] = pt(a2, r0), [x4, y4] = pt(a, r0);
-    const col = s.rest ? c.grey : cc.of(s.k);
+    const col = s.rest ? c.tail : cc.of(s.k);
     g += `<path d="M${x1} ${y1} A${R} ${R} 0 ${big} 1 ${x2} ${y2} L${x3} ${y3} A${r0} ${r0} 0 ${big} 0 ${x4} ${y4} Z"
             fill="${col}" stroke="${c.surf}" stroke-width="2"
             data-tip="<strong>${esc(s.k)}</strong><br>${s.n} ${T('gr.companies')} · ${Math.round(frac * 100)}%"/>`;
@@ -1417,7 +1422,7 @@ function chPie(el) {
   g += `<text x="${cx}" y="${cy - 2}" text-anchor="middle" fill="${c.ink}" font-size="22" font-weight="700">${total}</text>`
      + `<text x="${cx}" y="${cy + 15}" text-anchor="middle" fill="${c.mute}" font-size="10">${T('gr.companies')}</text>`;
 
-  const legend = slices.map(s => `<span><i style="background:${s.rest ? c.grey : cc.of(s.k)}"></i>${esc(s.k)}
+  const legend = slices.map(s => `<span><i style="background:${s.rest ? c.tail : cc.of(s.k)}"></i>${esc(s.k)}
       <strong>${s.n}</strong> <em>${Math.round(s.n / total * 100)}%</em></span>`).join('');
   el.innerHTML = `<div class="pie-wrap"><svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}"
       role="img" aria-label="Share of tracked companies by country">${g}</svg>
