@@ -1,458 +1,1202 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark" translate="no">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pet Insurance Live Tracker</title>
+<meta name="google" content="notranslate">
+<meta name="robots" content="noindex, nofollow">
+<title>Pet Insurance Tracker · Petplan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
-:root {
-  --bg: #0f1117;
-  --surface: #1a1d27;
-  --surface2: #22263a;
-  --border: #2e3350;
-  --accent: #4f6ef7;
-  --accent2: #7c3aed;
-  --green: #22c55e;
-  --yellow: #eab308;
-  --red: #ef4444;
-  --orange: #f97316;
-  --text: #e2e8f0;
-  --muted: #8892b0;
-  --white: #ffffff;
+/* ==========================================================================
+   Pet Insurance Live Tracker · Petplan
+   Same design system as the Retention Panel (panel-retencion-petplan):
+   Petplan Creative Guidelines colours, Zilla Slab headings, Arial body,
+   252px rail + blue topbar, 5px radius, light/dark themes.
+   ========================================================================== */
+
+/* ---- LIGHT (default) ---------------------------------------------------- */
+:root{
+  color-scheme: light;
+  --pp-blue:#0055a4; --pp-blue-dark:#00427f; --pp-blue-deep:#003057;
+  --pp-bg-blue:#adcfde; --pp-bg-blue-30:#e6f0f5;
+  --pp-green:#8ebe3f; --pp-green-dark:#6f9a2c; --pp-green-30:#ddedc2;
+  --pp-yellow:#ffcb05; --pp-orange:#f47721; --pp-magenta:#d83d96; --pp-purple:#662d91;
+  --pp-cta:#c9252c; --pp-cta-dark:#a51d23;
+  --pp-blue-pale:var(--pp-bg-blue); --pp-blue-mist:var(--pp-bg-blue-30);
+  --pp-green-pale:var(--pp-green-30); --pp-red:var(--pp-cta);
+
+  --surface-0:#f2f7fa; --surface-1:#ffffff; --surface-2:#e6f0f5; --surface-3:#d3e2ea;
+  --border:#d8e3ea; --border-strong:#b6c9d5;
+  --text-primary:#333333; --text-secondary:#5c6b76; --text-muted:#8a97a1;
+  --brand:var(--pp-blue); --brand-strong:var(--pp-blue-dark); --brand-soft:var(--pp-blue-mist);
+
+  --series-1:#0055a4; --series-2:#f47721; --series-3:#8ebe3f; --series-4:#662d91;
+  --series-5:#d83d96; --series-6:#c9252c; --series-7:#ffcb05; --series-8:#5c6b76;
+
+  --critical:#c9252c; --serious:#f47721; --warning:#ffcb05; --good:#8ebe3f;
+  --critical-ink:#a51d23; --serious-ink:#b4530f; --warning-ink:#8a6d00; --good-ink:#547a17;
+  --critical-bg:#fbe8e9; --serious-bg:#fdeee2; --warning-bg:#fff6d6; --good-bg:#eef6df;
+
+  --radius:5px; --radius-pill:28px;
+  --shadow-header:0 0 2px 0 rgba(0,0,0,.6);
+  --shadow:0 1px 2px rgba(0,0,0,.10), 0 3px 12px rgba(0,0,0,.06);
+  --slab:"Zilla Slab","American Typewriter",Rockwell,"Roboto Slab","Bookman Old Style",Georgia,serif;
+  --sans:Arial,"Helvetica Neue",Helvetica,sans-serif;
+  --mono:ui-monospace,"SF Mono","Cascadia Mono",Menlo,Consolas,monospace;
+
+  /* aliases kept so existing markup/JS that uses the old variable names still works */
+  --bg:var(--surface-0); --surface:var(--surface-1); --surface2:var(--surface-2);
+  --accent:var(--brand); --accent2:var(--pp-purple);
+  --text:var(--text-primary); --muted:var(--text-muted); --white:var(--text-primary);
+  --green:var(--good); --yellow:var(--warning); --red:var(--critical); --orange:var(--serious);
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 13px; }
 
-/* HEADER */
-.header { background: linear-gradient(135deg, #1a1d27 0%, #0f1117 100%); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
-.header-left { display: flex; align-items: center; gap: 12px; }
-.logo { width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent), var(--accent2)); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-.header-title { font-size: 18px; font-weight: 700; color: var(--white); }
-.header-sub { font-size: 11px; color: var(--muted); }
-.live-badge { display: flex; align-items: center; gap: 6px; background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.3); border-radius: 20px; padding: 4px 12px; font-size: 11px; color: var(--green); font-weight: 600; }
-.live-dot { width: 7px; height: 7px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.85)} }
-.header-right { display: flex; align-items: center; gap: 10px; }
-.last-updated { font-size: 11px; color: var(--muted); }
+/* ---- DARK --------------------------------------------------------------- */
+html[data-theme="dark"]{
+  color-scheme: dark;
+  --pp-bg-blue:#1d4470; --pp-bg-blue-30:#16293b;
+  --pp-blue-pale:#1d4470; --pp-blue-mist:#16293b; --pp-green-pale:#1d2c17;
+  --surface-0:#0c1620; --surface-1:#13212e; --surface-2:#1a2c3c; --surface-3:#24384a;
+  --border:#23384a; --border-strong:#35506a;
+  --text-primary:#eaf2f7; --text-secondary:#b3c4d0; --text-muted:#8598a6;
+  --brand:#82bcf1; --brand-strong:#a9d3f8; --brand-soft:#16293b;
+  --series-1:#6badea; --series-2:#f79553; --series-3:#a5d45e; --series-4:#a98ada;
+  --series-5:#e872b2; --series-6:#e8646a; --series-7:#ffd84a; --series-8:#9db9cd;
+  --critical-ink:#f08a8e; --serious-ink:#f7a469; --warning-ink:#ffd84a; --good-ink:#a5d45e;
+  --critical-bg:#2d1618; --serious-bg:#2e1e12; --warning-bg:#2c2610; --good-bg:#1d2c17;
+  --shadow:0 1px 2px rgba(0,0,0,.35), 0 3px 12px rgba(0,0,0,.28);
+  --white:#ffffff;
+  --green:var(--good-ink); --yellow:var(--warning-ink); --red:var(--critical-ink); --orange:var(--serious-ink);
+}
 
-/* TABS */
-.tabs { display: flex; gap: 2px; padding: 12px 24px 0; background: var(--bg); border-bottom: 1px solid var(--border); overflow-x: auto; }
-.tab { padding: 8px 16px; border-radius: 6px 6px 0 0; cursor: pointer; font-size: 12px; font-weight: 600; color: var(--muted); border: 1px solid transparent; border-bottom: none; transition: all 0.2s; white-space: nowrap; }
-.tab:hover { color: var(--text); background: var(--surface); }
-.tab.active { color: var(--accent); background: var(--surface); border-color: var(--border); border-bottom: 1px solid var(--surface); margin-bottom: -1px; }
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--surface-0);color:var(--text-primary);
+  font-family:var(--sans);font-size:15px;line-height:1.56;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--slab);font-weight:400;color:var(--brand);margin:0 0 .35em;line-height:1.24}
+h1{font-size:2rem} h2{font-size:1.3rem} h3{font-size:1.08rem}
+a{color:var(--brand)}
+.muted{color:var(--text-muted)}
+.mono{font-family:var(--mono)}
 
-/* MAIN CONTENT */
-.main { padding: 20px 24px; }
+/* ---- SHELL -------------------------------------------------------------- */
+.shell{display:flex;min-height:100dvh}
+.rail{flex:0 0 252px;width:252px;background:var(--surface-1);border-right:1px solid var(--border);
+  z-index:30;transition:margin-left .18s}
+.rail-inner{position:sticky;top:0;max-height:100dvh;overflow-y:auto}
+.rail.hide{margin-left:-252px}
+.rail-brand{display:block;padding:20px 22px 16px;text-decoration:none;color:var(--brand)}
+.brand-logo{display:none;height:26px;width:auto}
+.brand-text{display:block;font-family:var(--slab);font-weight:600;font-size:1.5rem;
+  line-height:1;letter-spacing:-.01em;color:var(--brand)}
+.brand-text sup{font-size:.42em;top:-.9em;position:relative;font-weight:400}
+.licence{display:block;margin-top:6px;font-size:.68rem;color:var(--text-muted);letter-spacing:.02em}
+.rail-nav{display:flex;flex-direction:column;padding:6px 0 20px}
+.rail-nav a{display:flex;align-items:center;gap:14px;padding:12px 22px;text-decoration:none;
+  color:var(--text-primary);font-size:.95rem;border-left:3px solid transparent;cursor:pointer}
+.rail-nav a:hover{background:var(--surface-2)}
+.rail-nav a.on{background:var(--pp-blue-mist);color:var(--brand);border-left-color:var(--brand);font-weight:560}
+.rail-nav .ic{display:grid;place-items:center;width:18px;height:18px;flex:0 0 18px}
+.rail-nav a:nth-child(1) .ic{color:var(--pp-yellow)}
+.rail-nav a:nth-child(2) .ic{color:var(--pp-orange)}
+.rail-nav a:nth-child(3) .ic{color:var(--pp-green)}
+.rail-nav a:nth-child(4) .ic{color:var(--pp-magenta)}
+.rail-nav a:nth-child(5) .ic{color:var(--pp-blue)}
+.rail-nav a:nth-child(6) .ic{color:var(--pp-purple)}
+html[data-theme="dark"] .rail-nav a:nth-child(5) .ic{color:var(--series-1)}
 
-/* STATS BAR */
-.stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px; }
-.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
-.stat-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-.stat-value { font-size: 22px; font-weight: 700; color: var(--white); }
-.stat-sub { font-size: 10px; color: var(--muted); margin-top: 2px; }
+/* ---- TOPBAR ------------------------------------------------------------- */
+.main-col{flex:1 1 auto;min-width:0;display:flex;flex-direction:column}
+.topbar{position:sticky;top:0;z-index:25;background:var(--pp-blue);color:#fff;display:flex;
+  align-items:center;gap:14px;padding:0 18px;min-height:52px;box-shadow:var(--shadow-header)}
+.topbar-title{margin:0;color:#fff;font-family:var(--sans);font-size:.84rem;font-weight:500;
+  letter-spacing:.09em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.burger{flex:0 0 auto;width:30px;height:30px;padding:0;display:grid;align-content:center;gap:4px;
+  background:none;border:0;cursor:pointer}
+.burger span{display:block;height:2px;width:18px;background:#fff;border-radius:2px;margin:0 auto}
+.icon-btn{display:grid;place-items:center;width:32px;height:32px;border-radius:4px;border:0;
+  background:none;cursor:pointer;color:rgba(255,255,255,.9);text-decoration:none}
+.icon-btn:hover{background:rgba(255,255,255,.14)}
+.langs{display:inline-flex;gap:2px;padding:2px;background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.28);border-radius:999px}
+.langs .lang{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;
+  text-decoration:none;font-size:.78rem;letter-spacing:.03em;font-weight:600;color:rgba(255,255,255,.82);
+  line-height:1;cursor:pointer;background:none;border:0;font-family:var(--sans);transition:background .15s,color .15s}
+.langs .lang:hover{background:rgba(255,255,255,.16);color:#fff}
+.langs .lang.on{background:#fff;color:var(--pp-blue)}
+.live-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:3px 11px;font-size:.72rem;
+  color:#fff;font-weight:600;letter-spacing:.04em}
+.live-dot{width:7px;height:7px;background:var(--pp-green);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
 
-/* FILTERS */
-.filters { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
-.filter-group { display: flex; align-items: center; gap: 6px; }
-.filter-label { font-size: 11px; color: var(--muted); font-weight: 600; }
-input[type=text], select { background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 6px; padding: 7px 12px; font-size: 12px; outline: none; transition: border-color 0.2s; }
-input[type=text]:focus, select:focus { border-color: var(--accent); }
-input[type=text] { width: 220px; }
-select { cursor: pointer; }
-.btn { padding: 7px 16px; border-radius: 6px; border: none; cursor: pointer; font-size: 12px; font-weight: 600; transition: all 0.2s; }
-.btn-primary { background: var(--accent); color: white; }
-.btn-primary:hover { background: #3b5bd5; }
-.btn-success { background: var(--green); color: #0a2918; }
-.btn-success:hover { background: #16a34a; }
-.btn-outline { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
-.btn-outline:hover { background: rgba(79,110,247,0.1); }
-.btn-sm { padding: 4px 10px; font-size: 11px; }
+/* ---- PAGE --------------------------------------------------------------- */
+main{flex:1 1 auto;padding:18px 22px 32px;min-width:0}
+.wrap{max-width:1560px;margin:0 auto}
+.pagebar{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin:0 0 16px}
+.pagebar h1{margin:0;font-size:1.5rem}
+.pagebar .sub{font-size:.82rem;color:var(--text-muted)}
+.pagebar-actions{margin-left:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.grid{display:grid;gap:16px}
+.grid.split{grid-template-columns:1.35fr 1fr}
+.grid.two{grid-template-columns:1fr 1fr}
+.card{background:var(--surface-1);border:1px solid var(--border);border-radius:var(--radius);
+  padding:18px 20px;box-shadow:var(--shadow);min-width:0;margin-bottom:16px}
+.card-head{display:flex;align-items:baseline;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.card-head h2{margin:0}
+.card p{margin:0 0 10px;font-size:.88rem;color:var(--text-secondary)}
+.spacer{flex:1 1 auto}
+.note{font-size:.82rem;color:var(--text-muted);margin-bottom:14px}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:2px 10px;border-radius:var(--radius-pill);
+  font-family:var(--slab);font-size:.75rem;white-space:nowrap;border:1px solid transparent;
+  background:var(--surface-2);color:var(--text-secondary)}
+.chip.good{background:var(--good-bg);color:var(--good-ink)}
+.chip.warn{background:var(--warning-bg);color:var(--warning-ink)}
+.chip.bad{background:var(--critical-bg);color:var(--critical-ink)}
 
-/* TABLE */
-.table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); }
-table { width: 100%; border-collapse: collapse; min-width: 1200px; }
-thead tr { background: var(--surface2); position: sticky; top: 0; }
-th { padding: 10px 12px; text-align: left; font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; border-bottom: 1px solid var(--border); cursor: pointer; user-select: none; white-space: nowrap; }
-th:hover { color: var(--text); }
-th .sort-icon { margin-left: 4px; opacity: 0.5; }
-th.sorted .sort-icon { opacity: 1; color: var(--accent); }
-tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
-tbody tr:hover { background: rgba(79,110,247,0.05); }
-tbody tr:last-child { border-bottom: none; }
-td { padding: 10px 12px; font-size: 12px; vertical-align: middle; }
-.company-name { font-weight: 600; color: var(--white); }
-.company-website { font-size: 10px; color: var(--accent); }
-.country-flag { font-size: 14px; margin-right: 4px; }
+/* ---- BUTTONS ------------------------------------------------------------ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--slab);
+  font-weight:400;font-size:.95rem;padding:10px 20px;border-radius:var(--radius);
+  border:1px solid rgba(0,0,0,.1);background:var(--surface-1);color:var(--text-primary);cursor:pointer;
+  transition:background .14s,color .14s}
+.btn:hover{background:var(--surface-2)}
+.btn.primary,.btn-primary{background:var(--pp-cta);border-color:var(--pp-cta);color:#fff}
+.btn.primary:hover,.btn-primary:hover{background:var(--pp-cta-dark);border-color:var(--pp-cta-dark)}
+.btn.blue{background:var(--pp-blue);border-color:var(--pp-blue);color:#fff}
+.btn.blue:hover{background:var(--pp-blue-dark)}
+.btn-success{background:var(--pp-green-dark);border-color:var(--pp-green-dark);color:#fff}
+.btn-success:hover{background:var(--pp-green);border-color:var(--pp-green)}
+.btn-outline{background:transparent;color:var(--brand);border:1px solid var(--brand)}
+.btn-outline:hover{background:var(--brand-soft)}
+.btn-sm,.btn.sm{padding:6px 12px;font-size:.82rem}
+.btn.lg{padding:12px 26px;font-size:1rem}
+.btn:disabled{opacity:.55;cursor:not-allowed}
 
-/* SCORE CELLS */
-.score-cell { display: flex; align-items: center; gap: 6px; }
-.score-bar { width: 40px; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
-.score-fill { height: 100%; border-radius: 2px; }
-.score-val { font-weight: 700; font-size: 13px; }
-.score-reviews { font-size: 10px; color: var(--muted); }
+/* ---- FORM CONTROLS ------------------------------------------------------ */
+input[type=text],input[type=number],input[type=date],select{
+  background:var(--surface-1);border:1px solid var(--border-strong);color:var(--text-primary);
+  border-radius:var(--radius);padding:8px 11px;font-size:.85rem;font-family:var(--sans);outline:none;
+  transition:border-color .15s,box-shadow .15s}
+input:focus,select:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-soft)}
+input[type=text]{min-width:220px}
+select{cursor:pointer}
+.filters{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.filter-group{display:flex;align-items:center;gap:6px}
+.filter-label{font-size:.78rem;color:var(--text-secondary);font-weight:600}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin-top:14px}
+.form-field{display:flex;flex-direction:column;gap:4px}
+.form-field label{font-size:.7rem;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.form-field input,.form-field select{width:100%}
 
-/* STAR RATING */
-.stars { color: #fbbf24; font-size: 11px; letter-spacing: -1px; }
+/* ---- KPI CARDS ---------------------------------------------------------- */
+.stats-bar{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:18px}
+.stat-card{background:var(--surface-1);border:1px solid var(--border);border-radius:var(--radius);
+  padding:14px 16px;box-shadow:var(--shadow);border-top:3px solid var(--brand)}
+.stat-card:nth-child(2){border-top-color:var(--pp-green)}
+.stat-card:nth-child(3){border-top-color:var(--pp-orange)}
+.stat-card:nth-child(4){border-top-color:var(--pp-magenta)}
+.stat-card:nth-child(5){border-top-color:var(--pp-purple)}
+.stat-card:nth-child(6){border-top-color:var(--pp-yellow)}
+.stat-label{font-size:.68rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;
+  font-weight:700;margin-bottom:6px}
+.stat-value{font-family:var(--slab);font-size:1.7rem;font-weight:500;color:var(--text-primary);line-height:1.1}
+.stat-sub{font-size:.7rem;color:var(--text-muted);margin-top:3px}
 
-/* BADGES */
-.badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 600; }
-.badge-op-sale { background: rgba(79,110,247,0.15); color: #818cf8; border: 1px solid rgba(79,110,247,0.25); }
-.badge-op-full { background: rgba(124,58,237,0.15); color: #a78bfa; border: 1px solid rgba(124,58,237,0.25); }
-.badge-group { background: rgba(234,179,8,0.12); color: #fbbf24; border: 1px solid rgba(234,179,8,0.2); }
-.badge-new { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.25); font-size: 9px; padding: 1px 5px; }
+/* ---- TABLE -------------------------------------------------------------- */
+.table-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border);background:var(--surface-1)}
+table{width:100%;border-collapse:collapse;min-width:1200px}
+thead tr{background:var(--surface-2)}
+th{padding:10px 12px;text-align:left;font-size:.68rem;font-weight:700;color:var(--text-secondary);
+  text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--border);cursor:pointer;
+  user-select:none;white-space:nowrap;position:sticky;top:0;background:var(--surface-2);z-index:2}
+th:hover{color:var(--brand)}
+th .sort-icon{margin-left:4px;opacity:.5}
+th.sorted .sort-icon{opacity:1;color:var(--brand)}
+tbody tr{border-bottom:1px solid var(--border);transition:background .15s}
+tbody tr:hover{background:var(--brand-soft)}
+tbody tr:last-child{border-bottom:none}
+td{padding:10px 12px;font-size:.82rem;vertical-align:middle}
+td:nth-child(9){white-space:nowrap}
+.company-name{font-weight:700;color:var(--text-primary)}
+.company-website{font-size:.7rem;color:var(--brand);text-decoration:none}
+.country-flag{font-size:14px;margin-right:5px}
 
-/* SCORE COLORS */
-.s-green { color: var(--green); }
-.s-yellow { color: var(--yellow); }
-.s-red { color: var(--red); }
-.s-orange { color: var(--orange); }
-.fill-green { background: var(--green); }
-.fill-yellow { background: var(--yellow); }
-.fill-orange { background: var(--orange); }
-.fill-red { background: var(--red); }
+/* ---- SCORES ------------------------------------------------------------- */
+.score-cell{display:flex;align-items:center;gap:8px}
+.score-bar{width:44px;height:4px;background:var(--surface-3);border-radius:2px;overflow:hidden}
+.score-fill{height:100%;border-radius:2px}
+.score-val{font-weight:700;font-size:.9rem}
+.score-reviews{font-size:.68rem;color:var(--text-muted)}
+.stars{color:var(--pp-yellow);font-size:.7rem;letter-spacing:-1px}
+.s-green{color:var(--good-ink)} .s-yellow{color:var(--warning-ink)}
+.s-red{color:var(--critical-ink)} .s-orange{color:var(--serious-ink)}
+.fill-green{background:var(--good)} .fill-yellow{background:var(--warning)}
+.fill-orange{background:var(--serious)} .fill-red{background:var(--critical)}
+.no-data{color:var(--text-muted);font-size:.75rem;font-style:italic}
 
-/* NO DATA */
-.no-data { color: var(--muted); font-size: 11px; font-style: italic; }
-.link-icon { font-size: 11px; }
+/* ---- BADGES / PILLS ----------------------------------------------------- */
+.badge{display:inline-block;padding:2px 9px;border-radius:var(--radius-pill);font-size:.68rem;
+  font-weight:600;font-family:var(--slab);border:1px solid transparent}
+.badge-op-sale{background:var(--brand-soft);color:var(--brand);border-color:var(--border-strong)}
+.badge-op-full{background:var(--surface-2);color:var(--pp-purple);border-color:var(--border-strong)}
+html[data-theme="dark"] .badge-op-full{color:var(--series-4)}
+.badge-group{background:var(--warning-bg);color:var(--warning-ink)}
+.badge-new{background:var(--good-bg);color:var(--good-ink);font-size:.62rem;padding:1px 6px}
+.country-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.pill{padding:4px 12px;border-radius:var(--radius-pill);font-size:.76rem;font-weight:600;cursor:pointer;
+  border:1px solid var(--border);color:var(--text-secondary);background:var(--surface-1);transition:all .15s}
+.pill:hover{border-color:var(--brand);color:var(--brand)}
+.pill.active{background:var(--pp-blue);border-color:var(--pp-blue);color:#fff}
 
-/* SECTION HEADING */
-.section-title { font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-.section-title span { font-size: 18px; }
+/* ---- PAGINATION / EMPTY ------------------------------------------------- */
+.pagination{display:flex;align-items:center;justify-content:space-between;margin-top:14px;gap:10px;flex-wrap:wrap}
+.page-info{font-size:.76rem;color:var(--text-muted)}
+.page-btns{display:flex;gap:4px}
+.page-btn{padding:5px 11px;border-radius:var(--radius);border:1px solid var(--border);
+  background:var(--surface-1);color:var(--text-secondary);cursor:pointer;font-size:.76rem}
+.page-btn:hover:not(:disabled),.page-btn.active{background:var(--pp-blue);border-color:var(--pp-blue);color:#fff}
+.page-btn:disabled{opacity:.4;cursor:not-allowed}
+.empty-state{text-align:center;padding:44px;color:var(--text-muted)}
+.empty-state .icon{font-size:34px;margin-bottom:10px}
 
-/* NEW COMPANIES PANEL */
-.new-companies-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 20px; }
-.new-company-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-top: 14px; }
-.new-company-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 14px; position: relative; }
-.new-company-card::before { content: 'NEW'; position: absolute; top: 10px; right: 10px; background: var(--green); color: #0a2918; font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 10px; }
-.nc-name { font-weight: 700; color: var(--white); font-size: 13px; margin-bottom: 4px; }
-.nc-country { font-size: 11px; color: var(--muted); margin-bottom: 8px; }
-.nc-scores { display: flex; gap: 16px; }
-.nc-score-item { font-size: 11px; }
-.nc-score-label { color: var(--muted); }
-.nc-score-val { font-weight: 700; color: var(--white); margin-left: 4px; }
-.nc-add-btn { margin-top: 10px; width: 100%; }
+/* ---- LISTS (overview) --------------------------------------------------- */
+.rank{list-style:none;margin:0;padding:0}
+.rank li{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:.85rem}
+.rank li:last-child{border-bottom:0}
+.rank .pos{font-family:var(--slab);color:var(--text-muted);width:22px;flex:0 0 22px}
+.rank .nm{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rank .vl{font-weight:700;font-family:var(--slab)}
+.bars{display:flex;flex-direction:column;gap:9px}
+.bar-row{display:grid;grid-template-columns:120px 1fr 42px;align-items:center;gap:10px;font-size:.82rem}
+.bar-track{height:9px;background:var(--surface-2);border-radius:5px;overflow:hidden}
+.bar-fill{height:100%;background:var(--series-1);border-radius:5px}
+.steps{margin:0;padding-left:20px}
+.steps li{margin-bottom:8px;font-size:.88rem;color:var(--text-secondary)}
+.steps strong{color:var(--text-primary)}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:.85rem}
+.kv dt{color:var(--text-muted)} .kv dd{margin:0;color:var(--text-primary)}
 
-/* ADD COMPANY FORM */
-.add-form { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 20px; }
-.form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 14px; }
-.form-field { display: flex; flex-direction: column; gap: 4px; }
-.form-field label { font-size: 10px; color: var(--muted); font-weight: 600; text-transform: uppercase; }
-.form-field input, .form-field select { width: 100%; }
+/* ---- NEW COMPANY CARDS / DOWNLOAD --------------------------------------- */
+.new-company-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-top:14px}
+.new-company-card{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);
+  padding:14px;position:relative}
+.new-company-card::before{content:'NEW';position:absolute;top:10px;right:10px;background:var(--pp-green);
+  color:#12240a;font-size:.6rem;font-weight:800;padding:2px 7px;border-radius:var(--radius-pill)}
+.nc-name{font-weight:700;color:var(--text-primary);font-size:.9rem;margin-bottom:2px}
+.nc-country{font-size:.76rem;color:var(--text-muted);margin-bottom:8px}
+.nc-scores{display:flex;gap:16px;flex-wrap:wrap}
+.nc-score-item{font-size:.76rem}
+.nc-score-label{color:var(--text-muted)}
+.nc-score-val{font-weight:700;margin-left:4px}
+.download-options{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
+.download-card{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);
+  padding:16px;flex:1;min-width:190px;display:flex;flex-direction:column;gap:8px}
+.dl-icon{font-size:26px}
+.dl-title{font-family:var(--slab);color:var(--text-primary);font-size:.98rem}
+.dl-desc{font-size:.78rem;color:var(--text-muted)}
 
-/* DOWNLOAD SECTION */
-.download-section { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 20px; }
-.download-options { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
-.download-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 16px; flex: 1; min-width: 180px; display: flex; flex-direction: column; gap: 8px; }
-.dl-icon { font-size: 28px; }
-.dl-title { font-weight: 700; color: var(--white); font-size: 13px; }
-.dl-desc { font-size: 11px; color: var(--muted); }
+/* ---- MODAL -------------------------------------------------------------- */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;
+  align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal{background:var(--surface-1);border:1px solid var(--border);border-radius:var(--radius);padding:22px;
+  width:90%;max-width:600px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow)}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.modal-title{font-family:var(--slab);font-size:1.1rem;color:var(--brand)}
+.modal-close{background:none;border:none;color:var(--text-muted);font-size:20px;cursor:pointer}
 
-/* COUNTRY FILTER PILLS */
-.country-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
-.pill { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); color: var(--muted); background: var(--surface); transition: all 0.15s; }
-.pill:hover { border-color: var(--accent); color: var(--accent); }
-.pill.active { background: var(--accent); border-color: var(--accent); color: white; }
+/* ---- ASSISTANT (same widget as the retention panel) --------------------- */
+.ask-launch{position:fixed;right:20px;bottom:20px;z-index:80;display:flex;align-items:center;gap:8px;
+  padding:10px 16px;border:0;border-radius:999px;cursor:pointer;background:var(--pp-blue);color:#fff;
+  font-family:var(--sans);font-size:.84rem;font-weight:500;box-shadow:0 6px 20px rgba(0,0,0,.22)}
+.ask-launch:hover{background:var(--pp-blue-dark)}
+.ask-panel{position:fixed;right:20px;bottom:74px;z-index:80;width:min(392px,100vw - 32px);
+  max-height:min(620px,100vh - 120px);display:flex;flex-direction:column;background:var(--surface-1);
+  border:1px solid var(--border);border-radius:10px;box-shadow:0 18px 48px rgba(0,0,0,.26);overflow:hidden}
+.ask-panel[hidden]{display:none}
+.ask-head{display:flex;align-items:flex-start;gap:10px;padding:14px 16px;border-bottom:1px solid var(--border)}
+.ask-head h2{margin:0;font-size:1rem;color:var(--brand)}
+.ask-head p{margin:3px 0 0;font-size:.74rem;color:var(--text-muted)}
+.ask-close{margin-left:auto;background:none;border:0;color:var(--text-muted);font-size:20px;cursor:pointer;line-height:1}
+.ask-body{flex:1 1 auto;overflow-y:auto;padding:14px 16px}
+.ask-msg{margin-bottom:14px;font-size:.84rem;line-height:1.5}
+.ask-msg p{margin:0 0 8px} .ask-msg p:last-child{margin:0}
+.ask-msg.bot{padding:11px 13px;border-radius:12px 12px 12px 2px;background:var(--surface-2);color:var(--text-primary)}
+.ask-msg.me{margin-left:auto;max-width:84%;width:fit-content;padding:8px 12px;
+  border-radius:12px 12px 2px;background:var(--pp-blue);color:#fff}
+.ask-form{display:flex;gap:8px;padding:12px 16px;border-top:1px solid var(--border)}
+.ask-form input{flex:1 1 auto;min-width:0}
+.ask-sugg{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.ask-sugg button{background:var(--surface-1);border:1px solid var(--border-strong);color:var(--text-secondary);
+  border-radius:999px;padding:4px 10px;font-size:.72rem;cursor:pointer;font-family:var(--sans)}
+.ask-sugg button:hover{border-color:var(--brand);color:var(--brand)}
 
-/* PAGINATION */
-.pagination { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; }
-.page-info { font-size: 11px; color: var(--muted); }
-.page-btns { display: flex; gap: 4px; }
-.page-btn { padding: 5px 10px; border-radius: 5px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); cursor: pointer; font-size: 11px; }
-.page-btn:hover, .page-btn.active { background: var(--accent); border-color: var(--accent); color: white; }
-.page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-
-/* EMPTY STATE */
-.empty-state { text-align: center; padding: 48px; color: var(--muted); }
-.empty-state .icon { font-size: 40px; margin-bottom: 12px; }
-
-/* TOOLTIP */
-.tooltip-wrap { position: relative; display: inline-block; }
-.tooltip-wrap:hover .tooltip { display: block; }
-.tooltip { display: none; position: absolute; bottom: calc(100% + 4px); left: 50%; transform: translateX(-50%); background: #1e2235; border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; font-size: 11px; color: var(--text); white-space: nowrap; z-index: 999; pointer-events: none; }
-
-/* SCROLLBAR */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--muted); }
-
-/* MODAL */
-.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center; }
-.modal-overlay.show { display: flex; }
-.modal { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto; }
-.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.modal-title { font-size: 16px; font-weight: 700; color: var(--white); }
-.modal-close { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; }
-.modal-close:hover { color: var(--white); }
+/* ---- SCROLLBAR / RESPONSIVE --------------------------------------------- */
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:4px}
+@media (max-width:1080px){.grid.split,.grid.two{grid-template-columns:1fr}}
+@media (max-width:860px){
+  .rail{position:fixed;top:0;bottom:0;left:0;margin-left:-252px}
+  .rail.open{margin-left:0}
+  main{padding:14px}
+}
+[hidden]{display:none !important}
 </style>
 </head>
+
 <body>
+<div class="shell">
 
-<!-- HEADER -->
-<div class="header">
-  <div class="header-left">
-    <div class="logo">🐾</div>
-    <div>
-      <div class="header-title">Pet Insurance Live Tracker</div>
-      <div class="header-sub">Global benchmark across 25 countries</div>
+  <!-- ============ RAIL ============ -->
+  <aside class="rail" id="rail">
+    <div class="rail-inner">
+      <a class="rail-brand" href="#overview" onclick="go('overview');return false">
+        <img class="brand-logo" id="brandLogo" src="static/logo-white.png" alt="Petplan"
+             onload="this.style.display='block';document.getElementById('brandText').style.display='none'">
+        <span class="brand-text" id="brandText">Petplan<sup>®</sup></span>
+        <span class="licence" data-i18n="brand.licence">Licence: Petplan Ibérica SL</span>
+      </a>
+
+      <nav class="rail-nav" id="railNav">
+        <a data-nav="overview" onclick="go('overview')">
+          <span class="ic"><svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M3 3h8v8H3V3zm10 0h8v5h-8V3zM3 13h8v8H3v-8zm10 3h8v5h-8v-5z"/></svg></span>
+          <span class="tx" data-i18n="nav.overview">Overview</span>
+        </a>
+        <a data-nav="tracker" onclick="go('tracker')">
+          <span class="ic"><svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M3 5h18v2H3V5zm0 6h18v2H3v-2zm0 6h12v2H3v-2z"/></svg></span>
+          <span class="tx" data-i18n="nav.tracker">Tracker</span>
+        </a>
+        <a data-nav="new-companies" onclick="go('new-companies')">
+          <span class="ic"><svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 2l2.6 6.3 6.8.5-5.2 4.4 1.6 6.6L12 16.3 6.2 19.8l1.6-6.6L2.6 8.8l6.8-.5L12 2z"/></svg></span>
+          <span class="tx" data-i18n="nav.new">New companies</span>
+        </a>
+        <a data-nav="add-company" onclick="go('add-company')">
+          <span class="ic"><svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5z"/></svg></span>
+          <span class="tx" data-i18n="nav.add">Add company</span>
+        </a>
+        <a data-nav="download" onclick="go('download')">
+          <span class="ic"><svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 3v10.6l3.3-3.3 1.4 1.4L12 17.4l-4.7-5.7 1.4-1.4L12 13.6V3h0zM4 19h16v2H4v-2z"/></svg></span>
+          <span class="tx" data-i18n="nav.download">Download</span>
+        </a>
+        <a data-nav="guide" onclick="go('guide')">
+          <span class="ic"><svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M5 3h11l4 4v14H5V3zm10 1.5V8h3.5L15 4.5zM7 11h10v2H7v-2zm0 4h10v2H7v-2z"/></svg></span>
+          <span class="tx" data-i18n="nav.guide">Guide</span>
+        </a>
+      </nav>
     </div>
-  </div>
-  <div class="header-right">
-    <div class="live-badge"><div class="live-dot"></div>LIVE</div>
-    <div class="last-updated" id="lastUpdated">Updated: —</div>
-  </div>
-</div>
+  </aside>
 
-<!-- FETCH STATUS BANNER -->
-<div style="background:linear-gradient(90deg,rgba(79,110,247,0.1),rgba(124,58,237,0.1));border-bottom:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
-  <div style="display:flex;align-items:center;gap:10px;">
-    <span style="font-size:18px">🔄</span>
-    <div>
-      <div style="font-size:12px;font-weight:700;color:var(--white)">Live Data System — Google live · Trustpilot snapshot</div>
-      <div style="font-size:11px;color:var(--muted)"><strong id="lastFetchStamp" style="color:var(--accent)">Click Refresh to update Google ratings live. Trustpilot shown as of its last fetch.</strong></div>
-    </div>
-  </div>
-  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-    <span id="refreshStatus" style="font-size:11px;color:var(--muted)"></span>
-    <button id="refreshBtn" onclick="refreshLiveData()" style="font-size:12px;font-weight:700;background:var(--accent);color:#fff;border:none;border-radius:6px;padding:7px 14px;cursor:pointer">🔄 Refresh live data</button>
-  </div>
-</div>
+  <!-- ============ MAIN COLUMN ============ -->
+  <div class="main-col">
 
-<!-- TABS -->
-<div class="tabs">
-  <div class="tab active" onclick="showTab('tracker')">📊 Tracker</div>
-  <div class="tab" onclick="showTab('new-companies')">🆕 New Companies</div>
-  <div class="tab" onclick="showTab('add-company')">➕ Add Company</div>
-  <div class="tab" onclick="showTab('download')">📥 Download</div>
-</div>
-
-<!-- MAIN -->
-<div class="main">
-
-  <!-- ===== TRACKER TAB ===== -->
-  <div id="tab-tracker">
-
-    <!-- STATS BAR -->
-    <div class="stats-bar">
-      <div class="stat-card">
-        <div class="stat-label">Total Companies</div>
-        <div class="stat-value" id="stat-total">145</div>
-        <div class="stat-sub">across 25 countries</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Avg Trustpilot</div>
-        <div class="stat-value s-green" id="stat-tp">—</div>
-        <div class="stat-sub">weighted average</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Avg Google Score</div>
-        <div class="stat-value s-yellow" id="stat-g">—</div>
-        <div class="stat-sub">weighted average</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Total Reviews</div>
-        <div class="stat-value" id="stat-reviews">—</div>
-        <div class="stat-sub">combined opinions</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Top Rated</div>
-        <div class="stat-value" id="stat-top" style="font-size:13px;line-height:1.3">—</div>
-        <div class="stat-sub">by ponderated score</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">New This Week</div>
-        <div class="stat-value s-green" id="stat-new">0</div>
-        <div class="stat-sub">companies added</div>
-      </div>
-    </div>
-
-    <!-- COUNTRY PILLS -->
-    <div class="country-pills" id="countryPills"></div>
-
-    <!-- FILTERS -->
-    <div class="filters">
-      <div class="filter-group">
-        <span class="filter-label">🔍</span>
-        <input type="text" id="searchInput" placeholder="Search company name..." oninput="applyFilters()">
-      </div>
-      <div class="filter-group">
-        <span class="filter-label">Type:</span>
-        <select id="opTypeFilter" onchange="applyFilters()">
-          <option value="">All Types</option>
-          <option value="Only Sale">Only Sale</option>
-          <option value="Full Service">Full Service</option>
-        </select>
-      </div>
-      <div class="filter-group">
-        <span class="filter-label">Group:</span>
-        <select id="groupFilter" onchange="applyFilters()">
-          <option value="">All Groups</option>
-        </select>
-      </div>
-      <div class="filter-group">
-        <span class="filter-label">Min Score:</span>
-        <select id="scoreFilter" onchange="applyFilters()">
-          <option value="0">Any Score</option>
-          <option value="4">4.0+</option>
-          <option value="4.5">4.5+</option>
-          <option value="3">3.0+</option>
-        </select>
-      </div>
-      <div class="filter-group">
-        <span class="filter-label">Sort:</span>
-        <select id="sortSelect" onchange="applyFilters()">
-          <option value="pondScore-desc">Ponderated Score ↓</option>
-          <option value="avgScore-desc">Average Score ↓</option>
-          <option value="tpScore-desc">Trustpilot Score ↓</option>
-          <option value="gScore-desc">Google Score ↓</option>
-          <option value="totalOpinions-desc">Total Reviews ↓</option>
-          <option value="tpReviews-desc">TP Reviews ↓</option>
-          <option value="company-asc">Company A–Z</option>
-          <option value="country-asc">Country A–Z</option>
-          <option value="date-desc">Date (Newest)</option>
-        </select>
-      </div>
-      <button class="btn btn-outline btn-sm" onclick="resetFilters()">Reset</button>
-      <div style="margin-left:auto; font-size:11px; color:var(--muted);" id="resultCount"></div>
-    </div>
-
-    <!-- TABLE -->
-    <div class="table-wrap">
-      <table id="mainTable">
-        <thead>
-          <tr>
-            <th onclick="sortBy('country')">Country <span class="sort-icon">↕</span></th>
-            <th onclick="sortBy('company')">Company <span class="sort-icon">↕</span></th>
-            <th>Type</th>
-            <th onclick="sortBy('tpScore')">Trustpilot <span class="sort-icon">↕</span></th>
-            <th onclick="sortBy('gScore')">Google Maps <span class="sort-icon">↕</span></th>
-            <th onclick="sortBy('pondScore')">Ponderated ↕</th>
-            <th onclick="sortBy('avgScore')">Average ↕</th>
-            <th onclick="sortBy('totalOpinions')">Opinions ↕</th>
-            <th onclick="sortBy('date')">Date ↕</th>
-            <th>Group</th>
-            <th>Source / Link</th>
-          </tr>
-        </thead>
-        <tbody id="tableBody"></tbody>
-      </table>
-    </div>
-    <div class="pagination">
-      <div class="page-info" id="pageInfo"></div>
-      <div class="page-btns" id="pageBtns"></div>
-    </div>
-  </div>
-
-  <!-- ===== NEW COMPANIES TAB ===== -->
-  <div id="tab-new-companies" style="display:none">
-    <div class="new-companies-panel">
-      <div class="section-title"><span>🆕</span> Recently Discovered Companies</div>
-      <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">Emerging pet-insurance companies discovered <strong style="color:var(--white)">online (Trustpilot)</strong> with <strong style="color:var(--white)">more than 500 reviews</strong> that are not already in the tracker. The fetch script finds these automatically.</p>
-      <div class="new-company-grid" id="newCompanyGrid"></div>
-    </div>
-    <div class="add-form">
-      <div class="section-title"><span>🔍</span> Discover & Add New Company</div>
-      <p style="font-size:12px;color:var(--muted);">Found a new pet insurance company? Add it here and it will appear in the tracker.</p>
-      <div class="form-grid" id="quickAddForm">
-        <div class="form-field"><label>Country *</label><select id="nc-country"><option value="">Select...</option></select></div>
-        <div class="form-field"><label>Company Name *</label><input type="text" id="nc-name" placeholder="e.g. PawGuard Insurance"></div>
-        <div class="form-field"><label>Website</label><input type="text" id="nc-website" placeholder="www.example.com"></div>
-        <div class="form-field"><label>Type of Operation</label>
-          <select id="nc-optype"><option value="Only Sale">Only Sale</option><option value="Full Service">Full Service</option></select>
+    <header class="topbar">
+      <button class="burger" id="burger" type="button" aria-label="Menu"><span></span><span></span><span></span></button>
+      <h1 class="topbar-title" id="topbarTitle" data-i18n="nav.overview">Overview</h1>
+      <div class="topbar-right">
+        <div class="live-badge"><span class="live-dot"></span><span data-i18n="topbar.live">LIVE</span></div>
+        <div class="langs">
+          <button class="lang" type="button" data-lang="es">ES</button>
+          <button class="lang on" type="button" data-lang="en">EN</button>
         </div>
-        <div class="form-field"><label>Trustpilot Score</label><input type="number" id="nc-tp-score" placeholder="0.0" min="0" max="5" step="0.1"></div>
-        <div class="form-field"><label>Trustpilot Reviews</label><input type="number" id="nc-tp-reviews" placeholder="0"></div>
-        <div class="form-field"><label>Google Score</label><input type="number" id="nc-g-score" placeholder="0.0" min="0" max="5" step="0.1"></div>
-        <div class="form-field"><label>Google Reviews</label><input type="number" id="nc-g-reviews" placeholder="0"></div>
-        <div class="form-field"><label>Group</label><input type="text" id="nc-group" placeholder="e.g. JAB, Agria..."></div>
-        <div class="form-field"><label>Source Link (if no Google Maps)</label><input type="text" id="nc-link" placeholder="https://..."></div>
+        <button class="icon-btn" id="themeBtn" type="button" title="Light / dark">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 3a9 9 0 109 9 7 7 0 01-9-9z"/></svg>
+        </button>
+        <span class="icon-btn" title="Petplan">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 12a4 4 0 100-8 4 4 0 000 8zm0 2c-4 0-7 2.2-7 5v1h14v-1c0-2.8-3-5-7-5z"/></svg>
+        </span>
       </div>
-      <div style="margin-top:16px;display:flex;gap:10px;">
-        <button class="btn btn-primary" onclick="addNewCompany()">➕ Add to Tracker</button>
-        <button class="btn btn-outline" onclick="clearNewForm()">Clear</button>
-      </div>
-    </div>
-  </div>
+    </header>
 
-  <!-- ===== ADD COMPANY TAB ===== -->
-  <div id="tab-add-company" style="display:none">
-    <div class="add-form">
-      <div class="section-title"><span>✏️</span> Add / Edit Company</div>
-      <div class="form-grid">
-        <div class="form-field"><label>Country *</label><select id="ac-country"><option value="">Select...</option></select></div>
-        <div class="form-field"><label>Company Name *</label><input type="text" id="ac-name" placeholder="Company name"></div>
-        <div class="form-field"><label>Website</label><input type="text" id="ac-website" placeholder="www.example.com"></div>
-        <div class="form-field"><label>Type of Operation</label>
-          <select id="ac-optype"><option value="Only Sale">Only Sale</option><option value="Full Service">Full Service</option></select>
-        </div>
-        <div class="form-field"><label>Trustpilot Score</label><input type="number" id="ac-tp-score" placeholder="0.0" min="0" max="5" step="0.1"></div>
-        <div class="form-field"><label>Trustpilot Reviews</label><input type="number" id="ac-tp-reviews" placeholder="0"></div>
-        <div class="form-field"><label>Google Maps Score</label><input type="number" id="ac-g-score" placeholder="0.0" min="0" max="5" step="0.1"></div>
-        <div class="form-field"><label>Google Maps Reviews</label><input type="number" id="ac-g-reviews" placeholder="0"></div>
-        <div class="form-field"><label>Group</label><input type="text" id="ac-group" placeholder="JAB, Agria, Santevet..."></div>
-        <div class="form-field"><label>Source Link</label><input type="text" id="ac-link" placeholder="https://..."></div>
-        <div class="form-field"><label>Underwriter</label><input type="text" id="ac-underwriter" placeholder="Allianz, Agria..."></div>
-        <div class="form-field"><label>Date</label><input type="date" id="ac-date"></div>
-      </div>
-      <div style="margin-top:16px;display:flex;gap:10px;">
-        <button class="btn btn-primary" onclick="addCompanyFromForm()">➕ Add to Tracker</button>
-        <button class="btn btn-outline" onclick="clearAddForm()">Clear</button>
-      </div>
-    </div>
-  </div>
+    <main>
+    <div class="wrap">
 
-  <!-- ===== DOWNLOAD TAB ===== -->
-  <div id="tab-download" style="display:none">
-    <div class="download-section">
-      <div class="section-title"><span>📥</span> Export Data</div>
-      <p style="font-size:12px;color:var(--muted);margin-bottom:8px;">Download the tracker data as an Excel spreadsheet. Files are generated fresh with today's date and all current data.</p>
-      <div class="download-options">
-        <div class="download-card">
-          <div class="dl-icon">📊</div>
-          <div class="dl-title">Full Benchmark</div>
-          <div class="dl-desc">All 145+ companies with all columns — scores, reviews, links, groups</div>
-          <button class="btn btn-success" style="margin-top:auto" onclick="downloadExcel('full')">⬇ Download Full XLSX</button>
+      <!-- ===================== OVERVIEW ===================== -->
+      <div id="tab-overview">
+        <div class="pagebar">
+          <div>
+            <h1 data-i18n="ov.title">The benchmark in one picture</h1>
+            <div class="sub"><span data-i18n="ov.sub">Trustpilot and Google Maps reputation across 25 countries</span> · <span id="lastUpdated">Updated: —</span></div>
+            <div class="sub" id="lastFetchStamp" style="margin-top:2px"></div>
+          </div>
+          <div class="pagebar-actions">
+            <span id="refreshStatus" class="muted" style="font-size:.78rem"></span>
+            <button class="btn blue" id="refreshBtn" onclick="refreshLiveData()"><span data-i18n="btn.refresh">Refresh live data</span></button>
+          </div>
         </div>
-        <div class="download-card">
-          <div class="dl-icon">🌍</div>
-          <div class="dl-title">By Country</div>
-          <div class="dl-desc">One sheet per country for easy regional comparison</div>
-          <button class="btn btn-success" style="margin-top:auto" onclick="downloadExcel('by-country')">⬇ Download By Country XLSX</button>
+
+        <div class="stats-bar">
+          <div class="stat-card">
+            <div class="stat-label" data-i18n="kpi.total">Total companies</div>
+            <div class="stat-value" id="stat-total">—</div>
+            <div class="stat-sub" data-i18n="kpi.total.sub">across 25 countries</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label" data-i18n="kpi.tp">Avg Trustpilot</div>
+            <div class="stat-value s-green" id="stat-tp">—</div>
+            <div class="stat-sub" data-i18n="kpi.avg.sub">average of rated companies</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label" data-i18n="kpi.g">Avg Google score</div>
+            <div class="stat-value s-yellow" id="stat-g">—</div>
+            <div class="stat-sub" data-i18n="kpi.avg.sub">average of rated companies</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label" data-i18n="kpi.reviews">Total reviews</div>
+            <div class="stat-value" id="stat-reviews">—</div>
+            <div class="stat-sub" data-i18n="kpi.reviews.sub">combined opinions</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label" data-i18n="kpi.top">Top rated</div>
+            <div class="stat-value" id="stat-top" style="font-size:1rem;line-height:1.3">—</div>
+            <div class="stat-sub" data-i18n="kpi.top.sub">by ponderated score</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label" data-i18n="kpi.new">Newly discovered</div>
+            <div class="stat-value s-green" id="stat-new">0</div>
+            <div class="stat-sub" data-i18n="kpi.new.sub">companies found online</div>
+          </div>
         </div>
-        <div class="download-card">
-          <div class="dl-icon">🆕</div>
-          <div class="dl-title">New Companies</div>
-          <div class="dl-desc">Only companies added in the last 30 days</div>
-          <button class="btn btn-success" style="margin-top:auto" onclick="downloadExcel('new')">⬇ Download New XLSX</button>
+
+        <div class="grid split">
+          <div class="card">
+            <div class="card-head">
+              <h2 data-i18n="ov.top.title">Best rated companies</h2>
+              <div class="spacer"></div>
+              <span class="chip" data-i18n="ov.top.chip">Ponderated score</span>
+            </div>
+            <p data-i18n="ov.top.note">The ponderated score weights each platform by how many reviews it holds, so a 4.9 from 40 people does not outrank a 4.7 from 12,000.</p>
+            <ol class="rank" id="ovTop"></ol>
+          </div>
+          <div class="card">
+            <div class="card-head"><h2 data-i18n="ov.country.title">Companies by country</h2></div>
+            <div class="bars" id="ovCountries"></div>
+          </div>
         </div>
-        <div class="download-card">
-          <div class="dl-icon">🔍</div>
-          <div class="dl-title">Current Filter</div>
-          <div class="dl-desc">Export only the companies visible in the current filtered view</div>
-          <button class="btn btn-success" style="margin-top:auto" onclick="downloadExcel('filtered')">⬇ Download Filtered XLSX</button>
+
+        <div class="grid two">
+          <div class="card">
+            <div class="card-head"><h2 data-i18n="ov.weak.title">Lowest rated — worth watching</h2></div>
+            <p data-i18n="ov.weak.note">Companies whose combined reputation sits below the market. Useful when studying who is losing ground.</p>
+            <ol class="rank" id="ovWeak"></ol>
+          </div>
+          <div class="card">
+            <div class="card-head"><h2 data-i18n="ov.data.title">Where these numbers come from</h2></div>
+            <p id="ovSource" data-i18n="ov.data.note">Trustpilot and Google Maps, read directly from each company's public profile. Google is refreshed live from this site; Trustpilot is a snapshot taken from the office PC, because Trustpilot blocks data-centre traffic.</p>
+            <dl class="kv" id="ovMeta"></dl>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="download-section">
-      <div class="section-title"><span>⏰</span> Scheduled Export Reminder</div>
-      <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">Click the button below every day to download a fresh daily snapshot with today's date stamped in the filename.</p>
-      <button class="btn btn-primary" onclick="downloadExcel('daily')">📅 Download Daily Snapshot (Today)</button>
-    </div>
-  </div>
 
-</div><!-- /main -->
+      <!-- ===================== TRACKER ===================== -->
+      <div id="tab-tracker" hidden>
+        <div class="pagebar">
+          <div>
+            <h1 data-i18n="tr.title">The book</h1>
+            <div class="sub" data-i18n="tr.sub">Every company being tracked, with both scores side by side</div>
+          </div>
+          <div class="pagebar-actions">
+            <span class="muted" style="font-size:.78rem" id="resultCount"></span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="country-pills" id="countryPills"></div>
+          <div class="filters">
+            <div class="filter-group">
+              <span class="filter-label">🔍</span>
+              <input type="text" id="searchInput" data-i18n-ph="tr.search" placeholder="Search company name..." oninput="applyFilters()">
+            </div>
+            <div class="filter-group">
+              <span class="filter-label" data-i18n="tr.type">Type:</span>
+              <select id="opTypeFilter" onchange="applyFilters()">
+                <option value="" data-i18n="tr.type.all">All types</option>
+                <option value="Only Sale">Only Sale</option>
+                <option value="Full Service">Full Service</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <span class="filter-label" data-i18n="tr.group">Group:</span>
+              <select id="groupFilter" onchange="applyFilters()">
+                <option value="" data-i18n="tr.group.all">All groups</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <span class="filter-label" data-i18n="tr.min">Min score:</span>
+              <select id="scoreFilter" onchange="applyFilters()">
+                <option value="0" data-i18n="tr.min.any">Any score</option>
+                <option value="4">4.0+</option>
+                <option value="4.5">4.5+</option>
+                <option value="3">3.0+</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <span class="filter-label" data-i18n="tr.sort">Sort:</span>
+              <select id="sortSelect" onchange="applyFilters()">
+                <option value="pondScore-desc" data-i18n="tr.sort.pond">Ponderated score ↓</option>
+                <option value="avgScore-desc" data-i18n="tr.sort.avg">Average score ↓</option>
+                <option value="tpScore-desc" data-i18n="tr.sort.tp">Trustpilot score ↓</option>
+                <option value="gScore-desc" data-i18n="tr.sort.g">Google score ↓</option>
+                <option value="totalOpinions-desc" data-i18n="tr.sort.op">Total reviews ↓</option>
+                <option value="tpReviews-desc" data-i18n="tr.sort.tpr">Trustpilot reviews ↓</option>
+                <option value="company-asc" data-i18n="tr.sort.az">Company A–Z</option>
+                <option value="country-asc" data-i18n="tr.sort.cz">Country A–Z</option>
+                <option value="date-desc" data-i18n="tr.sort.date">Date (newest)</option>
+              </select>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="resetFilters()" data-i18n="btn.reset">Reset</button>
+          </div>
+
+          <div class="table-wrap">
+            <table id="mainTable">
+              <thead>
+                <tr>
+                  <th onclick="sortBy('country')" data-i18n="th.country">Country <span class="sort-icon">↕</span></th>
+                  <th onclick="sortBy('company')" data-i18n="th.company">Company <span class="sort-icon">↕</span></th>
+                  <th data-i18n="th.type">Type</th>
+                  <th onclick="sortBy('tpScore')" data-i18n="th.tp">Trustpilot <span class="sort-icon">↕</span></th>
+                  <th onclick="sortBy('gScore')" data-i18n="th.g">Google Maps <span class="sort-icon">↕</span></th>
+                  <th onclick="sortBy('pondScore')" data-i18n="th.pond">Ponderated ↕</th>
+                  <th onclick="sortBy('avgScore')" data-i18n="th.avg">Average ↕</th>
+                  <th onclick="sortBy('totalOpinions')" data-i18n="th.op">Opinions ↕</th>
+                  <th onclick="sortBy('date')" data-i18n="th.date">Date ↕</th>
+                  <th data-i18n="th.group">Group</th>
+                  <th data-i18n="th.source">Source / link</th>
+                </tr>
+              </thead>
+              <tbody id="tableBody"></tbody>
+            </table>
+          </div>
+          <div class="pagination">
+            <div class="page-info" id="pageInfo"></div>
+            <div class="page-btns" id="pageBtns"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================== NEW COMPANIES ===================== -->
+      <div id="tab-new-companies" hidden>
+        <div class="pagebar">
+          <div>
+            <h1 data-i18n="nc.title">Recently discovered companies</h1>
+            <div class="sub" data-i18n="nc.sub">Emerging insurers found online, not yet part of the core book</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h2 data-i18n="nc.found">Found online</h2></div>
+          <p data-i18n="nc.note">Companies discovered on Trustpilot with a meaningful number of reviews. Check one before adding it to the book.</p>
+          <div class="new-company-grid" id="newCompanyGrid"></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h2 data-i18n="nc.add.title">Add a discovered company</h2></div>
+          <p data-i18n="nc.add.note">Found a new pet insurance company? Add it here and it appears in the tracker straight away.</p>
+          <div class="form-grid" id="quickAddForm">
+            <div class="form-field"><label data-i18n="f.country">Country *</label><select id="nc-country"><option value="" data-i18n="f.select">Select...</option></select></div>
+            <div class="form-field"><label data-i18n="f.name">Company name *</label><input type="text" id="nc-name" placeholder="e.g. PawGuard Insurance"></div>
+            <div class="form-field"><label data-i18n="f.website">Website</label><input type="text" id="nc-website" placeholder="www.example.com"></div>
+            <div class="form-field"><label data-i18n="f.optype">Type of operation</label>
+              <select id="nc-optype"><option value="Only Sale">Only Sale</option><option value="Full Service">Full Service</option></select>
+            </div>
+            <div class="form-field"><label data-i18n="f.tps">Trustpilot score</label><input type="number" id="nc-tp-score" placeholder="0.0" min="0" max="5" step="0.1"></div>
+            <div class="form-field"><label data-i18n="f.tpr">Trustpilot reviews</label><input type="number" id="nc-tp-reviews" placeholder="0"></div>
+            <div class="form-field"><label data-i18n="f.gs">Google score</label><input type="number" id="nc-g-score" placeholder="0.0" min="0" max="5" step="0.1"></div>
+            <div class="form-field"><label data-i18n="f.gr">Google reviews</label><input type="number" id="nc-g-reviews" placeholder="0"></div>
+            <div class="form-field"><label data-i18n="f.group">Group</label><input type="text" id="nc-group" placeholder="e.g. JAB, Agria..."></div>
+            <div class="form-field"><label data-i18n="f.link">Source link</label><input type="text" id="nc-link" placeholder="https://..."></div>
+          </div>
+          <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn primary" onclick="addNewCompany()" data-i18n="btn.addTracker">Add to tracker</button>
+            <button class="btn" onclick="clearNewForm()" data-i18n="btn.clear">Clear</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================== ADD COMPANY ===================== -->
+      <div id="tab-add-company" hidden>
+        <div class="pagebar">
+          <div>
+            <h1 data-i18n="ac.title">Add or edit a company</h1>
+            <div class="sub" data-i18n="ac.sub">Entries added here are kept in this browser and included in every export</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h2 data-i18n="ac.details">Company details</h2></div>
+          <div class="form-grid">
+            <div class="form-field"><label data-i18n="f.country">Country *</label><select id="ac-country"><option value="" data-i18n="f.select">Select...</option></select></div>
+            <div class="form-field"><label data-i18n="f.name">Company name *</label><input type="text" id="ac-name" placeholder="Company name"></div>
+            <div class="form-field"><label data-i18n="f.website">Website</label><input type="text" id="ac-website" placeholder="www.example.com"></div>
+            <div class="form-field"><label data-i18n="f.optype">Type of operation</label>
+              <select id="ac-optype"><option value="Only Sale">Only Sale</option><option value="Full Service">Full Service</option></select>
+            </div>
+            <div class="form-field"><label data-i18n="f.tps">Trustpilot score</label><input type="number" id="ac-tp-score" placeholder="0.0" min="0" max="5" step="0.1"></div>
+            <div class="form-field"><label data-i18n="f.tpr">Trustpilot reviews</label><input type="number" id="ac-tp-reviews" placeholder="0"></div>
+            <div class="form-field"><label data-i18n="f.gs">Google Maps score</label><input type="number" id="ac-g-score" placeholder="0.0" min="0" max="5" step="0.1"></div>
+            <div class="form-field"><label data-i18n="f.gr">Google Maps reviews</label><input type="number" id="ac-g-reviews" placeholder="0"></div>
+            <div class="form-field"><label data-i18n="f.group">Group</label><input type="text" id="ac-group" placeholder="JAB, Agria, Santevet..."></div>
+            <div class="form-field"><label data-i18n="f.link">Source link</label><input type="text" id="ac-link" placeholder="https://..."></div>
+            <div class="form-field"><label data-i18n="f.uw">Underwriter</label><input type="text" id="ac-underwriter" placeholder="Allianz, Agria..."></div>
+            <div class="form-field"><label data-i18n="f.date">Date</label><input type="date" id="ac-date"></div>
+          </div>
+          <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn primary" onclick="addCompanyFromForm()" data-i18n="btn.addTracker">Add to tracker</button>
+            <button class="btn" onclick="clearAddForm()" data-i18n="btn.clear">Clear</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================== DOWNLOAD ===================== -->
+      <div id="tab-download" hidden>
+        <div class="pagebar">
+          <div>
+            <h1 data-i18n="dl.title">Export the data</h1>
+            <div class="sub" data-i18n="dl.sub">Excel files generated fresh, stamped with today's date</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h2 data-i18n="dl.files">Files</h2></div>
+          <div class="download-options">
+            <div class="download-card">
+              <div class="dl-icon">📊</div>
+              <div class="dl-title" data-i18n="dl.full">Full benchmark</div>
+              <div class="dl-desc" data-i18n="dl.full.d">Every company with all columns — scores, reviews, links and groups</div>
+              <button class="btn btn-success sm" style="margin-top:auto" onclick="downloadExcel('full')" data-i18n="dl.full.b">Download full XLSX</button>
+            </div>
+            <div class="download-card">
+              <div class="dl-icon">🌍</div>
+              <div class="dl-title" data-i18n="dl.country">By country</div>
+              <div class="dl-desc" data-i18n="dl.country.d">One sheet per country for regional comparison</div>
+              <button class="btn btn-success sm" style="margin-top:auto" onclick="downloadExcel('by-country')" data-i18n="dl.country.b">Download by country</button>
+            </div>
+            <div class="download-card">
+              <div class="dl-icon">🆕</div>
+              <div class="dl-title" data-i18n="dl.new">New companies</div>
+              <div class="dl-desc" data-i18n="dl.new.d">Only the companies discovered online</div>
+              <button class="btn btn-success sm" style="margin-top:auto" onclick="downloadExcel('new')" data-i18n="dl.new.b">Download new</button>
+            </div>
+            <div class="download-card">
+              <div class="dl-icon">🔍</div>
+              <div class="dl-title" data-i18n="dl.filtered">Current filter</div>
+              <div class="dl-desc" data-i18n="dl.filtered.d">Only the companies visible in the filtered view</div>
+              <button class="btn btn-success sm" style="margin-top:auto" onclick="downloadExcel('filtered')" data-i18n="dl.filtered.b">Download filtered</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h2 data-i18n="dl.daily">Daily snapshot</h2></div>
+          <p data-i18n="dl.daily.d">A dated copy of the whole book, for the record.</p>
+          <button class="btn blue" onclick="downloadExcel('daily')" data-i18n="dl.daily.b">Download today's snapshot</button>
+        </div>
+      </div>
+
+      <!-- ===================== GUIDE ===================== -->
+      <div id="tab-guide" hidden>
+        <div class="pagebar">
+          <div>
+            <h1 data-i18n="gd.title">How to read this panel</h1>
+            <div class="sub" data-i18n="gd.sub">What each number means and where it comes from</div>
+          </div>
+        </div>
+        <div class="grid split">
+          <div class="card">
+            <div class="card-head"><h2 data-i18n="gd.scores">The two scores</h2></div>
+            <ol class="steps">
+              <li><strong data-i18n="gd.pond">Ponderated score</strong> — <span data-i18n="gd.pond.d">each platform weighted by its number of reviews. This is the fair one: it does not let a handful of five-star reviews outweigh thousands.</span></li>
+              <li><strong data-i18n="gd.avg">Average score</strong> — <span data-i18n="gd.avg.d">the plain mean of Trustpilot and Google. Easy to explain, but blind to volume.</span></li>
+              <li><strong data-i18n="gd.op">Opinions</strong> — <span data-i18n="gd.op.d">total reviews behind the score. Below a few hundred, treat the score as an indication rather than a verdict.</span></li>
+            </ol>
+          </div>
+          <div class="card">
+            <div class="card-head"><h2 data-i18n="gd.fresh">Freshness</h2></div>
+            <ol class="steps">
+              <li><strong>Google Maps</strong> — <span data-i18n="gd.g.d">refreshed live from this site through the Places API when a key is configured.</span></li>
+              <li><strong>Trustpilot</strong> — <span data-i18n="gd.tp.d">a snapshot published from the office PC. Trustpilot blocks data-centre traffic, so it is never overwritten with a blocked read.</span></li>
+              <li><strong data-i18n="gd.refresh">Refresh</strong> — <span data-i18n="gd.refresh.d">the button on Overview asks the server to re-check. On the free Render plan the service sleeps after inactivity; the first load after that takes a moment.</span></li>
+            </ol>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h2 data-i18n="gd.terms">Terms</h2></div>
+          <dl class="kv">
+            <dt>Only Sale</dt><dd data-i18n="gd.sale">The company sells the policy; another party handles claims and service.</dd>
+            <dt>Full Service</dt><dd data-i18n="gd.fs">The company sells and services the policy end to end.</dd>
+            <dt data-i18n="gd.group">Group</dt><dd data-i18n="gd.group.d">The parent or underwriting group behind the brand, where one is known.</dd>
+            <dt>NEW</dt><dd data-i18n="gd.new.d">Discovered automatically online and not yet reviewed by the team.</dd>
+          </dl>
+        </div>
+      </div>
+
+    </div><!-- /wrap -->
+    </main>
+  </div><!-- /main-col -->
+</div><!-- /shell -->
 
 <!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-header">
-      <div class="modal-title" id="modalTitle">Company Details</div>
+      <div class="modal-title" id="modalTitle">Company details</div>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <div id="modalBody"></div>
   </div>
 </div>
+
+<!-- ASSISTANT -->
+<button class="ask-launch" id="ask-launch" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="ask-panel" title="Tracker assistant">
+  <svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true"><path fill="currentColor" d="M12 3c-4.4 0-8 3.1-8 7 0 2.2 1.2 4.2 3 5.5V21l3.3-2.2c.5.1 1.1.1 1.7.1 4.4 0 8-3.1 8-7s-3.6-7-8-7z"/></svg>
+  <span data-i18n="ask.help">Help</span>
+</button>
+
+<section class="ask-panel" id="ask-panel" role="dialog" aria-modal="false" aria-label="Tracker assistant" hidden>
+  <header class="ask-head">
+    <div>
+      <h2 data-i18n="ask.title">Tracker assistant</h2>
+      <p data-i18n="ask.sub">Answers on how the tracker works and on what its numbers mean.</p>
+    </div>
+    <button class="ask-close" id="ask-close" type="button" aria-label="Close" title="Close">×</button>
+  </header>
+  <div class="ask-body" id="ask-body" aria-live="polite"></div>
+  <form class="ask-form" id="ask-form" autocomplete="off">
+    <input type="text" id="ask-input" name="q" maxlength="400" data-i18n-ph="ask.ph" placeholder="Type your question…" aria-label="Type your question">
+    <button class="btn primary sm" type="submit" data-i18n="ask.send">Ask</button>
+  </form>
+</section>
+
+<script>
+/* ============================================================
+   Petplan shell: navigation, theme, language, overview, assistant.
+   Loaded BEFORE the tracker's own script so that T() is available
+   to the render functions.
+   ============================================================ */
+
+/* ---------- i18n ---------- */
+const I18N = {
+  en: {
+    'brand.licence':'Licence: Petplan Ibérica SL',
+    'nav.overview':'Overview','nav.tracker':'Tracker','nav.new':'New companies',
+    'nav.add':'Add company','nav.download':'Download','nav.guide':'Guide',
+    'topbar.live':'LIVE','btn.refresh':'Refresh live data','btn.refreshing':'Refreshing…','msg.asking':'Asking the server to re-check Trustpilot and Google Maps…','btn.reset':'Reset',
+    'btn.addTracker':'Add to tracker','btn.clear':'Clear',
+    'ov.title':'The benchmark in one picture',
+    'ov.sub':'Trustpilot and Google Maps reputation across 25 countries',
+    'kpi.total':'Total companies','kpi.total.sub':'across 25 countries',
+    'kpi.tp':'Avg Trustpilot','kpi.g':'Avg Google score','kpi.avg.sub':'average of rated companies',
+    'kpi.reviews':'Total reviews','kpi.reviews.sub':'combined opinions',
+    'kpi.top':'Top rated','kpi.top.sub':'by ponderated score',
+    'kpi.new':'Newly discovered','kpi.new.sub':'companies found online',
+    'ov.top.title':'Best rated companies','ov.top.chip':'Ponderated score',
+    'ov.top.note':'The ponderated score weights each platform by how many reviews it holds, so a 4.9 from 40 people does not outrank a 4.7 from 12,000.',
+    'ov.country.title':'Companies by country',
+    'ov.weak.title':'Lowest rated — worth watching',
+    'ov.weak.note':'Companies whose combined reputation sits below the market. Useful when studying who is losing ground.',
+    'ov.data.title':'Where these numbers come from',
+    'ov.data.note':"Trustpilot and Google Maps, read directly from each company's public profile. Google is refreshed live from this site; Trustpilot is a snapshot taken from the office PC, because Trustpilot blocks data-centre traffic.",
+    'tr.title':'The book','tr.sub':'Every company being tracked, with both scores side by side',
+    'tr.search':'Search company name...','tr.type':'Type:','tr.type.all':'All types',
+    'tr.group':'Group:','tr.group.all':'All groups','tr.min':'Min score:','tr.min.any':'Any score','tr.sort':'Sort:',
+    'tr.sort.pond':'Ponderated score ↓','tr.sort.avg':'Average score ↓','tr.sort.tp':'Trustpilot score ↓',
+    'tr.sort.g':'Google score ↓','tr.sort.op':'Total reviews ↓','tr.sort.tpr':'Trustpilot reviews ↓',
+    'tr.sort.az':'Company A–Z','tr.sort.cz':'Country A–Z','tr.sort.date':'Date (newest)',
+    'th.country':'Country','th.company':'Company','th.type':'Type','th.tp':'Trustpilot','th.g':'Google Maps',
+    'th.pond':'Ponderated','th.avg':'Average','th.op':'Opinions','th.date':'Date','th.group':'Group','th.source':'Source / link',
+    'nc.title':'Recently discovered companies','nc.sub':'Emerging insurers found online, not yet part of the core book',
+    'nc.found':'Found online','nc.note':'Companies discovered on Trustpilot with a meaningful number of reviews. Check one before adding it to the book.',
+    'nc.add.title':'Add a discovered company','nc.add.note':'Found a new pet insurance company? Add it here and it appears in the tracker straight away.',
+    'nc.empty':'No emerging companies discovered yet. They appear here after a discovery run.',
+    'ac.title':'Add or edit a company','ac.sub':'Entries added here are kept in this browser and included in every export',
+    'ac.details':'Company details',
+    'f.country':'Country *','f.select':'Select...','f.name':'Company name *','f.website':'Website',
+    'f.optype':'Type of operation','f.tps':'Trustpilot score','f.tpr':'Trustpilot reviews',
+    'f.gs':'Google score','f.gr':'Google reviews','f.group':'Group','f.link':'Source link',
+    'f.uw':'Underwriter','f.date':'Date',
+    'dl.title':'Export the data','dl.sub':"Excel files generated fresh, stamped with today's date",'dl.files':'Files',
+    'dl.full':'Full benchmark','dl.full.d':'Every company with all columns — scores, reviews, links and groups','dl.full.b':'Download full XLSX',
+    'dl.country':'By country','dl.country.d':'One sheet per country for regional comparison','dl.country.b':'Download by country',
+    'dl.new':'New companies','dl.new.d':'Only the companies discovered online','dl.new.b':'Download new',
+    'dl.filtered':'Current filter','dl.filtered.d':'Only the companies visible in the filtered view','dl.filtered.b':'Download filtered',
+    'dl.daily':'Daily snapshot','dl.daily.d':'A dated copy of the whole book, for the record.','dl.daily.b':"Download today's snapshot",
+    'gd.title':'How to read this panel','gd.sub':'What each number means and where it comes from',
+    'gd.scores':'The two scores','gd.pond':'Ponderated score',
+    'gd.pond.d':'each platform weighted by its number of reviews. This is the fair one: it does not let a handful of five-star reviews outweigh thousands.',
+    'gd.avg':'Average score','gd.avg.d':'the plain mean of Trustpilot and Google. Easy to explain, but blind to volume.',
+    'gd.op':'Opinions','gd.op.d':'total reviews behind the score. Below a few hundred, treat the score as an indication rather than a verdict.',
+    'gd.fresh':'Freshness','gd.g.d':'refreshed live from this site through the Places API when a key is configured.',
+    'gd.tp.d':'a snapshot published from the office PC. Trustpilot blocks data-centre traffic, so it is never overwritten with a blocked read.',
+    'gd.refresh':'Refresh','gd.refresh.d':'the button on Overview asks the server to re-check. On the free Render plan the service sleeps after inactivity; the first load after that takes a moment.',
+    'gd.terms':'Terms','gd.sale':'The company sells the policy; another party handles claims and service.',
+    'gd.fs':'The company sells and services the policy end to end.',
+    'gd.group':'Group','gd.group.d':'The parent or underwriting group behind the brand, where one is known.',
+    'gd.new.d':'Discovered automatically online and not yet reviewed by the team.',
+    'ask.help':'Help','ask.title':'Tracker assistant','ask.sub':'Answers on how the tracker works and on what its numbers mean.',
+    'ask.ph':'Type your question…','ask.send':'Ask',
+    'ask.hello':'Hello. Ask me anything about the tracker — what the scores mean, where the data comes from, or who leads a given country.',
+    'res.updated':'Updated','res.companies':'companies','res.showing':'Showing','res.of':'of','res.prev':'Prev','res.next':'Next',
+    'res.reviews':'reviews','res.noreviews':'no reviews','res.nomatch':'No companies match your filters',
+    'res.nowebsite':'no website','res.notTp':'Not on Trustpilot','res.notG':'Not on Google Maps','res.nosource':'No source',
+    'msg.needName':'Company name and country are required.','msg.added':'added to the tracker.',
+    'ov.countries':'Countries','ov.companies':'companies','ov.reviews':'reviews counted',
+    'ov.lastData':'Data date','ov.rated':'Rated on both platforms','ov.tponly':'Trustpilot only','ov.gonly':'Google only'
+  },
+  es: {
+    'brand.licence':'Licencia: Petplan Ibérica SL',
+    'nav.overview':'Resumen','nav.tracker':'Seguimiento','nav.new':'Nuevas compañías',
+    'nav.add':'Añadir compañía','nav.download':'Descargas','nav.guide':'Guía',
+    'topbar.live':'EN VIVO','btn.refresh':'Actualizar datos','btn.refreshing':'Actualizando…','msg.asking':'Pidiendo al servidor que vuelva a comprobar Trustpilot y Google Maps…','btn.reset':'Limpiar',
+    'btn.addTracker':'Añadir al seguimiento','btn.clear':'Vaciar',
+    'ov.title':'El benchmark en una imagen',
+    'ov.sub':'Reputación en Trustpilot y Google Maps en 25 países',
+    'kpi.total':'Compañías totales','kpi.total.sub':'en 25 países',
+    'kpi.tp':'Media Trustpilot','kpi.g':'Media Google','kpi.avg.sub':'media de las compañías puntuadas',
+    'kpi.reviews':'Opiniones totales','kpi.reviews.sub':'opiniones combinadas',
+    'kpi.top':'Mejor valorada','kpi.top.sub':'por nota ponderada',
+    'kpi.new':'Recién descubiertas','kpi.new.sub':'compañías encontradas en línea',
+    'ov.top.title':'Compañías mejor valoradas','ov.top.chip':'Nota ponderada',
+    'ov.top.note':'La nota ponderada pesa cada plataforma por el número de opiniones: un 4,9 de 40 personas no adelanta a un 4,7 de 12.000.',
+    'ov.country.title':'Compañías por país',
+    'ov.weak.title':'Peor valoradas — a vigilar',
+    'ov.weak.note':'Compañías cuya reputación combinada queda por debajo del mercado. Útil para ver quién pierde terreno.',
+    'ov.data.title':'De dónde salen estas cifras',
+    'ov.data.note':'De Trustpilot y Google Maps, leídos del perfil público de cada compañía. Google se actualiza en vivo desde este sitio; Trustpilot es una foto tomada desde el PC de la oficina, porque bloquea el tráfico de centros de datos.',
+    'tr.title':'La cartera','tr.sub':'Todas las compañías seguidas, con las dos notas una al lado de la otra',
+    'tr.search':'Buscar compañía...','tr.type':'Tipo:','tr.type.all':'Todos los tipos',
+    'tr.group':'Grupo:','tr.group.all':'Todos los grupos','tr.min':'Nota mínima:','tr.min.any':'Cualquiera','tr.sort':'Orden:',
+    'tr.sort.pond':'Nota ponderada ↓','tr.sort.avg':'Nota media ↓','tr.sort.tp':'Nota Trustpilot ↓',
+    'tr.sort.g':'Nota Google ↓','tr.sort.op':'Opiniones totales ↓','tr.sort.tpr':'Opiniones Trustpilot ↓',
+    'tr.sort.az':'Compañía A–Z','tr.sort.cz':'País A–Z','tr.sort.date':'Fecha (más reciente)',
+    'th.country':'País','th.company':'Compañía','th.type':'Tipo','th.tp':'Trustpilot','th.g':'Google Maps',
+    'th.pond':'Ponderada','th.avg':'Media','th.op':'Opiniones','th.date':'Fecha','th.group':'Grupo','th.source':'Fuente / enlace',
+    'nc.title':'Compañías descubiertas recientemente','nc.sub':'Aseguradoras emergentes encontradas en línea, aún fuera de la cartera',
+    'nc.found':'Encontradas en línea','nc.note':'Compañías descubiertas en Trustpilot con un número relevante de opiniones. Revísalas antes de añadirlas.',
+    'nc.add.title':'Añadir una compañía descubierta','nc.add.note':'¿Has encontrado una compañía nueva? Añádela aquí y aparecerá en el seguimiento al momento.',
+    'nc.empty':'Aún no se ha descubierto ninguna compañía emergente. Aparecerán aquí tras una ronda de descubrimiento.',
+    'ac.title':'Añadir o editar una compañía','ac.sub':'Lo añadido aquí se guarda en este navegador y entra en todas las exportaciones',
+    'ac.details':'Datos de la compañía',
+    'f.country':'País *','f.select':'Selecciona...','f.name':'Nombre de la compañía *','f.website':'Web',
+    'f.optype':'Tipo de operación','f.tps':'Nota Trustpilot','f.tpr':'Opiniones Trustpilot',
+    'f.gs':'Nota Google','f.gr':'Opiniones Google','f.group':'Grupo','f.link':'Enlace de la fuente',
+    'f.uw':'Aseguradora','f.date':'Fecha',
+    'dl.title':'Exportar los datos','dl.sub':'Ficheros Excel generados al momento, con la fecha de hoy','dl.files':'Ficheros',
+    'dl.full':'Benchmark completo','dl.full.d':'Todas las compañías con todas las columnas — notas, opiniones, enlaces y grupos','dl.full.b':'Descargar XLSX completo',
+    'dl.country':'Por país','dl.country.d':'Una hoja por país para comparar por regiones','dl.country.b':'Descargar por país',
+    'dl.new':'Compañías nuevas','dl.new.d':'Solo las compañías descubiertas en línea','dl.new.b':'Descargar nuevas',
+    'dl.filtered':'Filtro actual','dl.filtered.d':'Solo las compañías visibles con el filtro aplicado','dl.filtered.b':'Descargar filtradas',
+    'dl.daily':'Foto diaria','dl.daily.d':'Una copia fechada de toda la cartera, para el archivo.','dl.daily.b':'Descargar la foto de hoy',
+    'gd.title':'Cómo leer este panel','gd.sub':'Qué significa cada cifra y de dónde sale',
+    'gd.scores':'Las dos notas','gd.pond':'Nota ponderada',
+    'gd.pond.d':'cada plataforma pesa según su número de opiniones. Es la justa: no deja que un puñado de cincos tape a miles de opiniones.',
+    'gd.avg':'Nota media','gd.avg.d':'la media simple de Trustpilot y Google. Fácil de explicar, pero ciega al volumen.',
+    'gd.op':'Opiniones','gd.op.d':'opiniones totales detrás de la nota. Por debajo de unos cientos, tómala como indicio, no como veredicto.',
+    'gd.fresh':'Actualidad','gd.g.d':'se actualiza en vivo desde este sitio con la API de Places cuando hay clave configurada.',
+    'gd.tp.d':'una foto publicada desde el PC de la oficina. Trustpilot bloquea el tráfico de centros de datos, así que nunca se sobrescribe con una lectura bloqueada.',
+    'gd.refresh':'Actualizar','gd.refresh.d':'el botón del Resumen pide al servidor que vuelva a comprobar. En el plan gratuito de Render el servicio se duerme tras un rato sin uso; la primera carga tarda un momento.',
+    'gd.terms':'Términos','gd.sale':'La compañía vende la póliza; otro se encarga de siniestros y servicio.',
+    'gd.fs':'La compañía vende y gestiona la póliza de principio a fin.',
+    'gd.group':'Grupo','gd.group.d':'El grupo matriz o asegurador detrás de la marca, cuando se conoce.',
+    'gd.new.d':'Descubierta automáticamente en línea y aún sin revisar por el equipo.',
+    'ask.help':'Ayuda','ask.title':'Asistente del panel','ask.sub':'Responde sobre cómo funciona el panel y qué significan sus cifras.',
+    'ask.ph':'Escribe tu pregunta…','ask.send':'Preguntar',
+    'ask.hello':'Hola. Pregúntame lo que quieras sobre el panel: qué significan las notas, de dónde salen los datos o quién lidera un país.',
+    'res.updated':'Actualizado','res.companies':'compañías','res.showing':'Mostrando','res.of':'de','res.prev':'Anterior','res.next':'Siguiente',
+    'res.reviews':'opiniones','res.noreviews':'sin opiniones','res.nomatch':'Ninguna compañía coincide con los filtros',
+    'res.nowebsite':'sin web','res.notTp':'No está en Trustpilot','res.notG':'No está en Google Maps','res.nosource':'Sin fuente',
+    'msg.needName':'El nombre de la compañía y el país son obligatorios.','msg.added':'añadida al seguimiento.',
+    'ov.countries':'Países','ov.companies':'compañías','ov.reviews':'opiniones contadas',
+    'ov.lastData':'Fecha de los datos','ov.rated':'Puntuadas en ambas plataformas','ov.tponly':'Solo Trustpilot','ov.gonly':'Solo Google'
+  }
+};
+
+let LANG = 'en';
+try { LANG = localStorage.getItem('ppLang') || 'en'; } catch (e) {}
+function T(key) { return (I18N[LANG] && I18N[LANG][key]) || I18N.en[key] || key; }
+
+function applyI18n() {
+  document.documentElement.lang = LANG;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.getAttribute('data-i18n');
+    const val = T(k);
+    // keep any trailing sort icon inside table headers
+    const icon = el.querySelector('.sort-icon');
+    if (icon) { el.innerHTML = val + ' <span class="sort-icon">↕</span>'; }
+    else el.textContent = val;
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    el.setAttribute('placeholder', T(el.getAttribute('data-i18n-ph')));
+  });
+  document.querySelectorAll('.langs .lang').forEach(b => b.classList.toggle('on', b.dataset.lang === LANG));
+  const t = document.getElementById('topbarTitle');
+  if (t && window.__section) t.textContent = T('nav.' + navKey(window.__section));
+  if (window.allData && window.allData.length) { try { applyFilters(); renderOverview(); renderNewCompanies(); } catch (e) {} }
+}
+
+function setLang(l) {
+  LANG = l;
+  try { localStorage.setItem('ppLang', l); } catch (e) {}
+  applyI18n();
+}
+
+/* ---------- navigation ---------- */
+const SECTIONS = ['overview','tracker','new-companies','add-company','download','guide'];
+function navKey(s) {
+  return { 'overview':'overview','tracker':'tracker','new-companies':'new','add-company':'add','download':'download','guide':'guide' }[s] || 'overview';
+}
+function go(name) {
+  if (!SECTIONS.includes(name)) name = 'overview';
+  window.__section = name;
+  SECTIONS.forEach(s => {
+    const el = document.getElementById('tab-' + s);
+    if (el) el.hidden = (s !== name);
+  });
+  document.querySelectorAll('#railNav a').forEach(a => a.classList.toggle('on', a.dataset.nav === name));
+  const t = document.getElementById('topbarTitle');
+  if (t) t.textContent = T('nav.' + navKey(name));
+  if (window.innerWidth <= 860) document.getElementById('rail').classList.remove('open');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (name === 'overview') { try { renderOverview(); } catch (e) {} }
+}
+
+/* ---------- theme ---------- */
+function setTheme(mode) {
+  document.documentElement.setAttribute('data-theme', mode);
+  try { localStorage.setItem('ppTheme', mode); } catch (e) {}
+}
+(function initTheme() {
+  let saved = 'dark';
+  try { saved = localStorage.getItem('ppTheme') || 'dark'; } catch (e) {}
+  document.documentElement.setAttribute('data-theme', saved);
+})();
+
+/* ---------- overview ---------- */
+function renderOverview() {
+  const data = (window.allData || []);
+  if (!data.length) return;
+
+  const rated = data.filter(c => (c.pondScore || 0) > 0);
+  const top = [...rated].sort((a, b) => b.pondScore - a.pondScore).slice(0, 8);
+  const weak = [...rated].filter(c => (c.totalOpinions || 0) >= 200)
+                         .sort((a, b) => a.pondScore - b.pondScore).slice(0, 8);
+
+  const line = (c, i) => `<li>
+      <span class="pos">${i + 1}</span>
+      <span class="nm">${flagOf(c.country)} ${c.company}</span>
+      <span class="vl ${scoreColor(c.pondScore)}">${c.pondScore.toFixed(2)}</span>
+    </li>`;
+
+  const topEl = document.getElementById('ovTop');
+  if (topEl) topEl.innerHTML = top.map(line).join('');
+  const weakEl = document.getElementById('ovWeak');
+  if (weakEl) weakEl.innerHTML = weak.map(line).join('');
+
+  // countries
+  const counts = {};
+  data.forEach(c => { const k = (c.country || '').trim(); if (k) counts[k] = (counts[k] || 0) + 1; });
+  const pairs = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 10);
+  const max = pairs.length ? pairs[0][1] : 1;
+  const barsEl = document.getElementById('ovCountries');
+  if (barsEl) barsEl.innerHTML = pairs.map(([c, n], i) => `
+    <div class="bar-row">
+      <div class="nm">${flagOf(c)} ${c}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.round(n / max * 100)}%;background:var(--series-${(i % 8) + 1})"></div></div>
+      <div class="vl" style="text-align:right">${n}</div>
+    </div>`).join('');
+
+  // meta
+  const both = data.filter(c => c.tpScore > 0 && c.gScore > 0).length;
+  const tpOnly = data.filter(c => c.tpScore > 0 && !(c.gScore > 0)).length;
+  const gOnly = data.filter(c => c.gScore > 0 && !(c.tpScore > 0)).length;
+  let latest = '';
+  data.forEach(c => { const d = c.gDate || c.date || c.tpDate || ''; if (d > latest) latest = d; });
+  const metaEl = document.getElementById('ovMeta');
+  if (metaEl) metaEl.innerHTML = `
+    <dt>${T('ov.rated')}</dt><dd>${both}</dd>
+    <dt>${T('ov.tponly')}</dt><dd>${tpOnly}</dd>
+    <dt>${T('ov.gonly')}</dt><dd>${gOnly}</dd>
+    <dt>${T('ov.countries')}</dt><dd>${Object.keys(counts).length}</dd>
+    <dt>${T('ov.lastData')}</dt><dd>${latest || '—'}</dd>`;
+}
+function flagOf(country) {
+  try { return COUNTRY_FLAGS[(country || '').trim()] || '🌐'; } catch (e) { return '🌐'; }
+}
+
+/* ---------- assistant ---------- */
+const COUNTRY_ALIASES = {
+  'spain':'Spain','españa':'Spain','espana':'Spain','uk':'UK','reino unido':'UK','britain':'UK','england':'UK',
+  'usa':'USA','us':'USA','estados unidos':'USA','eeuu':'USA','america':'USA',
+  'france':'France','francia':'France','germany':'Germany','alemania':'Germany',
+  'italy':'Italy','italia':'Italy','sweden':'Sweden','suecia':'Sweden','norway':'Norway','noruega':'Norway',
+  'denmark':'Denmark ','dinamarca':'Denmark ','ireland':'Ireland','irlanda':'Ireland',
+  'belgium':'Belgium','bélgica':'Belgium','belgica':'Belgium','netherlands':'Netherland','holanda':'Netherland',
+  'países bajos':'Netherland','paises bajos':'Netherland','switzerland':'Switzerland','suiza':'Switzerland',
+  'australia':'Australia','canada':'Canada','canadá':'Canada','new zealand':'New Zealand','nueva zelanda':'New Zealand',
+  'japan':'Japan','japón':'Japan','japon':'Japan','south africa':'South Africa','sudáfrica':'South Africa','sudafrica':'South Africa',
+  'argentina':'Argentina','brazil':'Brazil','brasil':'Brazil','chile':'Chile','colombia':'Colombia',
+  'mexico':'México','méxico':'México','peru':'Perú','perú':'Perú','czech republic':'Czech Republic','chequia':'Czech Republic'
+};
+
+function askFindCountry(q) {
+  const data = window.allData || [];
+  const names = [...new Set(data.map(c => (c.country || '').trim()).filter(Boolean))];
+  for (const n of names) if (q.includes(n.toLowerCase().trim())) return n;
+  for (const [alias, real] of Object.entries(COUNTRY_ALIASES)) {
+    if (q.includes(alias)) {
+      const hit = names.find(n => n.trim().toLowerCase() === real.trim().toLowerCase());
+      if (hit) return hit;
+    }
+  }
+  return null;
+}
+
+function askAnswer(raw) {
+  const q = (raw || '').toLowerCase().trim();
+  const data = window.allData || [];
+  const has = (...w) => w.some(x => q.includes(x));
+  const country = askFindCountry(q);
+  const inCountry = country ? data.filter(c => (c.country || '').trim() === country) : data;
+  const rated = inCountry.filter(c => (c.pondScore || 0) > 0);
+  const es = LANG === 'es';
+
+  // --- live data questions -------------------------------------------------
+  if (has('how many', 'cuántas', 'cuantas', 'number of companies', 'cuántos', 'cuantos')) {
+    if (country) return es
+      ? `Hay <strong>${inCountry.length}</strong> compañías de ${country.trim()} en la cartera.`
+      : `There are <strong>${inCountry.length}</strong> companies from ${country.trim()} in the book.`;
+    const countries = new Set(data.map(c => (c.country || '').trim()).filter(Boolean)).size;
+    return es
+      ? `La cartera tiene <strong>${data.length}</strong> compañías en <strong>${countries}</strong> países.`
+      : `The book holds <strong>${data.length}</strong> companies across <strong>${countries}</strong> countries.`;
+  }
+
+  if (has('best', 'top', 'leader', 'mejor', 'lidera', 'líder', 'lider')) {
+    const top = [...rated].sort((a, b) => b.pondScore - a.pondScore).slice(0, 5);
+    if (!top.length) return es ? 'Todavía no hay datos puntuados para responder eso.' : 'There is no rated data to answer that yet.';
+    const list = top.map((c, i) => `${i + 1}. ${c.company} — <strong>${c.pondScore.toFixed(2)}</strong> (${(c.totalOpinions || 0).toLocaleString()} ${T('res.reviews')})`).join('<br>');
+    return (es ? `Mejor valoradas${country ? ' en ' + country.trim() : ''} por nota ponderada:<br>` : `Best rated${country ? ' in ' + country.trim() : ''} by ponderated score:<br>`) + list;
+  }
+
+  if (has('worst', 'lowest', 'peor', 'peores', 'más baja', 'mas baja')) {
+    const bottom = [...rated].filter(c => (c.totalOpinions || 0) >= 100).sort((a, b) => a.pondScore - b.pondScore).slice(0, 5);
+    if (!bottom.length) return es ? 'No hay suficientes opiniones para responder eso.' : 'There are not enough reviews to answer that.';
+    const list = bottom.map((c, i) => `${i + 1}. ${c.company} — <strong>${c.pondScore.toFixed(2)}</strong> (${(c.totalOpinions || 0).toLocaleString()} ${T('res.reviews')})`).join('<br>');
+    return (es ? `Peor valoradas${country ? ' en ' + country.trim() : ''} (mínimo 100 opiniones):<br>` : `Lowest rated${country ? ' in ' + country.trim() : ''} (100+ reviews):<br>`) + list;
+  }
+
+  if (has('average', 'media', 'promedio') && rated.length) {
+    const avg = (rated.reduce((s, c) => s + c.pondScore, 0) / rated.length).toFixed(2);
+    const rev = inCountry.reduce((s, c) => s + (c.totalOpinions || 0), 0);
+    return es
+      ? `La nota ponderada media${country ? ' en ' + country.trim() : ''} es <strong>${avg}</strong>, sobre ${rev.toLocaleString()} opiniones de ${rated.length} compañías puntuadas.`
+      : `The average ponderated score${country ? ' in ' + country.trim() : ''} is <strong>${avg}</strong>, over ${rev.toLocaleString()} reviews from ${rated.length} rated companies.`;
+  }
+
+  // a company by name
+  const named = data.find(c => c.company && q.includes(c.company.toLowerCase()));
+  if (named) {
+    return es
+      ? `<strong>${named.company}</strong> (${named.country.trim()}) — Trustpilot ${named.tpScore || '—'} de ${(named.tpReviews || 0).toLocaleString()} opiniones, Google ${named.gScore || '—'} de ${(named.gReviews || 0).toLocaleString()}. Nota ponderada <strong>${named.pondScore || '—'}</strong>, media ${named.avgScore || '—'}. Tipo: ${named.opType || '—'}${named.group ? ', grupo ' + named.group : ''}.`
+      : `<strong>${named.company}</strong> (${named.country.trim()}) — Trustpilot ${named.tpScore || '—'} from ${(named.tpReviews || 0).toLocaleString()} reviews, Google ${named.gScore || '—'} from ${(named.gReviews || 0).toLocaleString()}. Ponderated <strong>${named.pondScore || '—'}</strong>, average ${named.avgScore || '—'}. Type: ${named.opType || '—'}${named.group ? ', group ' + named.group : ''}.`;
+  }
+
+  // --- how the panel works -------------------------------------------------
+  if (has('ponderated', 'ponderada', 'weighted', 'pondera')) return T('gd.pond') + ' — ' + T('gd.pond.d');
+  if (has('average score', 'nota media', 'media simple')) return T('gd.avg') + ' — ' + T('gd.avg.d');
+  if (has('trustpilot')) return 'Trustpilot — ' + T('gd.tp.d');
+  if (has('google')) return 'Google Maps — ' + T('gd.g.d');
+  if (has('refresh', 'actualiz', 'update')) return T('gd.refresh') + ' — ' + T('gd.refresh.d');
+  if (has('only sale', 'full service', 'tipo de operación', 'type of operation')) return 'Only Sale — ' + T('gd.sale') + '<br>Full Service — ' + T('gd.fs');
+  if (has('group', 'grupo')) return T('gd.group') + ' — ' + T('gd.group.d');
+  if (has('new', 'nueva', 'nuevas', 'discover', 'descubr')) return T('gd.new.d') + ' ' + (es ? 'Las verás en «Nuevas compañías».' : 'You will find them under “New companies”.');
+  if (has('add', 'añadir', 'anadir', 'agregar')) return es
+    ? 'Ve a «Añadir compañía», rellena país y nombre (lo demás es opcional) y pulsa Añadir. La entrada se guarda en este navegador y entra en las exportaciones.'
+    : 'Open “Add company”, fill in country and name (the rest is optional) and press Add. The entry is kept in this browser and included in every export.';
+  if (has('export', 'excel', 'xlsx', 'download', 'descarg')) return es
+    ? 'En «Descargas» tienes cuatro ficheros: completo, por país, solo nuevas y el filtro actual. Todos llevan la fecha de hoy en el nombre.'
+    : 'Under “Download” there are four files: full, by country, new only, and the current filter. Each is stamped with today’s date.';
+  if (has('data come', 'where', 'source', 'fuente', 'de dónde', 'de donde')) return T('ov.data.note');
+  if (has('opinion', 'review', 'reseñ')) return T('gd.op') + ' — ' + T('gd.op.d');
+  if (has('slow', 'lento', 'sleep', 'duerme', 'render')) return es
+    ? 'El sitio está en el plan gratuito de Render: el servicio se duerme tras un rato sin uso y la primera carga tarda unos segundos en despertarlo.'
+    : 'The site runs on Render’s free plan: the service sleeps after inactivity, so the first load after a quiet spell takes a few seconds to wake it.';
+  if (has('hello', 'hi ', 'hola', 'buenas')) return T('ask.hello');
+
+  return es
+    ? 'No tengo eso a mano. Puedo explicarte la nota ponderada, la media, de dónde salen los datos, cómo actualizar o exportar, o darte cifras: prueba con «mejor en España» o «cuántas compañías en Italia».'
+    : 'I do not have that to hand. I can explain the ponderated score, the average, where the data comes from, how to refresh or export — or give you figures: try “best in Spain” or “how many companies in Italy”.';
+}
+
+const ASK_SUGG = {
+  en: ['What is the ponderated score?', 'Best in Spain', 'Where does the data come from?', 'How do I export to Excel?'],
+  es: ['¿Qué es la nota ponderada?', 'Mejor en España', '¿De dónde salen los datos?', '¿Cómo exporto a Excel?']
+};
+
+function askPush(text, who) {
+  const body = document.getElementById('ask-body');
+  const d = document.createElement('div');
+  d.className = 'ask-msg ' + who;
+  d.innerHTML = '<p>' + text + '</p>';
+  body.appendChild(d);
+  body.scrollTop = body.scrollHeight;
+}
+function askSuggestions() {
+  const body = document.getElementById('ask-body');
+  const wrap = document.createElement('div');
+  wrap.className = 'ask-sugg';
+  (ASK_SUGG[LANG] || ASK_SUGG.en).forEach(s => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.textContent = s;
+    b.onclick = () => { askSubmit(s); wrap.remove(); };
+    wrap.appendChild(b);
+  });
+  body.appendChild(wrap);
+}
+function askSubmit(text) {
+  if (!text) return;
+  askPush(text.replace(/[<>]/g, ''), 'me');
+  setTimeout(() => askPush(askAnswer(text), 'bot'), 180);
+}
+function askOpen(open) {
+  const p = document.getElementById('ask-panel');
+  const l = document.getElementById('ask-launch');
+  p.hidden = !open;
+  l.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (open && !p.dataset.greeted) {
+    p.dataset.greeted = '1';
+    askPush(T('ask.hello'), 'bot');
+    askSuggestions();
+  }
+  if (open) document.getElementById('ask-input').focus();
+}
+
+/* ---------- wiring ---------- */
+window.addEventListener('load', function () {
+  document.getElementById('burger').onclick = () => {
+    const rail = document.getElementById('rail');
+    if (window.innerWidth <= 860) rail.classList.toggle('open');
+    else rail.classList.toggle('hide');
+  };
+  document.getElementById('themeBtn').onclick = () => {
+    setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  };
+  document.querySelectorAll('.langs .lang').forEach(b => { b.onclick = () => setLang(b.dataset.lang); });
+  document.getElementById('ask-launch').onclick = () => askOpen(document.getElementById('ask-panel').hidden);
+  document.getElementById('ask-close').onclick = () => askOpen(false);
+  document.getElementById('ask-form').onsubmit = (e) => {
+    e.preventDefault();
+    const i = document.getElementById('ask-input');
+    const v = i.value.trim();
+    i.value = '';
+    askSubmit(v);
+  };
+  applyI18n();
+  go(location.hash.replace('#', '') || 'overview');
+  renderOverview();
+});
+
+/* keeps the old entry point working */
+function showTab(name) { go(name === 'tracker' ? 'tracker' : name); }
+</script>
 
 <script>
 // ============================================================
@@ -463,8 +1207,8 @@ const SEED_DATA = [{"country":"USA","company":"Prudent Pet Insurance","website":
 // ============================================================
 // STATE
 // ============================================================
-let allData = [];
-let filteredData = [];
+var allData = [];
+var filteredData = [];
 let currentPage = 1;
 const PAGE_SIZE = 25;
 let activeCountry = 'All';
@@ -483,16 +1227,7 @@ const COUNTRY_FLAGS = {
 // ============================================================
 // INIT
 // ============================================================
-function showTab(name) {
-  ['tracker','new-companies','add-company','download'].forEach(t => {
-    const panel = document.getElementById('tab-' + t);
-    if (panel) panel.style.display = (t === name) ? '' : 'none';
-  });
-  document.querySelectorAll('.tabs .tab').forEach(tab => {
-    const oc = tab.getAttribute('onclick') || '';
-    tab.classList.toggle('active', oc.indexOf("showTab('" + name + "')") !== -1);
-  });
-}
+// showTab() lives in the shell script above (rail navigation).
 
 function closeModal() {
   const m = document.getElementById('modalOverlay');
@@ -544,7 +1279,7 @@ function showDataDate(arr) {
   }
   if (!latest) return;
   const updEl = document.getElementById('lastUpdated');
-  if (updEl) updEl.textContent = 'Updated: ' + latest;
+  if (updEl) updEl.textContent = T('res.updated') + ': ' + latest;
 }
 
 // Renders an honest "last refreshed" banner. A browser-mode fetch (run from the
@@ -579,9 +1314,9 @@ function showLastRefreshed(s) {
 function refreshLiveData() {
   const btn = document.getElementById('refreshBtn');
   const status = document.getElementById('refreshStatus');
-  const reset = () => { if (btn) { btn.disabled = false; btn.textContent = '🔄 Refresh live data'; } };
-  if (btn) { btn.disabled = true; btn.textContent = '⏳ Refreshing…'; }
-  if (status) status.textContent = 'Asking the server to re-check Trustpilot & Google Maps…';
+  const reset = () => { if (btn) { btn.disabled = false; btn.textContent = '🔄 ' + T('btn.refresh'); } };
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ ' + T('btn.refreshing'); }
+  if (status) status.textContent = T('msg.asking');
   fetch('/api/refresh', { method: 'POST' }).then(r => r.json()).then(res => {
     if (res && res.throttled) { if (status) status.textContent = res.message || 'Please wait a moment.'; reset(); return; }
     poll();
@@ -685,7 +1420,7 @@ function applyFilters() {
 
   currentPage = 1;
   renderTable();
-  document.getElementById('resultCount').textContent = filteredData.length + ' companies';
+  document.getElementById('resultCount').textContent = filteredData.length + ' ' + T('res.companies');
 }
 
 function sortBy(field) {
@@ -728,7 +1463,7 @@ function stars(s) {
 }
 function fmtScore(s, reviews, status, platform) {
   if (status === 'not_listed') {
-    const label = platform === 'g' ? 'Not on Google Maps' : 'Not on Trustpilot';
+    const label = platform === 'g' ? T('res.notG') : T('res.notTp');
     return `<span class="no-data" style="font-style:italic;white-space:nowrap" title="${label}">🚫 ${label}</span>`;
   }
   if (!s && !reviews) return '<span class="no-data">—</span>';
@@ -736,7 +1471,7 @@ function fmtScore(s, reviews, status, platform) {
   return `<div class="score-cell">
     <div>
       <div class="score-val ${scoreColor(s)}">${s > 0 ? s.toFixed(1) : '—'}</div>
-      <div class="score-reviews">${reviews > 0 ? reviews.toLocaleString() + ' reviews' : 'no reviews'}</div>
+      <div class="score-reviews">${reviews > 0 ? reviews.toLocaleString() + ' ' + T('res.reviews') : T('res.noreviews')}</div>
     </div>
     <div>
       <div class="stars">${stars(s)}</div>
@@ -752,7 +1487,7 @@ function renderTable() {
   const tbody = document.getElementById('tableBody');
 
   if (page.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="11"><div class="empty-state"><div class="icon">🔍</div><div>No companies match your filters</div></div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="11"><div class="empty-state"><div class="icon">🔍</div><div>${T('res.nomatch')}</div></div></td></tr>`;
     renderPagination();
     return;
   }
@@ -768,13 +1503,13 @@ function renderTable() {
         c.tpUrl  ? `<a href="${c.tpUrl}" target="_blank" style="color:var(--accent);font-size:11px" title="This company's Trustpilot profile">⭐ Trustpilot</a>` :
         c.gUrl   ? `<a href="${c.gUrl}" target="_blank" style="color:var(--muted);font-size:11px" title="This company's Google Maps place">📍 Google Maps</a>` :
         c.link   ? `<a href="${c.link}" target="_blank" style="color:var(--accent);font-size:11px">🔗 Source</a>` :
-        `<span class="no-data" title="No Trustpilot or Google Maps listing found">🚫 No source</span>`;
+        `<span class="no-data" title="No Trustpilot or Google Maps listing found">🚫 ${T('res.nosource')}</span>`;
 
     return `<tr>
       <td><span class="country-flag">${flag}</span>${c.country.trim()}</td>
       <td>
         <div class="company-name">${c.company} ${isNew ? '<span class="badge badge-new">NEW</span>' : ''}</div>
-        ${website ? `<a href="${website}" target="_blank" class="company-website">🌐 ${c.website}</a>` : '<span class="no-data" style="font-size:10px">no website</span>'}
+        ${website ? `<a href="${website}" target="_blank" class="company-website">🌐 ${c.website}</a>` : `<span class="no-data" style="font-size:10px">${T('res.nowebsite')}</span>`}
       </td>
       <td><span class="badge ${c.opType === 'Full Service' ? 'badge-op-full' : 'badge-op-sale'}">${c.opType || '—'}</span></td>
       <td><div style="cursor:${(c.tpUrl || (c.tpStatus !== 'not_listed' && c.website)) ? 'pointer' : 'default'}" onclick="openTrustpilot('${c.tpUrl || ''}','${c.website || ''}','${c.tpStatus || ''}')">
@@ -818,10 +1553,10 @@ function renderPagination() {
   const start = (currentPage - 1) * PAGE_SIZE + 1;
   const end = Math.min(currentPage * PAGE_SIZE, total);
 
-  document.getElementById('pageInfo').textContent = total > 0 ? `Showing ${start}–${end} of ${total}` : '';
+  document.getElementById('pageInfo').textContent = total > 0 ? `${T('res.showing')} ${start}–${end} ${T('res.of')} ${total}` : '';
 
   const btns = document.getElementById('pageBtns');
-  let html = `<button class="page-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹ Prev</button>`;
+  let html = `<button class="page-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹ ${T('res.prev')}</button>`;
 
   for (let i = 1; i <= pages; i++) {
     if (i === 1 || i === pages || Math.abs(i - currentPage) <= 1) {
@@ -830,7 +1565,7 @@ function renderPagination() {
       html += `<button class="page-btn" disabled>…</button>`;
     }
   }
-  html += `<button class="page-btn" onclick="goPage(${currentPage+1})" ${currentPage>=pages?'disabled':''}>Next ›</button>`;
+  html += `<button class="page-btn" onclick="goPage(${currentPage+1})" ${currentPage>=pages?'disabled':''}>${T('res.next')} ›</button>`;
   btns.innerHTML = html;
 }
 
@@ -863,6 +1598,7 @@ function updateStats() {
   document.getElementById('stat-reviews').textContent = totalReviews > 1000000 ? (totalReviews/1000000).toFixed(1)+'M' : totalReviews > 1000 ? (totalReviews/1000).toFixed(0)+'K' : totalReviews;
   document.getElementById('stat-top').textContent = top ? top.company : '—';
   document.getElementById('stat-new').textContent = newCount;
+  try { renderOverview(); } catch (e) {}
 }
 
 // ============================================================
@@ -872,7 +1608,7 @@ function renderNewCompanies() {
   const newOnes = allData.filter(c => c._auto_discovered === true && (c.totalOpinions || 0) > 500).sort((a,b) => (b.totalOpinions || 0) - (a.totalOpinions || 0));
   const grid = document.getElementById('newCompanyGrid');
   if (newOnes.length === 0) {
-    grid.innerHTML = '<div style="color:var(--muted);font-size:12px;grid-column:1/-1">No emerging companies discovered yet. When you run the fetch script it searches Trustpilot online for pet-insurance companies with more than 500 reviews that are not already tracked, and lists them here.</div>';
+    grid.innerHTML = '<div class="no-data" style="grid-column:1/-1">' + T('nc.empty') + '</div>';
     return;
   }
   grid.innerHTML = newOnes.map(c => {
@@ -896,7 +1632,7 @@ function renderNewCompanies() {
 function addNewCompany() {
   const name = document.getElementById('nc-name').value.trim();
   const country = document.getElementById('nc-country').value;
-  if (!name || !country) { alert('Company name and country are required.'); return; }
+  if (!name || !country) { alert(T('msg.needName')); return; }
 
   const tpScore = parseFloat(document.getElementById('nc-tp-score').value) || 0;
   const tpReviews = parseInt(document.getElementById('nc-tp-reviews').value) || 0;
@@ -925,13 +1661,13 @@ function addNewCompany() {
   updateStats();
   renderNewCompanies();
   clearNewForm();
-  alert('✅ ' + name + ' added to the tracker!');
+  alert('✅ ' + name + ' — ' + T('msg.added'));
 }
 
 function addCompanyFromForm() {
   const name = document.getElementById('ac-name').value.trim();
   const country = document.getElementById('ac-country').value;
-  if (!name || !country) { alert('Company name and country are required.'); return; }
+  if (!name || !country) { alert(T('msg.needName')); return; }
 
   const tpScore = parseFloat(document.getElementById('ac-tp-score').value) || 0;
   const tpReviews = parseInt(document.getElementById('ac-tp-reviews').value) || 0;
@@ -960,7 +1696,7 @@ function addCompanyFromForm() {
   updateStats();
   renderNewCompanies();
   clearAddForm();
-  alert('✅ ' + name + ' added to the tracker!');
+  alert('✅ ' + name + ' — ' + T('msg.added'));
 }
 
 function clearNewForm() {
