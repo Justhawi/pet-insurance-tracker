@@ -867,6 +867,7 @@ def discover_emerging_companies(page, existing_results, min_opinions=500, max_pa
     total_cards = 0
     dropped_known = 0
     dropped_small = 0
+    dropped_notpet = 0
 
     for code, country in markets:
         for pg in range(1, max_pages + 1):
@@ -913,7 +914,9 @@ def discover_emerging_companies(page, existing_results, min_opinions=500, max_pa
                         for (let k = si + 1; si >= 0 && k < leaves.length; k++) {
                           if (/^[\d.,\u00a0 ]+$/.test(leaves[k])) { reviews = leaves[k]; break; }
                         }
-                        out.push({ href, name, score, reviews,
+                        const cats = Array.from(box.querySelectorAll('a[href^="/categories/"]'))
+                          .map(x => x.getAttribute('href').replace('/categories/', '').split('?')[0]);
+                        out.push({ href, name, score, reviews, cats,
                                    text: (box.innerText || '').slice(0, 400) });
                       }
                       return out;
@@ -996,6 +999,14 @@ def discover_emerging_companies(page, existing_results, min_opinions=500, max_pa
                         log(f"      ⚠️  skipping {name}: unreadable review count")
                         continue
 
+                    # Trustpilot tags every business with its own categories.
+                    # Require the pet-insurance tag rather than trusting that
+                    # everything on the page belongs there.
+                    cats = [str(x) for x in (card.get("cats") or [])]
+                    if cats and not any("pet_insurance" in c for c in cats):
+                        dropped_notpet += 1
+                        continue
+
                     if (name.lower() in known
                             or _norm_domain(domain) in known_domains):
                         dropped_known += 1
@@ -1023,6 +1034,14 @@ def discover_emerging_companies(page, existing_results, min_opinions=500, max_pa
                         "date": datetime.now().strftime("%Y-%m-%d"),
                         "tpDate": datetime.now().strftime("%Y-%m-%d"), "gDate": "",
                         "_auto_discovered": True,
+                        "tpCategories": cats,
+                        "tpVerifiedPet": any("pet_insurance" in c for c in cats),
+                        # False = a multi-line insurer, so its Trustpilot score
+                        # covers car, home and travel too, not just pet cover.
+                        "petOnly": not any(
+                            c != "pet_insurance_company"
+                            and (c.endswith("_insurance_company") or c.endswith("_insurance_agency"))
+                            for c in cats),
                     })
                 if new_here == 0 and pg > 1:
                     break   # deeper pages are smaller companies; stop early
@@ -1033,7 +1052,10 @@ def discover_emerging_companies(page, existing_results, min_opinions=500, max_pa
 
     log(f"🔍 Discovery done — scanned {total_cards} listings, "
         f"{dropped_known} already tracked, {dropped_small} under {min_opinions} reviews, "
-        f"{len(found)} new emerging companies added.")
+        f"{dropped_notpet} not tagged pet insurance, "
+        f"{len(found)} new emerging companies added "
+        f"({sum(1 for c in found if c.get('petOnly'))} pet-only, "
+        f"{sum(1 for c in found if not c.get('petOnly'))} multi-line).")
     return found
 
 # ─────────────────────────────────────────────────────────────

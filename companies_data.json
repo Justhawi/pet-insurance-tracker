@@ -21,7 +21,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": false
   },
   {
     "country": "USA",
@@ -45,7 +47,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": true
   },
   {
     "country": "USA",
@@ -69,7 +73,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": false
   },
   {
     "country": "USA",
@@ -93,7 +99,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": false
   },
   {
     "country": "USA",
@@ -117,7 +125,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": true
   },
   {
     "country": "USA",
@@ -141,7 +151,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": true
   },
   {
     "country": "USA",
@@ -165,7 +177,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": false
   },
   {
     "country": "USA",
@@ -189,7 +203,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": true
   },
   {
     "country": "UK",
@@ -213,7 +229,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": false
   },
   {
     "country": "UK",
@@ -237,7 +255,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": true
   },
   {
     "country": "UK",
@@ -261,7 +281,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": false
   },
   {
     "country": "UK",
@@ -285,7 +307,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": false
   },
   {
     "country": "UK",
@@ -309,7 +333,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": false
   },
   {
     "country": "UK",
@@ -333,7 +359,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": true
   },
   {
     "country": "UK",
@@ -357,7 +385,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": true
   },
   {
     "country": "UK",
@@ -381,7 +411,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": false
   },
   {
     "country": "UK",
@@ -405,7 +437,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": false
   },
   {
     "country": "UK",
@@ -429,7 +463,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": false
   },
   {
     "country": "UK",
@@ -453,7 +489,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": true
   },
   {
     "country": "UK",
@@ -477,7 +515,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": false
   },
   {
     "country": "France",
@@ -501,7 +541,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": true
   },
   {
     "country": "France",
@@ -525,7 +567,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": true
   },
   {
     "country": "France",
@@ -549,7 +593,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": true
   },
   {
     "country": "Germany",
@@ -573,7 +619,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": true
   },
   {
     "country": "Germany",
@@ -597,7 +645,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": false
   },
   {
     "country": "Germany",
@@ -621,7 +671,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": false
   },
   {
     "country": "Germany",
@@ -645,7 +697,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": false
   },
   {
     "country": "Germany",
@@ -669,7 +723,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": false
   },
   {
     "country": "Germany",
@@ -693,7 +749,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": false
   },
   {
     "country": "Germany",
@@ -717,7 +775,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": false
   },
   {
     "country": "Germany",
@@ -741,7 +801,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": false
   },
   {
     "country": "Germany",
@@ -765,7 +827,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": false
   },
   {
     "country": "Germany",
@@ -789,7 +853,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": true
   },
   {
     "country": "Germany",
@@ -813,7 +879,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": false
   },
   {
     "country": "Germany",
@@ -837,7 +905,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": false
   },
   {
     "country": "Italy",
@@ -861,7 +931,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": false
   },
   {
     "country": "Sweden",
@@ -885,7 +957,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": false
   },
   {
     "country": "Sweden",
@@ -909,7 +983,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": false
   },
   {
     "country": "Sweden",
@@ -933,7 +1009,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": false
   },
   {
     "country": "Sweden",
@@ -957,7 +1035,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": false
   },
   {
     "country": "Australia",
@@ -981,7 +1061,9 @@
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
     "gDate": "",
-    "_auto_discovered": true
+    "_auto_discovered": true,
+    "tpVerifiedPet": true,
+    "petOnly": false
   },
   {
     "country": "UK",
