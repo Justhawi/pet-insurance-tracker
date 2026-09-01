@@ -128,6 +128,16 @@ html[data-theme="dark"] .rail-nav a:nth-child(5) .ic{color:var(--series-1)}
   line-height:1;cursor:pointer;background:none;border:0;font-family:var(--sans);transition:background .15s,color .15s}
 .langs .lang:hover{background:rgba(255,255,255,.16);color:#fff}
 .langs .lang.on{background:#fff;color:var(--pp-blue)}
+.flag{display:block;border-radius:2px;box-shadow:0 0 0 1px rgba(0,0,0,.22)}
+.account{position:relative}
+.account-menu{position:absolute;top:calc(100% + 8px);right:0;z-index:60;min-width:208px;padding:4px;
+  background:var(--surface-1);border:1px solid var(--border);border-radius:6px;box-shadow:0 10px 28px rgba(0,0,0,.18)}
+.account-menu .who{display:grid;gap:2px;padding:10px 12px 11px;border-bottom:1px solid var(--border)}
+.account-menu .name{font-family:var(--sans);font-size:.86rem;font-weight:500;color:var(--text-primary)}
+.account-menu .sub{font-size:.72rem;color:var(--text-muted)}
+.account-menu .item{display:flex;align-items:center;gap:9px;margin-top:4px;padding:9px 12px;border-radius:4px;
+  font-family:var(--sans);font-size:.84rem;color:var(--text-primary);text-decoration:none}
+.account-menu .item:hover{background:var(--surface-2)}
 .live-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.14);
   border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:3px 11px;font-size:.72rem;
   color:#fff;font-weight:600;letter-spacing:.04em}
@@ -400,15 +410,44 @@ html[data-theme="dark"] .badge-op-full{color:var(--series-4)}
       <div class="topbar-right">
         <div class="live-badge"><span class="live-dot"></span><span data-i18n="topbar.live">LIVE</span></div>
         <div class="langs">
-          <button class="lang" type="button" data-lang="es">ES</button>
-          <button class="lang on" type="button" data-lang="en">EN</button>
+          <button class="lang" type="button" data-lang="es" title="Español">
+            <svg class="flag" viewBox="0 0 60 40" width="20" height="14" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+              <rect width="60" height="40" fill="#AA151B"></rect>
+              <rect y="10" width="60" height="20" fill="#F1BF00"></rect>
+            </svg><span class="code">ES</span>
+          </button>
+          <button class="lang on" type="button" data-lang="en" title="English">
+            <svg class="flag" viewBox="0 0 60 30" width="20" height="14" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+              <clipPath id="uk-clip-hdr"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"></path></clipPath>
+              <rect width="60" height="30" fill="#012169"></rect>
+              <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"></path>
+              <path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#uk-clip-hdr)" stroke="#C8102E" stroke-width="4"></path>
+              <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"></path>
+              <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"></path>
+            </svg><span class="code">EN</span>
+          </button>
         </div>
         <button class="icon-btn" id="themeBtn" type="button" title="Light / dark">
           <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 3a9 9 0 109 9 7 7 0 01-9-9z"/></svg>
         </button>
-        <span class="icon-btn" title="Petplan">
-          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 12a4 4 0 100-8 4 4 0 000 8zm0 2c-4 0-7 2.2-7 5v1h14v-1c0-2.8-3-5-7-5z"/></svg>
-        </span>
+        <div class="account" id="account">
+          <button class="icon-btn avatar" id="accountBtn" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="accountMenu" title="Account">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 12a4 4 0 100-8 4 4 0 000 8zm0 2c-4 0-7 2.2-7 5v1h14v-1c0-2.8-3-5-7-5z"/></svg>
+          </button>
+          <div class="account-menu" id="accountMenu" role="menu" hidden>
+            <div class="who">
+              <span class="name" data-i18n="acct.name">Administrator</span>
+              <span class="sub" data-i18n="acct.sub">Shared password access</span>
+            </div>
+            <a class="item" href="/logout" role="menuitem">
+              <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
+                <path fill="currentColor" d="M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h5v-2H5V5h5V3z"></path>
+                <path fill="currentColor" d="M17 8l-1.4 1.4L17.2 11H9v2h8.2l-1.6 1.6L17 16l4-4-4-4z"></path>
+              </svg>
+              <span data-i18n="acct.signout">Sign out</span>
+            </a>
+          </div>
+        </div>
       </div>
     </header>
 
@@ -831,6 +870,7 @@ const I18N = {
     'gd.fs':'The company sells and services the policy end to end.',
     'gd.group':'Group','gd.group.d':'The parent or underwriting group behind the brand, where one is known.',
     'gd.new.d':'Discovered automatically online and not yet reviewed by the team.',
+    'acct.name':'Administrator','acct.sub':'Shared password access','acct.signout':'Sign out',
     'ask.help':'Help','ask.title':'Tracker assistant','ask.sub':'Answers on how the tracker works and on what its numbers mean.',
     'ask.ph':'Type your question…','ask.send':'Ask',
     'ask.hello':'Hello. Ask me anything about the tracker — what the scores mean, where the data comes from, or who leads a given country.',
@@ -897,6 +937,7 @@ const I18N = {
     'gd.fs':'La compañía vende y gestiona la póliza de principio a fin.',
     'gd.group':'Grupo','gd.group.d':'El grupo matriz o asegurador detrás de la marca, cuando se conoce.',
     'gd.new.d':'Descubierta automáticamente en línea y aún sin revisar por el equipo.',
+    'acct.name':'Administrador','acct.sub':'Acceso con contraseña compartida','acct.signout':'Cerrar sesión',
     'ask.help':'Ayuda','ask.title':'Asistente del panel','ask.sub':'Responde sobre cómo funciona el panel y qué significan sus cifras.',
     'ask.ph':'Escribe tu pregunta…','ask.send':'Preguntar',
     'ask.hello':'Hola. Pregúntame lo que quieras sobre el panel: qué significan las notas, de dónde salen los datos o quién lidera un país.',
@@ -1180,6 +1221,23 @@ window.addEventListener('load', function () {
     setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
   };
   document.querySelectorAll('.langs .lang').forEach(b => { b.onclick = () => setLang(b.dataset.lang); });
+
+  // account menu
+  const acctBtn = document.getElementById('accountBtn');
+  const acctMenu = document.getElementById('accountMenu');
+  const acctOpen = (open) => {
+    acctMenu.hidden = !open;
+    acctBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  };
+  acctBtn.onclick = (e) => { e.stopPropagation(); acctOpen(acctMenu.hidden); };
+  document.addEventListener('click', (e) => {
+    if (!acctMenu.hidden && !document.getElementById('account').contains(e.target)) acctOpen(false);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    if (!acctMenu.hidden) acctOpen(false);
+    else if (!document.getElementById('ask-panel').hidden) askOpen(false);
+  });
   document.getElementById('ask-launch').onclick = () => askOpen(document.getElementById('ask-panel').hidden);
   document.getElementById('ask-close').onclick = () => askOpen(false);
   document.getElementById('ask-form').onsubmit = (e) => {
@@ -1258,7 +1316,10 @@ function init() {
   applyDataset(SEED_DATA);
   showDataDate(SEED_DATA);
   // 2) If we are served by the cloud server, pull the latest live data.
-  fetch('/api/data').then(r => r.ok ? r.json() : null).then(d => {
+  fetch('/api/data').then(r => {
+    if (r.status === 401) { location.href = '/login'; return null; }   // session ended
+    return r.ok ? r.json() : null;
+  }).then(d => {
     if (Array.isArray(d) && d.length) { applyDataset(d); showDataDate(d); }
   }).catch(() => {});
   // 3) If a live refresh has run, show its richer status instead.
