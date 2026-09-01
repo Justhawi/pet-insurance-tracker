@@ -760,112 +760,190 @@ def _walk_business_units(obj, out):
         for v in obj:
             _walk_business_units(v, out)
 
-def discover_emerging_companies(page, existing_results, min_opinions=500, max_pages=4):
+def discover_emerging_companies(page, existing_results, min_opinions=500, max_pages=4,
+                                countries=None):
     """
-    Scrape Trustpilot's 'pet_insurance_agency' category for companies not yet tracked
-    that have at least min_opinions total reviews.  Returns a list of new company dicts.
+    Sweep Trustpilot's pet-insurance category for companies we do not track yet.
+
+    Rewritten because the previous version reported "0 new" every single day with
+    no error: it looked for `data-business-unit-display-name` attributes and a
+    `__NEXT_DATA__` blob, neither of which the category page necessarily exposes
+    any more, and it silently treated "found nothing" as "nothing is there".
+
+    What changed:
+      * waits for the business-unit cards to actually render instead of reading a
+        half-built page;
+      * reads the cards from the DOM (framework-agnostic) and only falls back to
+        the old attribute / __NEXT_DATA__ / JSON-LD routes;
+      * sweeps one page per country so a Spanish or Nordic insurer is discoverable,
+        and stamps the discovery with that country instead of "Unknown";
+      * logs what it actually saw — HTTP status, card count, how many were dropped
+        as already-tracked and how many as below the review threshold — so a zero
+        is explainable rather than mysterious.
     """
-    log(f"\n🔍 Discovering emerging companies online (> {min_opinions-1} reviews)…")
-    known   = _known_names()
-    found   = []
+    known = _known_names()
+    found = []
+    seen_domains = set()
     base_url = "https://www.trustpilot.com/categories/pet_insurance_agency"
 
-    for pg in range(1, max_pages + 1):
-        url = base_url if pg == 1 else f"{base_url}?page={pg}"
-        try:
-            page.goto(url, wait_until="domcontentloaded", timeout=20000)
-            page.wait_for_timeout(random.randint(1200, 2000))
-            content = page.content()
+    # (Trustpilot country code, the country label this tracker uses)
+    ALL_MARKETS = [
+        ("US", "USA"), ("GB", "UK"), ("ES", "Spain"), ("FR", "France"),
+        ("DE", "Germany"), ("IT", "Italy"), ("SE", "Sweden"), ("NL", "Netherland"),
+        ("BE", "Belgium"), ("DK", "Denmark "), ("NO", "Norway"), ("IE", "Ireland"),
+        ("CH", "Switzerland"), ("AU", "Australia"), ("CA", "Canada"), ("NZ", "New Zealand"),
+    ]
+    markets = countries if countries is not None else ALL_MARKETS
 
-            # Each business card has JSON-LD or embedded data-business-unit attributes
-            # Extract all (name, reviewCount, ratingValue) triples visible on the page
-            cards = page.evaluate("""
-                () => Array.from(document.querySelectorAll('[data-business-unit-display-name]'))
-                        .map(el => ({
-                            name:    el.getAttribute('data-business-unit-display-name') || '',
-                            website: el.getAttribute('data-website-url') || '',
-                            score:   parseFloat(el.getAttribute('data-trustscore') || '0'),
-                            reviews: parseInt(el.getAttribute('data-number-of-reviews') || '0'),
-                        }))
-            """) or []
+    log(f"\n🔍 Discovering emerging companies (> {min_opinions - 1} reviews) "
+        f"across {len(markets)} markets…")
 
-            # Primary modern method: parse the Next.js __NEXT_DATA__ payload
-            if not cards:
-                mnd = re.search(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>',
-                                content, re.DOTALL)
-                if mnd:
-                    try:
-                        nd = json.loads(mnd.group(1))
-                        tmp = []
-                        _walk_business_units(nd, tmp)
-                        seen = set()
-                        for bu in tmp:
-                            k = bu["name"].lower()
-                            if k in seen:
-                                continue
-                            seen.add(k)
-                            cards.append(bu)
-                    except Exception:
-                        pass
+    # Numbers on Trustpilot come as "1,234" (en) or "1.234" (de/es/it) or "1 234".
+    def _int(raw):
+        digits = re.sub(r"[^\d]", "", str(raw or ""))
+        return int(digits) if digits else 0
 
-            # Also try JSON-LD blocks (fallback)
-            if not cards:
-                for raw in re.findall(
-                    r'<script[^>]*type="application/ld\+json"[^>]*>(.*?)</script>',
-                    content, re.DOTALL
-                ):
-                    try:
-                        data = json.loads(raw)
-                        items = data if isinstance(data, list) else [data]
-                        for item in items:
-                            if item.get('@type') in ('LocalBusiness', 'Organization', 'InsuranceAgency'):
-                                ar = item.get('aggregateRating', {})
-                                name = item.get('name', '')
-                                reviews = int(ar.get('reviewCount', 0) or ar.get('ratingCount', 0) or 0)
-                                score   = float(ar.get('ratingValue', 0) or 0)
-                                web     = item.get('url', '')
-                                if name:
-                                    cards.append({'name': name, 'website': web,
-                                                  'score': score, 'reviews': reviews})
-                    except Exception:
-                        pass
+    def _score(raw):
+        m = re.search(r"([0-5])[.,](\d)", str(raw or ""))
+        return float(f"{m.group(1)}.{m.group(2)}") if m else 0.0
 
-            for card in cards:
-                name    = (card.get('name') or '').strip()
-                reviews = int(card.get('reviews') or 0)
-                score   = float(card.get('score') or 0)
-                web     = (card.get('website') or '').strip()
+    REVIEW_WORDS = (r"reviews?|reseñas?|opiniones|avis|bewertungen|recensioni|"
+                    r"beoordelingen|omdömen|anmeldelser|arviota|avaliações")
 
-                if not name or name.lower() in known:
-                    continue
-                if reviews < min_opinions:
-                    continue
+    total_cards = 0
+    dropped_known = 0
+    dropped_small = 0
 
-                log(f"   ✨ New company found: {name}  ({reviews:,} reviews, {score} TP score)")
-                known.add(name.lower())
-                found.append({
-                    "country":       "Unknown",   # will be inferred if possible
-                    "company":       name,
-                    "website":       web,
-                    "opType":        "Only Sale",
-                    "group":         "",
-                    "link":          "",
-                    "underwriter":   "",
-                    "tpScore":       round(score, 1),
-                    "tpReviews":     reviews,
-                    "gScore":        0.0,
-                    "gReviews":      0,
-                    "pondScore":     round(score, 1),
-                    "avgScore":      round(score, 1),
-                    "totalOpinions": reviews,
-                    "date":          datetime.now().strftime("%Y-%m-%d"),
-                    "_auto_discovered": True,
-                })
+    for code, country in markets:
+        for pg in range(1, max_pages + 1):
+            url = f"{base_url}?country={code}" + (f"&page={pg}" if pg > 1 else "")
+            try:
+                resp = page.goto(url, wait_until="domcontentloaded", timeout=25000)
+                status = resp.status if resp else 0
 
-        except Exception as e:
-            log(f"   ⚠️  Emerging-company page {pg} error: {e}")
+                # Give the cards a chance to render; the old code never did this.
+                try:
+                    page.wait_for_selector('a[name="business-unit-card"], a[href^="/review/"]',
+                                           timeout=8000)
+                except Exception:
+                    pass
+                page.wait_for_timeout(random.randint(700, 1400))
 
-    log(f"🔍 Discovery done — {len(found)} new emerging companies added.")
+                cards = page.evaluate("""
+                    () => {
+                      const pick = document.querySelectorAll('a[name="business-unit-card"]').length
+                        ? document.querySelectorAll('a[name="business-unit-card"]')
+                        : document.querySelectorAll('a[href^="/review/"]');
+                      const out = [];
+                      const seen = new Set();
+                      for (const a of pick) {
+                        const href = a.getAttribute('href') || '';
+                        if (!href.startsWith('/review/') || seen.has(href)) continue;
+                        seen.add(href);
+                        const box = a.closest('article, li, div[class*="card"]') || a;
+                        out.push({ href: href,
+                                   text: (box.innerText || a.innerText || '').slice(0, 400) });
+                      }
+                      return out;
+                    }
+                """) or []
+
+                # Fall back to the pre-existing routes if the DOM gave us nothing.
+                legacy = ""
+                if not cards:
+                    content = page.content()
+                    legacy = " (DOM empty"
+                    attr_cards = page.evaluate("""
+                        () => Array.from(document.querySelectorAll('[data-business-unit-display-name]'))
+                                .map(el => ({
+                                    href: '/review/' + (el.getAttribute('data-website-url') || ''),
+                                    text: (el.getAttribute('data-business-unit-display-name') || '') +
+                                          ' ' + (el.getAttribute('data-trustscore') || '') +
+                                          ' ' + (el.getAttribute('data-number-of-reviews') || '') + ' reviews'
+                                }))
+                    """) or []
+                    if attr_cards:
+                        cards = attr_cards; legacy += ", used data-attributes)"
+                    else:
+                        mnd = re.search(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>',
+                                        content, re.DOTALL)
+                        if mnd:
+                            try:
+                                tmp = []
+                                _walk_business_units(json.loads(mnd.group(1)), tmp)
+                                cards = [{"href": "/review/" + (u.get("website") or ""),
+                                          "text": f"{u['name']} {u['score']} {u['reviews']} reviews"}
+                                         for u in tmp]
+                                legacy += ", used __NEXT_DATA__)"
+                            except Exception:
+                                legacy += ", __NEXT_DATA__ unreadable)"
+                        else:
+                            legacy += f", no __NEXT_DATA__, {len(content):,} bytes)"
+
+                log(f"   [{code} p{pg}] HTTP {status} — {len(cards)} cards{legacy}")
+                if not cards:
+                    break   # nothing on this page, later pages will be empty too
+
+                total_cards += len(cards)
+                new_here = 0
+                for card in cards:
+                    href   = card.get("href") or ""
+                    domain = href.replace("/review/", "").strip("/").lower()
+                    text   = card.get("text") or ""
+                    if not domain or domain in seen_domains:
+                        continue
+                    seen_domains.add(domain)
+
+                    lines = [l.strip() for l in text.split("\n") if l.strip()]
+                    name = lines[0] if lines else domain
+                    # Read the score first, then take it out of the text: otherwise
+                    # "TrustScore 4.4 / 2,180 reviews" parses as 442,180 reviews.
+                    m_sc = re.search(r"TrustScore\s*([\d.,]+)", text, re.I)
+                    score = _score(m_sc.group(1)) if m_sc else _score(" ".join(lines[:2]))
+                    clean = re.sub(r"TrustScore\s*[\d.,]+", " ", text, flags=re.I)
+                    # digits/separators only, and never across a line break
+                    m_rev = re.search(r"([0-9][0-9.,\u202f\u00a0 ]*)\s*(?:%s)" % REVIEW_WORDS,
+                                      clean, re.I)
+                    reviews = _int(m_rev.group(1)) if m_rev else 0
+                    if reviews > 5_000_000:      # implausible: treat as a parse failure
+                        log(f"      ⚠️  skipping {name}: unreadable review count")
+                        continue
+
+                    if name.lower() in known or domain in known:
+                        dropped_known += 1
+                        continue
+                    if reviews < min_opinions:
+                        dropped_small += 1
+                        continue
+
+                    log(f"      ✨ {name} — {reviews:,} reviews, TP {score} ({country})")
+                    known.add(name.lower())
+                    new_here += 1
+                    found.append({
+                        "country": country, "company": name,
+                        "website": domain, "opType": "Only Sale",
+                        "group": "", "link": f"https://www.trustpilot.com{href}",
+                        "underwriter": "",
+                        "tpScore": round(score, 1), "tpReviews": reviews,
+                        "gScore": 0.0, "gReviews": 0,
+                        "tpStatus": "ok", "gStatus": "not_listed",
+                        "tpUrl": f"https://www.trustpilot.com{href}", "gUrl": "",
+                        "pondScore": round(score, 1), "avgScore": round(score, 1),
+                        "totalOpinions": reviews,
+                        "date": datetime.now().strftime("%Y-%m-%d"),
+                        "tpDate": datetime.now().strftime("%Y-%m-%d"), "gDate": "",
+                        "_auto_discovered": True,
+                    })
+                if new_here == 0 and pg > 1:
+                    break   # deeper pages are smaller companies; stop early
+
+            except Exception as e:
+                log(f"   ⚠️  [{code} p{pg}] error: {type(e).__name__}: {e}")
+                break
+
+    log(f"🔍 Discovery done — scanned {total_cards} listings, "
+        f"{dropped_known} already tracked, {dropped_small} under {min_opinions} reviews, "
+        f"{len(found)} new emerging companies added.")
     return found
 
 # ─────────────────────────────────────────────────────────────
@@ -1321,9 +1399,13 @@ def run_fetch(companies=None, progress_cb=None, discover=True, use_browser=True,
 
             # ── Emerging companies discovery ───────────────────────────
             if discover:
-                emerging = discover_emerging_companies(
-                    disc_page, results, min_opinions=501, max_pages=4
-                )
+                try:
+                    emerging = discover_emerging_companies(
+                        disc_page, results, min_opinions=501, max_pages=3
+                    )
+                except Exception as e:
+                    emerging = []
+                    log(f"⚠️  Discovery failed, keeping the rest of the fetch: {e}")
                 if emerging:
                     results = emerging + results
                     log(f"✨ {len(emerging)} emerging companies appended to dataset.")
