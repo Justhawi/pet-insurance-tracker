@@ -885,8 +885,8 @@ const I18N = {
     'nav.overview':'Overview','nav.tracker':'Tracker','nav.new':'New companies',
     'nav.add':'Add company','nav.download':'Download','nav.graphs':'Graphs','nav.guide':'Guide',
     'gr.title':'The book in pictures','gr.sub':'Every chart is drawn from the companies currently loaded',
-    'gr.top.title':'Best rated companies','gr.top.note':'Ponderated score, and the number of reviews behind it. Bar colour is the country.',
-    'gr.top.foot':'Only companies with 100 or more reviews, so a 5.0 from a handful does not top the list.',
+    'gr.top.title':'Best rated companies','gr.top.note':'Companies with at least 1,000 opinions. Bar colour is the country; the grey figure is the review count.',
+    'gr.top.foot':'A 4.90 from 180 people is not the same claim as a 4.90 from 3,149, so thinner evidence is left out of the ranking.',
     'gr.pie.title':'Where the book is','gr.pie.note':'Share of tracked companies by country.',
     'gr.loud.title':'Who has the loudest voice','gr.loud.note':'Companies with the most reviews behind their score.',
     'gr.loud.foot':'Review volume is a rough proxy for how many customers a brand is reaching.',
@@ -911,10 +911,10 @@ const I18N = {
     'kpi.top':'Top rated','kpi.top.sub':'by ponderated score',
     'kpi.new':'Newly discovered','kpi.new.sub':'companies found online','kpi.new.none':'none in the last run',
     'ov.top.title':'Best rated companies','ov.top.chip':'Ponderated score',
-    'ov.top.note':'The ponderated score weights each platform by how many reviews it holds, so a 4.9 from 40 people does not outrank a 4.7 from 12,000.',
+    'ov.top.note':'Companies with at least 1,000 opinions across Trustpilot and Google. The ponderated score weights each platform by how many reviews it holds, so a 4.9 from 40 people does not outrank a 4.7 from 12,000.',
     'ov.country.title':'Companies by country',
     'ov.weak.title':'Lowest rated — worth watching',
-    'ov.weak.note':'Companies whose combined reputation sits below the market. Useful when studying who is losing ground.',
+    'ov.weak.note':'Companies with at least 1,000 opinions whose combined reputation sits below the market. Useful when studying who is losing ground.',
     'ov.data.title':'Where these numbers come from',
     'ov.data.note':"Trustpilot and Google Maps, read directly from each company's public profile. Google is refreshed live from this site; Trustpilot is a snapshot taken from the office PC, because Trustpilot blocks data-centre traffic.",
     'tr.title':'The book','tr.sub':'Every company being tracked, with both scores side by side',
@@ -970,8 +970,8 @@ const I18N = {
     'nav.overview':'Resumen','nav.tracker':'Seguimiento','nav.new':'Nuevas compañías',
     'nav.add':'Añadir compañía','nav.download':'Descargas','nav.graphs':'Gráficos','nav.guide':'Guía',
     'gr.title':'La cartera en imágenes','gr.sub':'Cada gráfico se dibuja con las compañías cargadas ahora mismo',
-    'gr.top.title':'Compañías mejor valoradas','gr.top.note':'Nota ponderada y el número de opiniones que la sostienen. El color es el país.',
-    'gr.top.foot':'Solo compañías con 100 opiniones o más, para que un 5,0 de un puñado no encabece la lista.',
+    'gr.top.title':'Compañías mejor valoradas','gr.top.note':'Compañías con al menos 1.000 opiniones. El color es el país; la cifra gris son las opiniones.',
+    'gr.top.foot':'Un 4,90 de 180 personas no dice lo mismo que un 4,90 de 3.149, así que las pruebas más débiles quedan fuera del ranking.',
     'gr.pie.title':'Dónde está la cartera','gr.pie.note':'Reparto de compañías seguidas por país.',
     'gr.loud.title':'Quién tiene más voz','gr.loud.note':'Compañías con más opiniones detrás de su nota.',
     'gr.loud.foot':'El volumen de opiniones es una aproximación a cuántos clientes alcanza una marca.',
@@ -996,10 +996,10 @@ const I18N = {
     'kpi.top':'Mejor valorada','kpi.top.sub':'por nota ponderada',
     'kpi.new':'Recién descubiertas','kpi.new.sub':'compañías encontradas en línea','kpi.new.none':'ninguna en la última ronda',
     'ov.top.title':'Compañías mejor valoradas','ov.top.chip':'Nota ponderada',
-    'ov.top.note':'La nota ponderada pesa cada plataforma por el número de opiniones: un 4,9 de 40 personas no adelanta a un 4,7 de 12.000.',
+    'ov.top.note':'Compañías con al menos 1.000 opiniones entre Trustpilot y Google. La nota ponderada pesa cada plataforma por el número de opiniones: un 4,9 de 40 personas no adelanta a un 4,7 de 12.000.',
     'ov.country.title':'Compañías por país',
     'ov.weak.title':'Peor valoradas — a vigilar',
-    'ov.weak.note':'Compañías cuya reputación combinada queda por debajo del mercado. Útil para ver quién pierde terreno.',
+    'ov.weak.note':'Compañías con al menos 1.000 opiniones cuya reputación combinada queda por debajo del mercado. Útil para ver quién pierde terreno.',
     'ov.data.title':'De dónde salen estas cifras',
     'ov.data.note':'De Trustpilot y Google Maps, leídos del perfil público de cada compañía. Google se actualiza en vivo desde este sitio; Trustpilot es una foto tomada desde el PC de la oficina, porque bloquea el tráfico de centros de datos.',
     'tr.title':'La cartera','tr.sub':'Todas las compañías seguidas, con las dos notas una al lado de la otra',
@@ -1120,9 +1120,10 @@ function renderOverview() {
   if (!data.length) return;
 
   const rated = data.filter(c => (c.pondScore || 0) > 0);
-  const top = [...rated].sort((a, b) => b.pondScore - a.pondScore).slice(0, 8);
-  const weak = [...rated].filter(c => (c.totalOpinions || 0) >= 200)
-                         .sort((a, b) => a.pondScore - b.pondScore).slice(0, 8);
+  // both rankings need enough opinions behind the score to mean anything
+  const eligible = rated.filter(c => (c.totalOpinions || 0) >= MIN_OPINIONS);
+  const top = [...eligible].sort((a, b) => b.pondScore - a.pondScore).slice(0, 8);
+  const weak = [...eligible].sort((a, b) => a.pondScore - b.pondScore).slice(0, 8);
 
   const line = (c, i) => `<li>
       <span class="pos">${i + 1}</span>
@@ -1374,7 +1375,11 @@ function chartTip() {
   }
   return el;
 }
+/* A ranking is only worth reading when there is enough evidence behind the
+   score, so every ranking needs this many Trustpilot + Google opinions. */
+const MIN_OPINIONS = 1000;
 function rated() { return (allData || []).filter(c => (c.pondScore || 0) > 0); }
+function ranked() { return rated().filter(c => (c.totalOpinions || 0) >= MIN_OPINIONS); }
 function noData(el) { el.innerHTML = `<p class="no-data">${T('gr.none')}</p>`; }
 function shortName(n) { return n.length > 26 ? n.slice(0, 25) + '…' : n; }
 
@@ -1415,8 +1420,7 @@ function chPie(el) {
 
 /* ---- 2. top rated companies ---------------------------------------------- */
 function chTop(el) {
-  const rows = rated().filter(c => (c.totalOpinions || 0) >= 100)
-    .sort((a, b) => b.pondScore - a.pondScore).slice(0, 10);
+  const rows = ranked().sort((a, b) => b.pondScore - a.pondScore).slice(0, 10);
   if (!rows.length) return noData(el);
   const cc = countryColours(), c = chartInk();
   const L = 168, R = 92, T_ = 6, rowH = 27, h = T_ + rows.length * rowH + 10;
