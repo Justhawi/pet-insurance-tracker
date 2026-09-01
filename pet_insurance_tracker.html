@@ -709,6 +709,27 @@ html[data-theme="dark"] .badge-op-full{color:var(--series-4)}
             <button class="btn" onclick="clearAddForm()" data-i18n="btn.clear">Clear</button>
           </div>
         </div>
+
+        <div class="card" style="margin-top:18px">
+          <div class="card-head"><h2 data-i18n="rc.title">Remove a company</h2></div>
+          <div class="sub" data-i18n="rc.sub">Removing takes the company out of the tracker, the charts and every export in this
+            browser. The daily run will not bring it back, and you can restore it here at any time.</div>
+          <div class="form-grid">
+            <div class="form-field" style="grid-column:span 2">
+              <label data-i18n="rc.pick">Company to remove</label>
+              <select id="rc-company"><option value="" data-i18n="f.select">Select...</option></select>
+            </div>
+          </div>
+          <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+            <button class="btn" id="rc-ask" onclick="askRemoveCompany()" data-i18n="btn.remove">Remove</button>
+            <span id="rc-confirm" hidden style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+              <span id="rc-confirm-text" style="font-size:.86rem"></span>
+              <button class="btn primary sm" onclick="confirmRemoveCompany()" data-i18n="btn.removeYes">Yes, remove</button>
+              <button class="btn sm" onclick="cancelRemoveCompany()" data-i18n="btn.cancel">Cancel</button>
+            </span>
+          </div>
+          <div id="rc-removed" style="margin-top:16px"></div>
+        </div>
       </div>
 
       <!-- ===================== DOWNLOAD ===================== -->
@@ -932,6 +953,13 @@ const I18N = {
     'nc.view':'View on Trustpilot ↗','nc.lastCheck':'Last checked','nc.how':'A company lands here when the daily run spots it on Trustpilot with 500+ reviews and it is not tracked yet.',
     'ac.title':'Add or edit a company','ac.sub':'Entries added here are kept in this browser and included in every export',
     'ac.details':'Company details',
+    'rc.title':'Remove a company',
+    'rc.sub':'Removing takes the company out of the tracker, the charts and every export in this browser. The daily run will not bring it back, and you can restore it here at any time.',
+    'rc.pick':'Company to remove','rc.confirm':'Remove {name}?',
+    'rc.removedTitle':'Removed in this browser','rc.none':'Nothing removed yet.',
+    'btn.remove':'Remove','btn.removeYes':'Yes, remove','btn.cancel':'Cancel','btn.restore':'Restore',
+    'msg.removed':'removed from the tracker.','msg.restored':'is back in the tracker.',
+    'msg.pickCompany':'Pick a company to remove first.',
     'f.country':'Country *','f.select':'Select...','f.name':'Company name *','f.website':'Website',
     'f.optype':'Type of operation','f.tps':'Trustpilot score','f.tpr':'Trustpilot reviews',
     'f.gs':'Google score','f.gr':'Google reviews','f.group':'Group','f.link':'Source link',
@@ -1017,6 +1045,13 @@ const I18N = {
     'nc.view':'Ver en Trustpilot ↗','nc.lastCheck':'Última comprobación','nc.how':'Una compañía aparece aquí cuando la ronda diaria la detecta en Trustpilot con más de 500 opiniones y aún no está en el seguimiento.',
     'ac.title':'Añadir o editar una compañía','ac.sub':'Lo añadido aquí se guarda en este navegador y entra en todas las exportaciones',
     'ac.details':'Datos de la compañía',
+    'rc.title':'Eliminar una compañía',
+    'rc.sub':'Al eliminarla desaparece del seguimiento, de los gráficos y de todas las exportaciones en este navegador. La ronda diaria no la devolverá, y puedes restaurarla aquí cuando quieras.',
+    'rc.pick':'Compañía a eliminar','rc.confirm':'¿Eliminar {name}?',
+    'rc.removedTitle':'Eliminadas en este navegador','rc.none':'Todavía no has eliminado ninguna.',
+    'btn.remove':'Eliminar','btn.removeYes':'Sí, eliminar','btn.cancel':'Cancelar','btn.restore':'Restaurar',
+    'msg.removed':'eliminada del seguimiento.','msg.restored':'vuelve a estar en el seguimiento.',
+    'msg.pickCompany':'Primero elige una compañía.',
     'f.country':'País *','f.select':'Selecciona...','f.name':'Nombre de la compañía *','f.website':'Web',
     'f.optype':'Tipo de operación','f.tps':'Nota Trustpilot','f.tpr':'Opiniones Trustpilot',
     'f.gs':'Nota Google','f.gr':'Opiniones Google','f.group':'Grupo','f.link':'Enlace de la fuente',
@@ -1072,7 +1107,10 @@ function applyI18n() {
   document.querySelectorAll('.langs .lang').forEach(b => b.classList.toggle('on', b.dataset.lang === LANG));
   const t = document.getElementById('topbarTitle');
   if (t && window.__section) t.textContent = T('nav.' + navKey(window.__section));
-  if (window.allData && window.allData.length) { try { applyFilters(); renderOverview(); renderNewCompanies(); } catch (e) {} }
+  if (window.allData && window.allData.length) {
+    try { applyFilters(); renderOverview(); renderNewCompanies(); } catch (e) {}
+    try { populateRemoveSelect(); renderRemovedList(); } catch (e) {}
+  }
   if (window.__section === 'graphs') { try { renderGraphs(); } catch (e) {} }
 }
 
@@ -1664,6 +1702,21 @@ function closeModal() {
   if (m) m.classList.remove('show');
 }
 
+/* ---------- removals -------------------------------------------------------
+   A removal has to outlive the dataset it was made against: the daily run
+   republishes the whole book, so filtering allData alone would put the company
+   straight back on the next load. The removed rows are therefore kept in their
+   own store and subtracted from every dataset as it arrives. The row itself is
+   kept, not just its name, so a company that was typed in by hand here can also
+   be restored — the server has no copy of that one to fall back on. */
+const REMOVED_KEY = 'petTrackerRemoved';
+let removedRows = [];
+try { removedRows = JSON.parse(localStorage.getItem(REMOVED_KEY) || '[]'); } catch (e) { removedRows = []; }
+if (!Array.isArray(removedRows)) removedRows = [];
+
+const rowKey = c => ((c && c.company || '').trim().toLowerCase() + '|' + (c && c.country || '').trim().toLowerCase());
+function saveRemoved() { try { localStorage.setItem(REMOVED_KEY, JSON.stringify(removedRows)); } catch (e) {} }
+
 function applyDataset(arr) {
   // Use the given dataset as the base, then keep any manually-added companies.
   allData = JSON.parse(JSON.stringify(arr || []));
@@ -1675,12 +1728,109 @@ function applyDataset(arr) {
       allData = allData.concat(saved.filter(c => !names.has((c.company || '').toLowerCase())));
     }
   } catch (e) {}
+  const gone = new Set(removedRows.map(r => r.key));
+  if (gone.size) allData = allData.filter(c => !gone.has(rowKey(c)));
   buildCountryPills();
   buildGroupFilter();
   populateCountrySelects();
+  populateRemoveSelect();
+  renderRemovedList();
   applyFilters();
   updateStats();
   renderNewCompanies();
+}
+
+/* Every company currently in the book, country first so the list reads in the
+   same order as the tracker table. */
+function populateRemoveSelect() {
+  const sel = document.getElementById('rc-company');
+  if (!sel) return;
+  const keep = sel.value;
+  sel.innerHTML = '<option value="">' + esc(T('f.select')) + '</option>';
+  [...(allData || [])]
+    .sort((a, b) => (a.country || '').localeCompare(b.country || '') ||
+                    (a.company || '').localeCompare(b.company || ''))
+    .forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = rowKey(c);
+      opt.textContent = (COUNTRY_FLAGS[(c.country || '').trim()] || '') + ' ' +
+                        (c.country || '').trim() + ' — ' + (c.company || '');
+      sel.appendChild(opt);
+    });
+  if (keep && sel.querySelector(`option[value="${CSS.escape(keep)}"]`)) sel.value = keep;
+}
+
+function renderRemovedList() {
+  const el = document.getElementById('rc-removed');
+  if (!el) return;
+  if (!removedRows.length) {
+    el.innerHTML = `<div class="sub">${esc(T('rc.none'))}</div>`;
+    return;
+  }
+  el.innerHTML = `<div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;
+      color:var(--text-muted);margin-bottom:8px">${esc(T('rc.removedTitle'))} (${removedRows.length})</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">` +
+    removedRows.map((r, i) => `<span class="pill" style="cursor:default">
+        ${esc((COUNTRY_FLAGS[(r.row.country || '').trim()] || '') + ' ' + (r.row.company || ''))}
+        <button class="btn sm" style="margin-left:8px;padding:1px 8px;font-size:.72rem"
+          onclick="restoreCompany(${i})">↺ ${esc(T('btn.restore'))}</button>
+      </span>`).join('') + '</div>';
+}
+
+function askRemoveCompany() {
+  const sel = document.getElementById('rc-company');
+  const key = sel && sel.value;
+  if (!key) { alert(T('msg.pickCompany')); return; }
+  const row = (allData || []).find(c => rowKey(c) === key);
+  if (!row) return;
+  document.getElementById('rc-confirm-text').textContent =
+    T('rc.confirm').replace('{name}', row.company || '');
+  document.getElementById('rc-confirm').hidden = false;
+  document.getElementById('rc-ask').hidden = true;
+}
+
+function cancelRemoveCompany() {
+  document.getElementById('rc-confirm').hidden = true;
+  document.getElementById('rc-ask').hidden = false;
+}
+
+function confirmRemoveCompany() {
+  const sel = document.getElementById('rc-company');
+  const key = sel && sel.value;
+  const row = (allData || []).find(c => rowKey(c) === key);
+  cancelRemoveCompany();
+  if (!row) return;
+  removedRows.push({ key, row: JSON.parse(JSON.stringify(row)) });
+  saveRemoved();
+  allData = allData.filter(c => rowKey(c) !== key);
+  saveData();
+  refreshAfterEdit();
+  alert('🗑️ ' + (row.company || '') + ' — ' + T('msg.removed'));
+}
+
+function restoreCompany(i) {
+  const entry = removedRows[i];
+  if (!entry) return;
+  removedRows.splice(i, 1);
+  saveRemoved();
+  if (!(allData || []).some(c => rowKey(c) === entry.key)) allData.unshift(entry.row);
+  saveData();
+  refreshAfterEdit();
+  alert('↺ ' + (entry.row.company || '') + ' — ' + T('msg.restored'));
+}
+
+/* One redraw path for anything that changes the book from this page. */
+function refreshAfterEdit() {
+  buildCountryPills();
+  buildGroupFilter();
+  populateCountrySelects();
+  populateRemoveSelect();
+  renderRemovedList();
+  applyFilters();
+  updateStats();
+  renderNewCompanies();
+  if (window.__section === 'graphs') { try { renderGraphs(); } catch (e) {} }
+  if (window.__section === 'overview') { try { renderOverview(); } catch (e) {} }
 }
 
 function init() {
@@ -1830,11 +1980,16 @@ function populateCountrySelects() {
   ['nc-country','ac-country'].forEach(id => {
     const sel = document.getElementById(id);
     if (!sel) return;
+    // Rebuild rather than append: this runs again on every dataset that lands,
+    // and appending gave the dropdown the same country several times over.
+    const keep = sel.value;
+    sel.innerHTML = '<option value="">' + esc(T('f.select')) + '</option>';
     countries.forEach(c => {
       const opt = document.createElement('option');
       opt.value = c; opt.textContent = (COUNTRY_FLAGS[c]||'') + ' ' + c;
       sel.appendChild(opt);
     });
+    if (keep && countries.includes(keep)) sel.value = keep;
   });
 }
 
@@ -2118,14 +2273,22 @@ function addNewCompany() {
     underwriter: ''
   };
 
+  unRemove(entry);
   allData.unshift(entry);
   saveData();
-  buildCountryPills();
-  applyFilters();
-  updateStats();
-  renderNewCompanies();
+  refreshAfterEdit();
   clearNewForm();
   alert('✅ ' + name + ' — ' + T('msg.added'));
+}
+
+/* Adding a company back by hand cancels an earlier removal of the same one —
+   otherwise the next dataset would subtract it again and the entry would
+   disappear on the following reload. */
+function unRemove(entry) {
+  const k = rowKey(entry);
+  const before = removedRows.length;
+  removedRows = removedRows.filter(r => r.key !== k);
+  if (removedRows.length !== before) saveRemoved();
 }
 
 function addCompanyFromForm() {
@@ -2153,12 +2316,10 @@ function addCompanyFromForm() {
     underwriter: document.getElementById('ac-underwriter').value.trim()
   };
 
+  unRemove(entry);
   allData.unshift(entry);
   saveData();
-  buildCountryPills();
-  applyFilters();
-  updateStats();
-  renderNewCompanies();
+  refreshAfterEdit();
   clearAddForm();
   alert('✅ ' + name + ' — ' + T('msg.added'));
 }
