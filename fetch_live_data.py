@@ -722,6 +722,36 @@ def fetch_google_maps(company_name, country, website=""):
 # ─────────────────────────────────────────────────────────────
 _KNOWN_NAMES_CACHE: set = set()
 
+def _norm_domain(d):
+    """pumpkin.care, www.pumpkin.care and https://www.pumpkin.care/ are one company."""
+    d = re.sub(r"^https?://", "", str(d or "").strip().lower()).split("/")[0]
+    return re.sub(r"^www\.", "", d)
+
+
+_KNOWN_DOMAINS_CACHE: set = set()
+
+def _known_domains():
+    """Websites already in the book. Discovery matched on company name only, so
+    Trustpilot's "Pumpkin Pet Insurance" looked new next to our "Pumpkin"."""
+    global _KNOWN_DOMAINS_CACHE
+    if not _KNOWN_DOMAINS_CACHE:
+        rows = list(COMPANIES)
+        if os.path.exists(JSON_PATH):
+            try:
+                with open(JSON_PATH, encoding="utf-8") as f:
+                    rows += json.load(f)
+            except Exception:
+                pass
+        for c in rows:
+            if c.get("website"):
+                _KNOWN_DOMAINS_CACHE.add(_norm_domain(c["website"]))
+            m = re.search(r"/review/([^/?#]+)", str(c.get("tpUrl") or ""))
+            if m:
+                _KNOWN_DOMAINS_CACHE.add(_norm_domain(m.group(1)))
+        _KNOWN_DOMAINS_CACHE.discard("")
+    return _KNOWN_DOMAINS_CACHE
+
+
 def _known_names():
     global _KNOWN_NAMES_CACHE
     if not _KNOWN_NAMES_CACHE:
@@ -782,9 +812,10 @@ def discover_emerging_companies(page, existing_results, min_opinions=500, max_pa
         is explainable rather than mysterious.
     """
     known = _known_names()
+    known_domains = _known_domains()
     found = []
     seen_domains = set()
-    base_url = "https://www.trustpilot.com/categories/pet_insurance_agency"
+    base_url = "https://www.trustpilot.com/categories/pet_insurance_company"
 
     # (Trustpilot country code, the country label this tracker uses)
     ALL_MARKETS = [
@@ -829,6 +860,10 @@ def discover_emerging_companies(page, existing_results, min_opinions=500, max_pa
                     pass
                 page.wait_for_timeout(random.randint(700, 1400))
 
+                # A card renders as separate leaf elements — badge, name, domain,
+                # score, review count, address — so read those rather than trying
+                # to unpick innerText, where "4.5" and "1,318" arrive glued
+                # together as "4.51,318 reviews".
                 cards = page.evaluate("""
                     () => {
                       const pick = document.querySelectorAll('a[name="business-unit-card"]').length
@@ -841,8 +876,22 @@ def discover_emerging_companies(page, existing_results, min_opinions=500, max_pa
                         if (!href.startsWith('/review/') || seen.has(href)) continue;
                         seen.add(href);
                         const box = a.closest('article, li, div[class*="card"]') || a;
-                        out.push({ href: href,
-                                   text: (box.innerText || a.innerText || '').slice(0, 400) });
+                        const leaves = Array.from(box.querySelectorAll('p,span,h2,h3,div'))
+                          .filter(e => e.children.length === 0)
+                          .map(e => (e.innerText || '').trim())
+                          .filter(Boolean);
+                        const dom = href.replace('/review/', '').replace(/\/$/, '');
+                        let name = '';
+                        const di = leaves.findIndex(t => t.toLowerCase() === dom.toLowerCase());
+                        if (di > 0) name = leaves[di - 1];
+                        const si = leaves.findIndex(t => /^[0-5][.,]\d$/.test(t));
+                        let score = si >= 0 ? leaves[si] : '';
+                        let reviews = '';
+                        for (let k = si + 1; si >= 0 && k < leaves.length; k++) {
+                          if (/^[\d.,\u00a0 ]+$/.test(leaves[k])) { reviews = leaves[k]; break; }
+                        }
+                        out.push({ href, name, score, reviews,
+                                   text: (box.innerText || '').slice(0, 400) });
                       }
                       return out;
                     }
@@ -895,21 +944,37 @@ def discover_emerging_companies(page, existing_results, min_opinions=500, max_pa
                     seen_domains.add(domain)
 
                     lines = [l.strip() for l in text.split("\n") if l.strip()]
-                    name = lines[0] if lines else domain
-                    # Read the score first, then take it out of the text: otherwise
-                    # "TrustScore 4.4 / 2,180 reviews" parses as 442,180 reviews.
-                    m_sc = re.search(r"TrustScore\s*([\d.,]+)", text, re.I)
-                    score = _score(m_sc.group(1)) if m_sc else _score(" ".join(lines[:2]))
-                    clean = re.sub(r"TrustScore\s*[\d.,]+", " ", text, flags=re.I)
-                    # digits/separators only, and never across a line break
-                    m_rev = re.search(r"([0-9][0-9.,\u202f\u00a0 ]*)\s*(?:%s)" % REVIEW_WORDS,
-                                      clean, re.I)
-                    reviews = _int(m_rev.group(1)) if m_rev else 0
+                    name    = (card.get("name") or "").strip()
+                    score   = _score(card.get("score"))
+                    reviews = _int(card.get("reviews"))
+
+                    if not (name and score and reviews):
+                        # Fallback for a layout we have not seen: the score and the
+                        # review count come glued together ("4.51,318 reviews"), and
+                        # the first line is a badge such as MOST RELEVANT, not a name.
+                        m = re.search(r"([0-5])[.,](\d)\s*([\d.,\u00a0 ]*?)\s*(?:%s)\b"
+                                      % REVIEW_WORDS, text, re.I)
+                        if m:
+                            score   = score   or float(f"{m.group(1)}.{m.group(2)}")
+                            reviews = reviews or _int(m.group(3))
+                        if not name:
+                            BADGES = {"most relevant", "ad", "advertisement", "verified",
+                                      "verified company", "claimed", "sponsored"}
+                            for l in lines:
+                                low = l.lower().strip()
+                                if low in BADGES or low == domain:
+                                    continue
+                                if re.match(r"^[0-5][.,]\d", l):
+                                    continue
+                                name = l
+                                break
+                            name = name or domain
                     if reviews > 5_000_000:      # implausible: treat as a parse failure
                         log(f"      ⚠️  skipping {name}: unreadable review count")
                         continue
 
-                    if name.lower() in known or domain in known:
+                    if (name.lower() in known
+                            or _norm_domain(domain) in known_domains):
                         dropped_known += 1
                         continue
                     if reviews < min_opinions:
@@ -918,6 +983,7 @@ def discover_emerging_companies(page, existing_results, min_opinions=500, max_pa
 
                     log(f"      ✨ {name} — {reviews:,} reviews, TP {score} ({country})")
                     known.add(name.lower())
+                    known_domains.add(_norm_domain(domain))
                     new_here += 1
                     found.append({
                         "country": country, "company": name,
@@ -1041,7 +1107,7 @@ def discover_emerging_companies_http(existing_results, min_opinions=501, max_pag
     log(f"\n🔍 Discovering emerging companies online (> {min_opinions-1} reviews)…")
     known = _known_names()
     found = []
-    base  = "https://www.trustpilot.com/categories/pet_insurance_agency"
+    base  = "https://www.trustpilot.com/categories/pet_insurance_company"
     for pg in range(1, max_pages + 1):
         url = base if pg == 1 else f"{base}?page={pg}"
         try:
