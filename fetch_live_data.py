@@ -722,6 +722,29 @@ def fetch_google_maps(company_name, country, website=""):
 # ─────────────────────────────────────────────────────────────
 _KNOWN_NAMES_CACHE: set = set()
 
+_TLD_COUNTRY = {
+    "co.uk": "UK", "uk": "UK", "es": "Spain", "fr": "France", "de": "Germany",
+    "it": "Italy", "se": "Sweden", "no": "Norway", "dk": "Denmark ", "ie": "Ireland",
+    "be": "Belgium", "nl": "Netherland", "ch": "Switzerland", "at": "Austria",
+    "com.au": "Australia", "au": "Australia", "ca": "Canada",
+    "co.nz": "New Zealand", "nz": "New Zealand", "co.za": "South Africa",
+    "jp": "Japan", "co.jp": "Japan", "br": "Brazil", "com.br": "Brazil",
+    "mx": "México", "com.mx": "México", "cl": "Chile", "pe": "Perú",
+    "ar": "Argentina", "com.ar": "Argentina", "cz": "Czech Republic",
+}
+
+def _country_from_domain(d):
+    """oneplan.co.za turned up in the US listing and was stamped USA. The domain
+    is better evidence of where a company operates than the listing it appeared in."""
+    parts = _norm_domain(d).split(".")
+    for n in (2, 1):
+        if len(parts) > n:
+            suffix = ".".join(parts[-n:])
+            if suffix in _TLD_COUNTRY:
+                return _TLD_COUNTRY[suffix]
+    return ""
+
+
 def _norm_domain(d):
     """pumpkin.care, www.pumpkin.care and https://www.pumpkin.care/ are one company."""
     d = re.sub(r"^https?://", "", str(d or "").strip().lower()).split("/")[0]
@@ -986,7 +1009,8 @@ def discover_emerging_companies(page, existing_results, min_opinions=500, max_pa
                     known_domains.add(_norm_domain(domain))
                     new_here += 1
                     found.append({
-                        "country": country, "company": name,
+                        "country": _country_from_domain(domain) or country,
+                        "company": name,
                         "website": domain, "opType": "Only Sale",
                         "group": "", "link": f"https://www.trustpilot.com{href}",
                         "underwriter": "",
@@ -1552,6 +1576,21 @@ def run_fetch(companies=None, progress_cb=None, discover=True, use_browser=True,
             log(f"         TP {ts} {row['tpScore']}/{row['tpReviews']:,}  |  "
                 f"G(kept) {gs} {row['gScore']}/{row['gReviews']:,}")
 
+
+    # ── Keep earlier discoveries ────────────────────────────────
+    # results is rebuilt from COMPANIES every run, and discovery skips anything
+    # already in the book — so without this, a company found today disappears
+    # tomorrow.
+    try:
+        have = {str(c.get("company", "")).lower() for c in results}
+        kept = [c for c in prev.values()
+                if c.get("_auto_discovered")
+                and str(c.get("company", "")).lower() not in have]
+        if kept:
+            results = results + kept
+            log(f"↺ Kept {len(kept)} companies found by earlier discovery runs.")
+    except Exception as e:
+        log(f"⚠️  Could not carry earlier discoveries forward: {e}")
 
     # ── Save to JSON ────────────────────────────────────────────
     try:
