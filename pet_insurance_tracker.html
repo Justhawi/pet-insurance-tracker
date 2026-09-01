@@ -1319,46 +1319,62 @@ function askOpen(open) {
    Charts. Hand-drawn SVG — no chart library to load.
 
    Colour carries country identity and is shared by every chart here and by
-   the Overview bars, so a country keeps its colour wherever you see it. The
-   six hues are ordered blue, orange, purple, green, magenta, yellow because
-   that ordering clears colour-blind separation on both surfaces (worst
-   adjacent pair ΔE 17.3 dark / 19.0 light); the brand ramp's own order put
-   green next to orange, which deuteranopes cannot separate. Every mark also
-   carries its name in text, so identity never rests on colour alone.
+   the Overview bars, so a country keeps its colour wherever you see it.
+
+   Every market that can appear on a chart axis has its own colour: the
+   country chart plots the fourteen markets with three or more rated
+   companies, so the ramp is fourteen tones deep and nothing shares a
+   colour with anything else on screen. Each country owns a hue family and
+   the ramp was then solved for lightness and saturation, so the worst pair
+   in the whole set — the tail neutral included — sits ΔE 15.1 apart on the
+   dark surface and 14.1 on the light one (OKLab ×100). For scale, the pair
+   that made Italy and New Zealand look identical was 10.3, and the markets
+   that shared the old tail grey were at zero. Every tone also
+   clears 3:1 against its surface and 6.0 under simulated protanopia and
+   deuteranopia, and every mark carries its name in text, so identity never
+   rests on colour alone.
    ============================================================ */
 function chartInk() {
   const dark = document.documentElement.getAttribute('data-theme') === 'dark';
   return {
     hue:  dark ? '#2b74ba' : '#0055a4',
-    grey: dark ? '#8598a6' : '#5c6b76',
-    // Countries past the ninth share this. It has to sit well clear of the
-    // ninth slot's slate: the old tail grey was ΔE 10.3 from it, which is below
-    // the level at which full-colour vision can separate two tones — Italy and
-    // New Zealand came out looking identical.
-    tail: dark ? '#63737f' : '#a3b0b8',
+    // The two de-emphasis tones on the Petplan chart. They only ever share a
+    // panel with each other and with Petplan's own country colour, and they are
+    // ΔE 16+ from each other and from those three colours, so the leader bar and
+    // the market-average bar can no longer be mistaken for one another.
+    lead: dark ? '#d3dde4' : '#2c3d45',
+    avg:  dark ? '#6f7a83' : '#6b7276',
+    // The eleven markets with one or two companies each. None of them can reach
+    // a country panel — that needs three rated companies — so this shows up
+    // mostly as the pie's "other countries" wedge, and it still sits ΔE 15.1
+    // (dark) / 15.2 (light) from every one of the fourteen country colours.
+    tail: dark ? '#819797' : '#61687e',
     grid: dark ? '#23384a' : '#d8e3ea',
     surf: dark ? '#13212e' : '#ffffff',
     ink:  dark ? '#eaf2f7' : '#333333',
     mute: dark ? '#8598a6' : '#6b7a85',
-    // Nine countries get their own colour. The order matters: teal beside the
-    // slate fails colour-blind separation badly (ΔE 1.6), teal beside red is
-    // fine (12.3), and this sequence clears the check on both surfaces. Nine is
-    // where it stops — a tenth hue was indistinguishable from the slate — so
-    // everything past the ninth country shares grey.
+    // One colour per charted market, in country-rank order: UK, USA, Spain,
+    // Germany, France, Australia, South Africa, Japan, Italy, New Zealand,
+    // Switzerland, Canada, Sweden, Belgium. Each keeps its hue family across
+    // both themes; the lightness and saturation are what the solver moved to
+    // pull every pair apart.
     ramp: dark
-      ? ['#6badea', '#f79553', '#a98ada', '#a5d45e', '#e872b2', '#ffd84a', '#4ec9c0', '#e8646a', '#9db9cd']
-      : ['#0055a4', '#f47721', '#662d91', '#8ebe3f', '#d83d96', '#ffcb05', '#14857c', '#c9252c', '#5c6b76'],
+      ? ['#379bfc', '#f3a468', '#7757db', '#2d7e43', '#e495d9', '#8e9f03', '#2ad29c',
+         '#b95100', '#1d74a1', '#abfa67', '#b83b92', '#fbe2ab', '#f75974', '#97d5fd']
+      : ['#0d6ad7', '#ea7109', '#8c86db', '#3ca63a', '#eb5ea0', '#8c7200', '#179fa6',
+         '#be334f', '#004459', '#296910', '#91359a', '#5b3b01', '#850241', '#3e1a94'],
   };
 }
 const esc = t => String(t == null ? '' : t)
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-/* One country -> one colour, everywhere. The six biggest markets get a hue;
-   the tail shares grey, rather than inventing a 7th hue nobody can name. */
+/* One country -> one colour, everywhere. The fourteen markets that can reach a
+   chart axis each get their own; the eleven one- and two-company markets behind
+   them share the tail neutral. */
 function countryColours() {
   const c = chartInk(), counts = {};
   (allData || []).forEach(x => { const k = (x.country || '').trim(); if (k) counts[k] = (counts[k] || 0) + 1; });
-  const top = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 9).map(e => e[0]);
+  const top = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 14).map(e => e[0]);
   const map = {};
   top.forEach((k, i) => map[k] = c.ramp[i]);
   return { map, top, of: k => map[(k || '').trim()] || c.tail };
@@ -1506,15 +1522,15 @@ function chPetplan(el) {
     g += `<text x="${L - 8}" y="${y0 - 3}" fill="${c.ink}" font-size="11" font-weight="700" text-anchor="end">${esc(r.country)}</text>`
        + bar(y0, r.p.pondScore, col, T('gr.petplan'),
              `<strong>${esc(r.p.company)}</strong><br>${r.p.pondScore.toFixed(2)} · rank ${r.rank} of ${r.of}`, true)
-       + bar(y0 + bh + gap, r.lead.pondScore, c.grey, shortName(r.lead.company),
+       + bar(y0 + bh + gap, r.lead.pondScore, c.lead, shortName(r.lead.company),
              `${T('gr.leader')}: <strong>${esc(r.lead.company)}</strong><br>${r.lead.pondScore.toFixed(2)}`, false)
-       + bar(y0 + (bh + gap) * 2, r.avg, c.grey + '80', T('gr.market'),
+       + bar(y0 + (bh + gap) * 2, r.avg, c.avg, T('gr.market'),
              `${esc(r.country)} ${T('gr.market').toLowerCase()}<br>${r.avg.toFixed(2)} over ${r.of} ${T('gr.companies')}`, false);
   });
   el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" role="img"
       aria-label="Petplan against the leader and the average of its market">${g}</svg>
-    <div class="chart-legend"><span><i style="background:${c.grey}"></i>${T('gr.leader')}</span>
-      <span><i style="background:${c.grey};opacity:.5"></i>${T('gr.market')}</span></div>`;
+    <div class="chart-legend"><span><i style="background:${c.lead}"></i>${T('gr.leader')}</span>
+      <span><i style="background:${c.avg}"></i>${T('gr.market')}</span></div>`;
 }
 
 /* ---- 5. average score by country ----------------------------------------- */
