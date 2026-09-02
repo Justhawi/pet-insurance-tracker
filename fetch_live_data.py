@@ -50,6 +50,21 @@ MANUAL_TP_URL = {
 # Force the Google Maps listing URL (navigate directly, skip search).
 # Use the canonical /maps/place/.../data=... URL for a specific place.
 MANUAL_G_URL = {
+    # Goodflair (France) — the auto search reported not_listed; Luis sent the
+    # Nantes listing, which carries the reviews.
+    "Goodflair":
+        "https://www.google.com/maps/place/Goodflair/"
+        "@47.2094266,-1.6016949,820m/data=!3m1!1e3!4m6!3m5"
+        "!1s0x4805edbbeec521b3:0xd1c38820bde09a43"
+        "!8m2!3d47.2094266!4d-1.5991146!16s%2Fg%2F11twg63s8j",
+    # Vetprotect24 / Dogprotect24 / Catprotect24 (Germany) — one company under
+    # three brands; the Köln listing trades as Vetprotect24, which is why a
+    # search on dogprotect24.de found nothing.
+    "Vetprotect24 | Dogprotect24 | Catprotect24":
+        "https://www.google.com/maps/place/Vetprotect24/"
+        "@50.9134937,6.9384617,761m/data=!3m2!1e3!4b1!4m6!3m5"
+        "!1s0x47bf27241363b759:0x68bdb4fba91c9751"
+        "!8m2!3d50.9134937!4d6.941042!16s%2Fg%2F11s9xr714h",
     # Prudent Pet — the auto search returns a near-empty card.
     # This is the actual company listing in Naperville, IL.
     "Prudent Pet Insurance":
