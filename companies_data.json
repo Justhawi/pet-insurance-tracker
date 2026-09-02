@@ -1308,12 +1308,16 @@
     "gStatus": "not_listed",
     "tpUrl": "https://www.trustpilot.com/review/www.argospetinsurance.co.uk",
     "gUrl": "",
-    "pondScore": 4.5,
-    "avgScore": 4.5,
-    "totalOpinions": 2462,
+    "pondScore": 4.49,
+    "avgScore": 4.2,
+    "totalOpinions": 2495,
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
-    "gDate": "2026-09-01"
+    "gDate": "2026-09-01",
+    "otherSource": "Pet Insurance Guide",
+    "otherScore": 3.9,
+    "otherReviews": 33,
+    "otherUrl": "https://www.pet-insurance-guide.co.uk/provider-ratings/argos-pet-insurance-how-good-is-it/"
   },
   {
     "country": "UK",
