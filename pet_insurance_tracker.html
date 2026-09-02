@@ -1486,6 +1486,18 @@ const GENERALIST_DOMAINS = new Set([
   'mapfre.es', 'santalucia.es', 'sanitas.es', 'lineadirecta.com', 'generali.es',
   'axa.es', 'caser.es', 'verti.es', 'tuio.com', 'terranea.es', 'dkv.es',
 ]);
+/* Struck off by hand and gone from the daily run as well, but a browser that
+   has ever saved the book locally would otherwise hand them back on load, so
+   they are refused here too. Same list as STRUCK_OFF_DOMAINS in fetch_live_data.py.
+     gopetplan.com                     — the US Petplan brand no longer trades
+     petinsurance.sainsburysbank.co.uk — a UK bank, not a pet insurer */
+const STRUCK_OFF_DOMAINS = new Set(['gopetplan.com', 'petinsurance.sainsburysbank.co.uk']);
+function isStruckOff(c) {
+  if (STRUCK_OFF_DOMAINS.has(siteDomain(c))) return true;
+  const m = /\/review\/([^/?#]+)/.exec(String((c && (c.tpUrl || c.link)) || ''));
+  return !!(m && STRUCK_OFF_DOMAINS.has(m[1].toLowerCase().replace(/^www\./, '')));
+}
+
 function siteDomain(c) {
   const raw = ((c && (c.website || c.link)) || '').toLowerCase().trim();
   if (!raw) return '';
@@ -1784,6 +1796,7 @@ function applyDataset(arr) {
   } catch (e) {}
   const gone = new Set(removedRows.map(r => r.key));
   if (gone.size) allData = allData.filter(c => !gone.has(rowKey(c)));
+  allData = allData.filter(c => !isStruckOff(c));
   buildCountryPills();
   buildGroupFilter();
   populateCountrySelects();

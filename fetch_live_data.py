@@ -834,6 +834,34 @@ NOT_A_PET_INSURER = {
 }
 
 
+# Companies struck off by hand. Discovery would otherwise find them again on the
+# next sweep, and the carry-forward below would keep them alive for ever, so the
+# exclusion has to live here rather than in a one-off edit of the JSON.
+#   gopetplan.com                     — the US Petplan brand no longer trades
+#   petinsurance.sainsburysbank.co.uk — a UK generalist bank, not a pet insurer
+# Matched on the registered domain: the display name on Trustpilot changes.
+STRUCK_OFF_DOMAINS = {
+    "gopetplan.com",
+    "petinsurance.sainsburysbank.co.uk",
+}
+
+
+def is_struck_off(company):
+    """True when this row is one of the companies removed by hand. Trustpilot
+    URLs carry the company's domain in the path (/review/<domain>), so those are
+    read from the path rather than from the host."""
+    for key in ("website", "link", "tpUrl"):
+        raw = str(company.get(key) or "")
+        if not raw:
+            continue
+        if _norm_domain(raw) in STRUCK_OFF_DOMAINS:
+            return True
+        m = re.search(r"/review/([^/?#]+)", raw)
+        if m and _norm_domain(m.group(1)) in STRUCK_OFF_DOMAINS:
+            return True
+    return False
+
+
 def discover_emerging_companies(page, existing_results, min_opinions=500, max_pages=4,
                                 countries=None):
     """
@@ -1037,6 +1065,11 @@ def discover_emerging_companies(page, existing_results, min_opinions=500, max_pa
                             f"({', '.join(c for c in cats if c in NOT_A_PET_INSURER)})")
                         continue
 
+                    if _norm_domain(domain) in STRUCK_OFF_DOMAINS:
+                        dropped_known += 1
+                        log(f"      ↷ {name or domain}: struck off by hand, not re-added")
+                        continue
+
                     if (name.lower() in known
                             or _norm_domain(domain) in known_domains):
                         dropped_known += 1
@@ -1208,6 +1241,7 @@ def discover_emerging_companies_http(existing_results, min_opinions=501, max_pag
             score = float(card.get("score") or 0)
             web = (card.get("website") or "").strip()
             if not name or name.lower() in known: continue
+            if _norm_domain(web) in STRUCK_OFF_DOMAINS: continue
             if reviews < min_opinions: continue
             log(f"   ✨ New: {name} ({reviews:,} reviews)")
             known.add(name.lower())
@@ -1637,12 +1671,21 @@ def run_fetch(companies=None, progress_cb=None, discover=True, use_browser=True,
         have = {str(c.get("company", "")).lower() for c in results}
         kept = [c for c in prev.values()
                 if c.get("_auto_discovered")
-                and str(c.get("company", "")).lower() not in have]
+                and str(c.get("company", "")).lower() not in have
+                and not is_struck_off(c)]
         if kept:
             results = results + kept
             log(f"↺ Kept {len(kept)} companies found by earlier discovery runs.")
     except Exception as e:
         log(f"⚠️  Could not carry earlier discoveries forward: {e}")
+
+    # ── Struck off by hand ──────────────────────────────────────
+    # Whatever route a row took to get here — the seed list, discovery, or the
+    # carry-forward above — a company on the struck-off list is not published.
+    _before = len(results)
+    results = [c for c in results if not is_struck_off(c)]
+    if len(results) != _before:
+        log(f"✖ Dropped {_before - len(results)} company(ies) struck off by hand.")
 
     # ── Save to JSON ────────────────────────────────────────────
     try:
