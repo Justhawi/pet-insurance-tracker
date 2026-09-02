@@ -260,6 +260,9 @@ html[data-theme="dark"] .badge-op-full{color:var(--series-4)}
 .badge-group{background:var(--warning-bg);color:var(--warning-ink)}
 /* Pet specialist vs generalist insurer. The generalist reads as the quieter of
    the two: it is the row that sits out of the rankings. */
+.badge-full{background:var(--good-bg);color:var(--good-ink);border-color:transparent}
+/* One platform only: the score is real but it rests on half the evidence. */
+.badge-thin{background:var(--warning-bg);color:var(--warning-ink);border-color:transparent}
 .badge-petonly{background:var(--good-bg);color:var(--good-ink);border-color:transparent}
 .badge-generalist{background:var(--surface-2);color:var(--text-muted);border-color:var(--border-strong)}
 .badge-new{background:var(--good-bg);color:var(--good-ink);font-size:.62rem;padding:1px 6px}
@@ -639,6 +642,7 @@ html[data-theme="dark"] .badge-op-full{color:var(--series-4)}
                   <th onclick="sortBy('pondScore')" data-i18n="th.pond">Ponderated ↕</th>
                   <th onclick="sortBy('avgScore')" data-i18n="th.avg">Average ↕</th>
                   <th onclick="sortBy('totalOpinions')" data-i18n="th.op">Opinions ↕</th>
+                  <th data-i18n="th.sources">Sources</th>
                   <th onclick="sortBy('date')" data-i18n="th.date">Date ↕</th>
                   <th data-i18n="th.group">Group</th>
                   <th data-i18n="th.source">Source / link</th>
@@ -721,6 +725,34 @@ html[data-theme="dark"] .badge-op-full{color:var(--series-4)}
             <button class="btn primary" onclick="addCompanyFromForm()" data-i18n="btn.addTracker">Add to tracker</button>
             <button class="btn" onclick="clearAddForm()" data-i18n="btn.clear">Clear</button>
           </div>
+        </div>
+
+        <div class="card" style="margin-top:18px">
+          <div class="card-head"><h2 data-i18n="os.title">Add another source to a company</h2></div>
+          <div class="sub" data-i18n="os.sub">A company rated on one platform only is being compared with companies rated on two.
+            Give it a third source — any review site that holds real numbers for it — and the score is weighted the same way, by
+            how many reviews each platform holds.</div>
+          <div class="form-grid">
+            <div class="form-field" style="grid-column:span 2">
+              <label data-i18n="os.pick">Company</label>
+              <select id="os-company" onchange="onPickSourceCompany()"><option value="" data-i18n="f.select">Select...</option></select>
+            </div>
+            <div class="form-field"><label data-i18n="os.name">Source name</label>
+              <input type="text" id="os-name" placeholder="Feefo, Facebook, Reclame Aqui..."></div>
+            <div class="form-field"><label data-i18n="os.score">Score</label>
+              <input type="number" id="os-score" placeholder="0.0" min="0" max="5" step="0.1"></div>
+            <div class="form-field"><label data-i18n="os.reviews">Reviews</label>
+              <input type="number" id="os-reviews" placeholder="0" min="0"></div>
+            <div class="form-field" style="grid-column:span 2"><label data-i18n="os.link">Link to the source</label>
+              <input type="text" id="os-url" placeholder="https://..."></div>
+          </div>
+          <div id="os-preview" class="sub" style="margin-top:10px"></div>
+          <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+            <button class="btn primary" onclick="saveExtraSource()" data-i18n="os.save">Save this source</button>
+            <button class="btn" onclick="clearExtraSource()" data-i18n="os.clear">Clear the form</button>
+            <button class="btn" onclick="downloadExtraSources()" data-i18n="os.export">Download what is entered</button>
+          </div>
+          <div id="os-list" style="margin-top:16px"></div>
         </div>
 
         <div class="card" style="margin-top:18px">
@@ -846,6 +878,7 @@ html[data-theme="dark"] .badge-op-full{color:var(--series-4)}
               <li><strong data-i18n="gd.pond">Ponderated score</strong> — <span data-i18n="gd.pond.d">each platform weighted by its number of reviews. This is the fair one: it does not let a handful of five-star reviews outweigh thousands.</span></li>
               <li><strong data-i18n="gd.avg">Average score</strong> — <span data-i18n="gd.avg.d">the plain mean of Trustpilot and Google. Easy to explain, but blind to volume.</span></li>
               <li><strong data-i18n="gd.op">Opinions</strong> — <span data-i18n="gd.op.d">total reviews behind the score. Below a few hundred, treat the score as an indication rather than a verdict.</span></li>
+              <li><strong data-i18n="gd.src">How many sources</strong> — <span data-i18n="gd.src.d">the Sources column says how many platforms hold a score for a company. One is not wrong, but it is half the evidence of two, so those rows are marked wherever they are ranked. The Add company page takes a third source — any review site with real numbers — and it is weighted the same way as Trustpilot and Google.</span></li>
               <li><strong data-i18n="gd.who">Who gets ranked</strong> — <span data-i18n="gd.who.d">pet insurance specialists with at least 1,000 opinions. Generalist insurers stay in the tracker and the exports, marked Generalist in the Focus column, but they are not ranked: their reviews are mostly about motor, home and health policies, so a score against a pet specialist would not be the same measurement.</span></li>
             </ol>
           </div>
@@ -959,6 +992,18 @@ const I18N = {
     'tr.sort.g':'Google score ↓','tr.sort.op':'Total reviews ↓','tr.sort.tpr':'Trustpilot reviews ↓',
     'tr.sort.az':'Company A–Z','tr.sort.cz':'Country A–Z','tr.sort.date':'Date (newest)',
     'th.country':'Country','th.company':'Company','th.type':'Type','th.tp':'Trustpilot','th.g':'Google Maps',
+    'th.sources':'Sources','src.one':'source','src.many':'sources','src.none':'No platform holds a score for this company yet.',
+    'src.thin':'1 source','src.thin.hint':'Only one platform holds a score for this company, so it is being compared with companies rated on two. Add a third source on the Add company page to even it up.',
+    'src.addhint':'No other source entered yet. Add one on the Add company page.',
+    'res.other':'Other source',
+    'os.title':'Add another source to a company',
+    'os.sub':'A company rated on one platform only is being compared with companies rated on two. Give it a third source — any review site that holds real numbers for it — and the score is weighted the same way, by how many reviews each platform holds.',
+    'os.pick':'Company','os.name':'Source name','os.score':'Score','os.reviews':'Reviews','os.link':'Link to the source',
+    'os.save':'Save this source','os.clear':'Clear the form','os.export':'Download what is entered',
+    'os.need':'A source needs a name, a score and a review count.',
+    'os.saved':'saved. The score now rests on {n} sources.',
+    'os.none':'No extra sources entered yet.',
+    'os.listTitle':'Sources added in this browser','os.thinLeft':'{n} companies still rest on one platform',
     'th.focus':'Focus',
     'tr.focus':'Focus:','tr.focus.all':'Pet and generalist',
     'focus.pet':'Pet only','focus.gen':'Generalist',
@@ -994,6 +1039,7 @@ const I18N = {
     'gd.pond.d':'each platform weighted by its number of reviews. This is the fair one: it does not let a handful of five-star reviews outweigh thousands.',
     'gd.avg':'Average score','gd.avg.d':'the plain mean of Trustpilot and Google. Easy to explain, but blind to volume.',
     'gd.op':'Opinions','gd.op.d':'total reviews behind the score. Below a few hundred, treat the score as an indication rather than a verdict.',
+    'gd.src':'How many sources','gd.src.d':'the Sources column says how many platforms hold a score for a company. One is not wrong, but it is half the evidence of two, so those rows are marked wherever they are ranked. The Add company page takes a third source — any review site with real numbers — and it is weighted the same way as Trustpilot and Google.',
     'gd.who':'Who gets ranked','gd.who.d':'pet insurance specialists with at least 1,000 opinions. Generalist insurers stay in the tracker and the exports, marked Generalist in the Focus column, but they are not ranked: their reviews are mostly about motor, home and health policies, so a score against a pet specialist would not be the same measurement.',
     'gd.fresh':'Freshness','gd.g.d':'refreshed live from this site through the Places API when a key is configured.',
     'gd.tp.d':'a snapshot published from the office PC. Trustpilot blocks data-centre traffic, so it is never overwritten with a blocked read.',
@@ -1057,6 +1103,18 @@ const I18N = {
     'tr.sort.g':'Nota Google ↓','tr.sort.op':'Opiniones totales ↓','tr.sort.tpr':'Opiniones Trustpilot ↓',
     'tr.sort.az':'Compañía A–Z','tr.sort.cz':'País A–Z','tr.sort.date':'Fecha (más reciente)',
     'th.country':'País','th.company':'Compañía','th.type':'Tipo','th.tp':'Trustpilot','th.g':'Google Maps',
+    'th.sources':'Fuentes','src.one':'fuente','src.many':'fuentes','src.none':'Todavía ninguna plataforma puntúa a esta compañía.',
+    'src.thin':'1 fuente','src.thin.hint':'Solo una plataforma la puntúa, así que se está comparando con compañías puntuadas en dos. Añade una tercera fuente en la página Añadir compañía para igualarlo.',
+    'src.addhint':'Todavía no hay otra fuente. Añádela en la página Añadir compañía.',
+    'res.other':'Otra fuente',
+    'os.title':'Añadir otra fuente a una compañía',
+    'os.sub':'Una compañía puntuada en una sola plataforma se está comparando con otras puntuadas en dos. Dale una tercera fuente —cualquier sitio de opiniones con cifras reales— y se pondera igual que las demás, por el número de opiniones de cada plataforma.',
+    'os.pick':'Compañía','os.name':'Nombre de la fuente','os.score':'Nota','os.reviews':'Opiniones','os.link':'Enlace a la fuente',
+    'os.save':'Guardar esta fuente','os.clear':'Vaciar el formulario','os.export':'Descargar lo introducido',
+    'os.need':'La fuente necesita nombre, nota y número de opiniones.',
+    'os.saved':'guardada. La nota ya se apoya en {n} fuentes.',
+    'os.none':'Todavía no has introducido otras fuentes.',
+    'os.listTitle':'Fuentes añadidas en este navegador','os.thinLeft':'{n} compañías siguen con una sola plataforma',
     'th.focus':'Enfoque',
     'tr.focus':'Enfoque:','tr.focus.all':'Mascotas y generalistas',
     'focus.pet':'Solo mascotas','focus.gen':'Generalista',
@@ -1092,6 +1150,7 @@ const I18N = {
     'gd.pond.d':'cada plataforma pesa según su número de opiniones. Es la justa: no deja que un puñado de cincos tape a miles de opiniones.',
     'gd.avg':'Nota media','gd.avg.d':'la media simple de Trustpilot y Google. Fácil de explicar, pero ciega al volumen.',
     'gd.op':'Opiniones','gd.op.d':'opiniones totales detrás de la nota. Por debajo de unos cientos, tómala como indicio, no como veredicto.',
+    'gd.src':'Cuántas fuentes','gd.src.d':'la columna Fuentes dice cuántas plataformas puntúan a cada compañía. Una no está mal, pero es la mitad de evidencia que dos, así que esas filas se marcan allí donde se puntúan. La página Añadir compañía admite una tercera fuente —cualquier sitio de opiniones con cifras reales— y se pondera igual que Trustpilot y Google.',
     'gd.who':'Quién entra en los rankings','gd.who.d':'los especialistas en seguros para mascotas con al menos 1.000 opiniones. Las aseguradoras generalistas siguen en el seguimiento y en las exportaciones, marcadas como Generalista en la columna Enfoque, pero no se puntúan: sus opiniones hablan sobre todo de auto, hogar y salud, así que compararlas con un especialista no mediría lo mismo.',
     'gd.fresh':'Actualidad','gd.g.d':'se actualiza en vivo desde este sitio con la API de Places cuando hay clave configurada.',
     'gd.tp.d':'una foto publicada desde el PC de la oficina. Trustpilot bloquea el tráfico de centros de datos, así que nunca se sobrescribe con una lectura bloqueada.',
@@ -1193,7 +1252,9 @@ function renderOverview() {
 
   const line = (c, i) => `<li>
       <span class="pos">${i + 1}</span>
-      <span class="nm">${flagOf(c.country)} ${c.company}</span>
+      <span class="nm">${flagOf(c.country)} ${c.company}${isThin(c)
+          ? ` <span class="badge badge-thin" style="font-size:.6rem;padding:1px 6px"
+                title="${T('src.thin.hint')}">${T('src.thin')}</span>` : ''}</span>
       <span class="vl ${scoreColor(c.pondScore)}">${c.pondScore.toFixed(2)}</span>
     </li>`;
 
@@ -1314,6 +1375,8 @@ function askAnswer(raw) {
   }
 
   // --- how the panel works -------------------------------------------------
+  if (has('source', 'fuente', 'fuentes', 'one platform', 'una plataforma', 'fair', 'justo', 'fairness'))
+    return T('gd.src') + ' — ' + T('gd.src.d');
   if (has('generalist', 'generalista', 'not ranked', 'no aparece', 'why is', 'por qué no', 'porque no',
           'ranked', 'ranking', 'rankings', 'quién entra', 'quien entra', 'pet only', 'solo mascotas'))
     return T('gd.who') + ' — ' + T('gd.who.d');
@@ -1552,6 +1615,7 @@ function chPie(el) {
 /* ---- 2. top rated companies ---------------------------------------------- */
 function chTop(el) {
   const rows = ranked().sort((a, b) => b.pondScore - a.pondScore).slice(0, 10);
+  // a thin score is flagged in the tooltip, the same as in the Overview list
   if (!rows.length) return noData(el);
   const cc = countryColours(), c = chartInk();
   const L = 168, R = 92, T_ = 6, rowH = 27, h = T_ + rows.length * rowH + 10;
@@ -1562,7 +1626,7 @@ function chTop(el) {
     const y = T_ + i * rowH, bh = 15, col = cc.of(r.country);
     g += `<text x="${L - 8}" y="${y + bh - 2}" fill="${c.ink}" font-size="11" text-anchor="end">${esc(shortName(r.company))}</text>`
        + `<rect x="${L}" y="${y}" width="${Math.max(3, x(r.pondScore) - L)}" height="${bh}" rx="4" fill="${col}"
-            data-tip="<strong>${esc(r.company)}</strong><br>${esc(r.country.trim())} · ${r.pondScore.toFixed(2)}<br>${(r.totalOpinions || 0).toLocaleString()} ${T('gr.reviews')}"/>`
+            data-tip="<strong>${esc(r.company)}</strong><br>${esc(r.country.trim())} · ${r.pondScore.toFixed(2)}<br>${(r.totalOpinions || 0).toLocaleString()} ${T('gr.reviews')}<br>${esc(sourcesOf(r).map(x => x.name).join(' + '))}${isThin(r) ? ' · ' + esc(T('src.thin')) : ''}"/>`
        + `<text x="${x(r.pondScore) + 7}" y="${y + bh - 2}" fill="${c.ink}" font-size="11" font-weight="700">${r.pondScore.toFixed(2)}</text>`
        + `<text x="${x(r.pondScore) + 42}" y="${y + bh - 2}" fill="${c.mute}" font-size="10">${(r.totalOpinions || 0).toLocaleString()}</text>`;
   });
@@ -1783,6 +1847,56 @@ if (!Array.isArray(removedRows)) removedRows = [];
 const rowKey = c => ((c && c.company || '').trim().toLowerCase() + '|' + (c && c.country || '').trim().toLowerCase());
 function saveRemoved() { try { localStorage.setItem(REMOVED_KEY, JSON.stringify(removedRows)); } catch (e) {} }
 
+/* ---- extra sources -------------------------------------------------------
+   A company rated on Trustpilot only is being compared with one rated on
+   Trustpilot and Google, which is not the same evidence. The answer is to give
+   the thin ones a third source rather than to guess: the office enters what it
+   finds — the site's name, its score, how many reviews it holds, and the link —
+   and that source joins the ponderated score on the same terms as the other two.
+
+   The entries live in this browser and are re-applied to every dataset that
+   lands, because the daily run republishes the whole book from the server and
+   would otherwise wipe them. Once a batch is entered, download it from the Add
+   company page and it can be committed to the published data, where the daily
+   run carries it forward for everyone. */
+const SOURCES_KEY = 'petTrackerSources';
+let extraSources = {};
+try { extraSources = JSON.parse(localStorage.getItem(SOURCES_KEY) || '{}') || {}; } catch (e) { extraSources = {}; }
+function saveExtraSources() { try { localStorage.setItem(SOURCES_KEY, JSON.stringify(extraSources)); } catch (e) {} }
+
+/* Which platforms actually hold a score for this company. */
+function sourcesOf(c) {
+  const out = [];
+  if ((c.tpScore || 0) > 0) out.push({ k: 'tp', name: 'Trustpilot', score: c.tpScore, n: c.tpReviews || 0, url: c.tpUrl || '' });
+  if ((c.gScore || 0) > 0) out.push({ k: 'g', name: 'Google Maps', score: c.gScore, n: c.gReviews || 0, url: c.gUrl || '' });
+  if ((c.otherScore || 0) > 0) out.push({ k: 'other', name: c.otherSource || 'Other', score: c.otherScore, n: c.otherReviews || 0, url: c.otherUrl || '' });
+  return out;
+}
+const sourceCount = c => sourcesOf(c).length;
+const isThin = c => sourceCount(c) === 1;   // one platform only: the fairness case
+
+/* The ponderated score, recomputed whenever a third source is attached. Same
+   rule as the server: every platform weighted by the reviews it holds. */
+function recomputeScores(c) {
+  const src = sourcesOf(c);
+  const n = src.reduce((s, x) => s + (x.n || 0), 0);
+  c.totalOpinions = n;
+  c.pondScore = n > 0 ? Math.round((src.reduce((s, x) => s + x.score * (x.n || 0), 0) / n) * 100) / 100 : 0;
+  c.avgScore = src.length ? Math.round((src.reduce((s, x) => s + x.score, 0) / src.length) * 100) / 100 : 0;
+  return c;
+}
+
+function applyExtraSources(list) {
+  (list || []).forEach(c => {
+    const e = extraSources[rowKey(c)];
+    if (!e || !(e.otherScore > 0)) return;
+    c.otherSource = e.otherSource; c.otherScore = e.otherScore;
+    c.otherReviews = e.otherReviews; c.otherUrl = e.otherUrl;
+    recomputeScores(c);
+  });
+  return list;
+}
+
 function applyDataset(arr) {
   // Use the given dataset as the base, then keep any manually-added companies.
   allData = JSON.parse(JSON.stringify(arr || []));
@@ -1797,14 +1911,122 @@ function applyDataset(arr) {
   const gone = new Set(removedRows.map(r => r.key));
   if (gone.size) allData = allData.filter(c => !gone.has(rowKey(c)));
   allData = allData.filter(c => !isStruckOff(c));
+  applyExtraSources(allData);
   buildCountryPills();
   buildGroupFilter();
   populateCountrySelects();
   populateRemoveSelect();
   renderRemovedList();
+  populateSourceSelect();
+  renderSourceList();
   applyFilters();
   updateStats();
   renderNewCompanies();
+}
+
+/* ---- the "add another source" form -------------------------------------- */
+function populateSourceSelect() {
+  const sel = document.getElementById('os-company');
+  if (!sel) return;
+  const keep = sel.value;
+  sel.innerHTML = '<option value="">' + esc(T('f.select')) + '</option>';
+  // thin companies first: they are the ones this form exists for
+  [...(allData || [])]
+    .sort((a, b) => (sourceCount(a) - sourceCount(b))
+                 || (b.totalOpinions || 0) - (a.totalOpinions || 0)
+                 || (a.company || '').localeCompare(b.company || ''))
+    .forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = rowKey(c);
+      const mark = isThin(c) ? '• ' : '';
+      opt.textContent = mark + (COUNTRY_FLAGS[(c.country || '').trim()] || '') + ' ' +
+                        (c.company || '') + ' — ' + sourcesOf(c).map(x => x.name).join(' + ');
+      sel.appendChild(opt);
+    });
+  if (keep && sel.querySelector(`option[value="${CSS.escape(keep)}"]`)) sel.value = keep;
+}
+
+function onPickSourceCompany() {
+  const key = document.getElementById('os-company').value;
+  const c = (allData || []).find(x => rowKey(x) === key);
+  const box = document.getElementById('os-preview');
+  if (!c) { box.textContent = ''; return; }
+  const e = extraSources[key];
+  document.getElementById('os-name').value = e ? (e.otherSource || '') : '';
+  document.getElementById('os-score').value = e ? (e.otherScore || '') : '';
+  document.getElementById('os-reviews').value = e ? (e.otherReviews || '') : '';
+  document.getElementById('os-url').value = e ? (e.otherUrl || '') : '';
+  box.innerHTML = sourcesOf(c).map(x =>
+      `<strong>${esc(x.name)}</strong> ${x.score.toFixed(1)} · ${(x.n || 0).toLocaleString()} ${esc(T('res.reviews'))}`)
+    .join(' &nbsp;·&nbsp; ') +
+    ` &nbsp;→&nbsp; ${esc(T('th.pond'))} <strong>${(c.pondScore || 0).toFixed(2)}</strong>`;
+}
+
+function saveExtraSource() {
+  const key = document.getElementById('os-company').value;
+  const c = (allData || []).find(x => rowKey(x) === key);
+  if (!c) { alert(T('msg.pickCompany')); return; }
+  const name = document.getElementById('os-name').value.trim();
+  const score = parseFloat(document.getElementById('os-score').value) || 0;
+  const n = parseInt(document.getElementById('os-reviews').value) || 0;
+  if (!name || !(score > 0) || !(n > 0)) { alert(T('os.need')); return; }
+  extraSources[key] = { company: c.company, country: c.country, otherSource: name,
+                        otherScore: score, otherReviews: n,
+                        otherUrl: document.getElementById('os-url').value.trim() };
+  saveExtraSources();
+  applyExtraSources(allData);
+  saveData();
+  refreshAfterEdit();
+  onPickSourceCompany();
+  alert('✅ ' + c.company + ' — ' + T('os.saved').replace('{n}', String(sourceCount(c))));
+}
+
+function clearExtraSource() {
+  ['os-name','os-score','os-reviews','os-url'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  document.getElementById('os-company').value = '';
+  document.getElementById('os-preview').textContent = '';
+}
+
+function dropExtraSource(key) {
+  if (!extraSources[key]) return;
+  delete extraSources[key];
+  saveExtraSources();
+  const c = (allData || []).find(x => rowKey(x) === key);
+  if (c) { delete c.otherSource; delete c.otherScore; delete c.otherReviews; delete c.otherUrl; recomputeScores(c); }
+  saveData();
+  refreshAfterEdit();
+}
+
+/* The entries are per-browser. This hands them over as a file so they can be
+   committed to the published data, after which the daily run keeps them. */
+function downloadExtraSources() {
+  const rows = Object.entries(extraSources).map(([key, e]) => ({ key, ...e }));
+  if (!rows.length) { alert(T('os.none')); return; }
+  const blob = new Blob([JSON.stringify(rows, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'extra_sources_' + new Date().toISOString().slice(0, 10) + '.json';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+function renderSourceList() {
+  const el = document.getElementById('os-list');
+  if (!el) return;
+  const rows = Object.entries(extraSources);
+  const thin = (allData || []).filter(isThin).length;
+  const head = `<div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;
+      color:var(--text-muted);margin-bottom:8px">${esc(T('os.listTitle'))} (${rows.length}) ·
+      ${esc(T('os.thinLeft').replace('{n}', String(thin)))}</div>`;
+  if (!rows.length) { el.innerHTML = head + `<div class="sub">${esc(T('os.none'))}</div>`; return; }
+  el.innerHTML = head + '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
+    rows.map(([key, e]) => `<span class="pill" style="cursor:default">
+        ${esc((COUNTRY_FLAGS[(e.country || '').trim()] || '') + ' ' + (e.company || ''))} ·
+        ${esc(e.otherSource || '')} ${Number(e.otherScore || 0).toFixed(1)}
+        (${Number(e.otherReviews || 0).toLocaleString()})
+        <button class="btn sm" style="margin-left:8px;padding:1px 8px;font-size:.72rem"
+          onclick="dropExtraSource('${key.replace(/'/g, "\\'")}')">✕</button>
+      </span>`).join('') + '</div>';
 }
 
 /* Every company currently in the book, country first so the list reads in the
@@ -1893,6 +2115,8 @@ function refreshAfterEdit() {
   populateCountrySelects();
   populateRemoveSelect();
   renderRemovedList();
+  populateSourceSelect();
+  renderSourceList();
   applyFilters();
   updateStats();
   renderNewCompanies();
@@ -2160,7 +2384,7 @@ function renderTable() {
   const tbody = document.getElementById('tableBody');
 
   if (page.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="12"><div class="empty-state"><div class="icon">🔍</div><div>${T('res.nomatch')}</div></div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="13"><div class="empty-state"><div class="icon">🔍</div><div>${T('res.nomatch')}</div></div></td></tr>`;
     renderPagination();
     return;
   }
@@ -2172,11 +2396,15 @@ function renderTable() {
     // Source link: prefer Trustpilot (its profile link is reliable); use the
     // Google Maps place only when the company is NOT on Trustpilot; otherwise a
     // manual link or nothing. No name-based Maps search (it lands on wrong places).
-    const sourceLink =
-        c.tpUrl  ? `<a href="${c.tpUrl}" target="_blank" style="color:var(--accent);font-size:11px" title="This company's Trustpilot profile">⭐ Trustpilot</a>` :
-        c.gUrl   ? `<a href="${c.gUrl}" target="_blank" style="color:var(--muted);font-size:11px" title="This company's Google Maps place">📍 Google Maps</a>` :
-        c.link   ? `<a href="${c.link}" target="_blank" style="color:var(--accent);font-size:11px">🔗 Source</a>` :
-        `<span class="no-data" title="No Trustpilot or Google Maps listing found">🚫 ${T('res.nosource')}</span>`;
+    // Trustpilot and Google already have their own score columns, so this column
+    // carries the other sources of information — the third platform brought in to
+    // even up a company that only one of the two had rated.
+    const sourceLink = (c.otherScore || 0) > 0
+      ? (c.otherUrl
+          ? `<a href="${c.otherUrl}" target="_blank" rel="noopener" style="color:var(--accent);font-size:11px"
+               title="${esc(c.otherSource || '')} ${Number(c.otherScore).toFixed(1)} · ${(c.otherReviews || 0).toLocaleString()}">🔗 ${esc(c.otherSource || T('res.other'))}</a>`
+          : `<span style="font-size:11px;color:var(--text-muted)">${esc(c.otherSource || '')} ${Number(c.otherScore).toFixed(1)}</span>`)
+      : `<span class="no-data" title="${esc(T('src.addhint'))}">—</span>`;
 
     return `<tr>
       <td><span class="country-flag">${flag}</span>${c.country.trim()}</td>
@@ -2197,6 +2425,9 @@ function renderTable() {
       <td><span class="score-val ${scoreColor(c.pondScore)}" style="font-size:15px;font-weight:800">${c.pondScore > 0 ? c.pondScore.toFixed(2) : '—'}</span></td>
       <td><span class="score-val ${scoreColor(c.avgScore)}">${c.avgScore > 0 ? c.avgScore.toFixed(2) : '—'}</span></td>
       <td>${fmtNum(c.totalOpinions)}</td>
+      <td><span class="badge ${isThin(c) ? 'badge-thin' : (sourceCount(c) ? 'badge-full' : '')}"
+            title="${esc(sourcesOf(c).map(x => x.name + ' ' + x.score.toFixed(1) + ' (' + (x.n||0).toLocaleString() + ')').join(' · ') || T('src.none'))}"
+            >${sourceCount(c)} ${esc(sourceCount(c) === 1 ? T('src.one') : T('src.many'))}</span></td>
       <td style="font-size:11px;color:var(--muted)">${c.date || '—'}</td>
       <td>${c.group ? `<span class="badge badge-group">${c.group}</span>` : '<span class="no-data">—</span>'}</td>
       <td>${sourceLink}</td>
@@ -2450,7 +2681,7 @@ function downloadExcel(type) {
 
 function exportToXLSX(sheets, filename) {
   const wb = XLSX.utils.book_new();
-  const headers = ['COUNTRY','COMPANY','COMPANY WEBSITE','Type of Operation','Focus','Trustpilot Score','Trustpilot Reviews','Google Score','Google Reviews','Ponderated Score','Average Score','Number of Opinions','Date','Group','Source Link','Underwriter'];
+  const headers = ['COUNTRY','COMPANY','COMPANY WEBSITE','Type of Operation','Focus','Trustpilot Score','Trustpilot Reviews','Google Score','Google Reviews','Ponderated Score','Average Score','Number of Opinions','Sources','Other Source','Other Score','Other Reviews','Date','Group','Source Link','Underwriter'];
 
   sheets.forEach(({ name, data }) => {
     const rows = [headers, ...data.map(c => [
@@ -2459,7 +2690,9 @@ function exportToXLSX(sheets, filename) {
       c.tpScore || '', c.tpReviews || '',
       c.gScore || '', c.gReviews || '',
       c.pondScore || '', c.avgScore || '',
-      c.totalOpinions || '', c.date, c.group, c.link, c.underwriter
+      c.totalOpinions || '', sourceCount(c),
+      c.otherSource || '', c.otherScore || '', c.otherReviews || '',
+      c.date, c.group, c.otherUrl || '', c.underwriter
     ])];
 
     const ws = XLSX.utils.aoa_to_sheet(rows);

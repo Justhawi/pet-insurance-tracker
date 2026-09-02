@@ -412,11 +412,36 @@ def tp_profile_belongs_to(tp_url, website):
         return True
     return False
 
-def calc(tp_s, tp_r, g_s, g_r):
-    total = tp_r + g_r
-    pond  = round((tp_s*tp_r + g_s*g_r)/total, 2) if total else 0.0
-    avg   = round((tp_s+g_s)/2, 2) if tp_s and g_s else (tp_s or g_s or 0.0)
+def calc(tp_s, tp_r, g_s, g_r, o_s=0.0, o_r=0):
+    """Weight every platform by the reviews it holds.
+
+    The third slot is the source the office enters by hand for a company that
+    only one of Trustpilot and Google rates - without it, a one-platform score
+    competes with two-platform scores on unequal evidence. It carries no weight
+    unless both a score and a review count were entered."""
+    o_s = float(o_s or 0.0); o_r = int(o_r or 0)
+    if not (o_s > 0 and o_r > 0):
+        o_s, o_r = 0.0, 0
+    total = tp_r + g_r + o_r
+    pond  = round((tp_s*tp_r + g_s*g_r + o_s*o_r)/total, 2) if total else 0.0
+    have  = [x for x in (tp_s, g_s, o_s) if x]
+    avg   = round(sum(have)/len(have), 2) if have else 0.0
     return pond, avg, total
+
+
+# The hand-entered third source travels with the company row. The run rebuilds
+# every row from the seed list, so without carrying these across they would be
+# wiped on the first refresh after they were committed.
+EXTRA_SOURCE_FIELDS = ("otherSource", "otherScore", "otherReviews", "otherUrl")
+
+
+def carry_extra_source(new_row, old_row):
+    """Copy a company's hand-entered source from the previous run onto this one."""
+    for k in EXTRA_SOURCE_FIELDS:
+        v = (old_row or {}).get(k)
+        if v not in (None, "", 0):
+            new_row[k] = v
+    return new_row
 
 def accept_consent(page):
     for sel in [
@@ -1274,8 +1299,10 @@ def _finalize(c, tp_res, g_res, old, today):
         ps = old.get("gScore", 0) or 0; pr = old.get("gReviews", 0) or 0
         if ps > 0: g_status, g_s, g_r, g_url = "ok", ps, pr, (old.get("gUrl", "") or "")
         else: g_status, g_s, g_r, g_url = "error", 0.0, 0, ""
-    pond, avg, total = calc(tp_s, tp_r, g_s, g_r)
-    return ({**c, "tpScore": tp_s, "tpReviews": tp_r, "gScore": g_s, "gReviews": g_r,
+    row = carry_extra_source({**c}, old)
+    pond, avg, total = calc(tp_s, tp_r, g_s, g_r,
+                            row.get("otherScore", 0), row.get("otherReviews", 0))
+    return ({**row, "tpScore": tp_s, "tpReviews": tp_r, "gScore": g_s, "gReviews": g_r,
              "tpStatus": tp_status, "gStatus": g_status, "tpUrl": tp_url, "gUrl": g_url,
              "pondScore": pond, "avgScore": avg, "totalOpinions": total, "date": today},
             tp_status, g_status)
@@ -1560,10 +1587,15 @@ def run_fetch(companies=None, progress_cb=None, discover=True, use_browser=True,
                     gm_fail += 1
                 time.sleep(random.uniform(0.2, 0.4))
 
-                pond, avg, total = calc(tp_s, tp_r, g_s, g_r)
+                row = carry_extra_source({**c}, prev.get(c.get("company", ""), {}))
+                pond, avg, total = calc(tp_s, tp_r, g_s, g_r,
+                                        row.get("otherScore", 0), row.get("otherReviews", 0))
+                if row.get("otherScore"):
+                    log(f"         ＋ {row.get('otherSource')} {row.get('otherScore')} / "
+                        f"{int(row.get('otherReviews') or 0):,} (entered by hand)")
                 log(f"         📊 Pond={pond}  Avg={avg}  Total={total:,}")
 
-                results.append({**c,
+                results.append({**row,
                     "tpScore": tp_s,   "tpReviews": tp_r,
                     "gScore":  g_s,    "gReviews":  g_r,
                     "tpStatus": tp_status, "gStatus": g_status,
@@ -1621,8 +1653,10 @@ def run_fetch(companies=None, progress_cb=None, discover=True, use_browser=True,
             if tp_status == "ok" and tp_s > 0: tp_ok += 1
             else: tp_fail += 1
 
-            pond, avg, total = calc(tp_s, tp_r, g_s, g_r)
-            results.append({**c,
+            row = carry_extra_source({**c}, old)
+            pond, avg, total = calc(tp_s, tp_r, g_s, g_r,
+                                    row.get("otherScore", 0), row.get("otherReviews", 0))
+            results.append({**row,
                 "tpScore": tp_s,   "tpReviews": tp_r,
                 "gScore":  g_s,    "gReviews":  g_r,
                 "tpStatus": tp_status, "gStatus": g_status,
