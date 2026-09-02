@@ -1553,8 +1553,9 @@ const GENERALIST_DOMAINS = new Set([
    has ever saved the book locally would otherwise hand them back on load, so
    they are refused here too. Same list as STRUCK_OFF_DOMAINS in fetch_live_data.py.
      gopetplan.com                     — the US Petplan brand no longer trades
-     petinsurance.sainsburysbank.co.uk — a UK bank, not a pet insurer */
-const STRUCK_OFF_DOMAINS = new Set(['gopetplan.com', 'petinsurance.sainsburysbank.co.uk']);
+     petinsurance.sainsburysbank.co.uk — a UK bank, not a pet insurer
+     bivvy.com                         — no longer trading */
+const STRUCK_OFF_DOMAINS = new Set(['gopetplan.com', 'petinsurance.sainsburysbank.co.uk', 'bivvy.com']);
 function isStruckOff(c) {
   if (STRUCK_OFF_DOMAINS.has(siteDomain(c))) return true;
   const m = /\/review\/([^/?#]+)/.exec(String((c && (c.tpUrl || c.link)) || ''));

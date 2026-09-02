@@ -57,6 +57,34 @@ MANUAL_G_URL = {
         "@47.2094266,-1.6016949,820m/data=!3m1!1e3!4m6!3m5"
         "!1s0x4805edbbeec521b3:0xd1c38820bde09a43"
         "!8m2!3d47.2094266!4d-1.5991146!16s%2Fg%2F11twg63s8j",
+    # Santévet Germany — the German arm has its own Frankfurt listing; the
+    # auto search kept landing on the French parent in Lyon.
+    "Santevet Germany":
+        "https://www.google.com/maps/place/Sant%C3%A9vet/"
+        "@50.1211377,8.4714171,49542m/data=!3m2!1e3!4b1!4m6!3m5"
+        "!1s0x4194bc43456b9f0b:0x819d87fbc8509bb2"
+        "!8m2!3d50.1212548!4d8.6365638!16s%2Fg%2F11vkv5rdk3",
+    # Bulle Bleue (France) — Villeneuve-d'Ascq listing.
+    "Bulle Bleue":
+        "https://www.google.com/maps/place/Bulle+Bleue/"
+        "@50.6070259,3.1550007,766m/data=!3m2!1e3!4b1!4m6!3m5"
+        "!1s0x47c2d7cb764446fd:0xcd2bde2818f923da"
+        "!8m2!3d50.6070259!4d3.157581!16s%2Fg%2F11hz5_733y",
+    # Uelzener Versicherungen (Germany) — the Uelzen head office.
+    "Uelzener Versicherungen":
+        "https://www.google.com/maps/place/Uelzener+Versicherungen/"
+        "@52.9599666,10.553452,727m/data=!3m3!1e3!4b1"
+        "!5s0x47ae2b7e0fd697d1:0x651e842233280a87!4m6!3m5"
+        "!1s0x47ae2b7e11df47f5:0x4da8fcb22edf1ac4"
+        "!8m2!3d52.9599666!4d10.5560323!16s%2Fg%2F1tgq5pmd",
+    # Barmenia's Dogprotect24 division — Luis asked for the same Köln listing
+    # as the Vetprotect24 row above. The two rows therefore report the same
+    # Google reviews; see the note in the tracker's guide.
+    "Dogprotect24 Spezialabteilung der Barmenia Tierversicherung":
+        "https://www.google.com/maps/place/Vetprotect24/"
+        "@50.9134937,6.9384617,761m/data=!3m2!1e3!4b1!4m6!3m5"
+        "!1s0x47bf27241363b759:0x68bdb4fba91c9751"
+        "!8m2!3d50.9134937!4d6.941042!16s%2Fg%2F11s9xr714h",
     # Vetprotect24 / Dogprotect24 / Catprotect24 (Germany) — one company under
     # three brands; the Köln listing trades as Vetprotect24, which is why a
     # search on dogprotect24.de found nothing.
@@ -879,10 +907,12 @@ NOT_A_PET_INSURER = {
 # exclusion has to live here rather than in a one-off edit of the JSON.
 #   gopetplan.com                     — the US Petplan brand no longer trades
 #   petinsurance.sainsburysbank.co.uk — a UK generalist bank, not a pet insurer
+#   bivvy.com                         — no longer trading
 # Matched on the registered domain: the display name on Trustpilot changes.
 STRUCK_OFF_DOMAINS = {
     "gopetplan.com",
     "petinsurance.sainsburysbank.co.uk",
+    "bivvy.com",                       # no longer trading
 }
 
 
