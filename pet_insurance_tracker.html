@@ -258,6 +258,10 @@ td:nth-child(9){white-space:nowrap}
 .badge-op-full{background:var(--surface-2);color:var(--pp-purple);border-color:var(--border-strong)}
 html[data-theme="dark"] .badge-op-full{color:var(--series-4)}
 .badge-group{background:var(--warning-bg);color:var(--warning-ink)}
+/* Pet specialist vs generalist insurer. The generalist reads as the quieter of
+   the two: it is the row that sits out of the rankings. */
+.badge-petonly{background:var(--good-bg);color:var(--good-ink);border-color:transparent}
+.badge-generalist{background:var(--surface-2);color:var(--text-muted);border-color:var(--border-strong)}
 .badge-new{background:var(--good-bg);color:var(--good-ink);font-size:.62rem;padding:1px 6px}
 .country-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
 .pill{padding:4px 12px;border-radius:var(--radius-pill);font-size:.76rem;font-weight:600;cursor:pointer;
@@ -544,7 +548,7 @@ html[data-theme="dark"] .badge-op-full{color:var(--series-4)}
         <div class="grid two">
           <div class="card">
             <div class="card-head"><h2 data-i18n="ov.weak.title">Lowest rated — worth watching</h2></div>
-            <p data-i18n="ov.weak.note">Companies whose combined reputation sits below the market. Useful when studying who is losing ground.</p>
+            <p data-i18n="ov.weak.note">Pet specialists with at least 1,000 opinions whose combined reputation sits below the market. Generalist insurers are not ranked here. Useful when studying who is losing ground.</p>
             <ol class="rank" id="ovWeak"></ol>
           </div>
           <div class="card">
@@ -580,6 +584,14 @@ html[data-theme="dark"] .badge-op-full{color:var(--series-4)}
                 <option value="" data-i18n="tr.type.all">All types</option>
                 <option value="Only Sale">Only Sale</option>
                 <option value="Full Service">Full Service</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <span class="filter-label" data-i18n="tr.focus">Focus:</span>
+              <select id="focusFilter" onchange="applyFilters()">
+                <option value="" data-i18n="tr.focus.all">Pet and generalist</option>
+                <option value="pet" data-i18n="focus.pet">Pet only</option>
+                <option value="generalist" data-i18n="focus.gen">Generalist</option>
               </select>
             </div>
             <div class="filter-group">
@@ -621,6 +633,7 @@ html[data-theme="dark"] .badge-op-full{color:var(--series-4)}
                   <th onclick="sortBy('country')" data-i18n="th.country">Country <span class="sort-icon">↕</span></th>
                   <th onclick="sortBy('company')" data-i18n="th.company">Company <span class="sort-icon">↕</span></th>
                   <th data-i18n="th.type">Type</th>
+                  <th data-i18n="th.focus">Focus</th>
                   <th onclick="sortBy('tpScore')" data-i18n="th.tp">Trustpilot <span class="sort-icon">↕</span></th>
                   <th onclick="sortBy('gScore')" data-i18n="th.g">Google Maps <span class="sort-icon">↕</span></th>
                   <th onclick="sortBy('pondScore')" data-i18n="th.pond">Ponderated ↕</th>
@@ -788,7 +801,7 @@ html[data-theme="dark"] .badge-op-full{color:var(--series-4)}
         <div class="grid split">
           <div class="card">
             <div class="card-head"><h2 data-i18n="gr.top.title">Best rated companies</h2></div>
-            <p data-i18n="gr.top.note">Ponderated score, and the number of reviews behind it. Bar colour is the country.</p>
+            <p data-i18n="gr.top.note">Pet specialists with at least 1,000 opinions; generalist insurers are not ranked. Bar colour is the country; the grey figure is the review count.</p>
             <div class="chart" id="chTop"></div>
           </div>
           <div class="card">
@@ -800,19 +813,19 @@ html[data-theme="dark"] .badge-op-full{color:var(--series-4)}
 
         <div class="card">
           <div class="card-head"><h2 data-i18n="gr.pp.title">Petplan against its market</h2></div>
-          <p data-i18n="gr.pp.note">Each Petplan entry, the best rated company in the same country, and that country's average.</p>
+          <p data-i18n="gr.pp.note">Each Petplan entry, the best rated pet specialist in the same country, and that country's average.</p>
           <div class="chart" id="chPetplan"></div>
         </div>
 
         <div class="grid split">
           <div class="card">
             <div class="card-head"><h2 data-i18n="gr.loud.title">Who has the loudest voice</h2></div>
-            <p data-i18n="gr.loud.note">Companies with the most reviews behind their score.</p>
+            <p data-i18n="gr.loud.note">Pet specialists with the most reviews behind their score.</p>
             <div class="chart" id="chLoudest"></div>
           </div>
           <div class="card">
             <div class="card-head"><h2 data-i18n="gr.country.title">Average score by country</h2></div>
-            <p data-i18n="gr.country.note">Markets with at least three rated companies, against the average of the whole book.</p>
+            <p data-i18n="gr.country.note">Markets with at least three rated pet specialists, against the average of all of them. Generalist insurers are left out.</p>
             <div class="chart" id="chCountry"></div>
           </div>
         </div>
@@ -833,6 +846,7 @@ html[data-theme="dark"] .badge-op-full{color:var(--series-4)}
               <li><strong data-i18n="gd.pond">Ponderated score</strong> — <span data-i18n="gd.pond.d">each platform weighted by its number of reviews. This is the fair one: it does not let a handful of five-star reviews outweigh thousands.</span></li>
               <li><strong data-i18n="gd.avg">Average score</strong> — <span data-i18n="gd.avg.d">the plain mean of Trustpilot and Google. Easy to explain, but blind to volume.</span></li>
               <li><strong data-i18n="gd.op">Opinions</strong> — <span data-i18n="gd.op.d">total reviews behind the score. Below a few hundred, treat the score as an indication rather than a verdict.</span></li>
+              <li><strong data-i18n="gd.who">Who gets ranked</strong> — <span data-i18n="gd.who.d">pet insurance specialists with at least 1,000 opinions. Generalist insurers stay in the tracker and the exports, marked Generalist in the Focus column, but they are not ranked: their reviews are mostly about motor, home and health policies, so a score against a pet specialist would not be the same measurement.</span></li>
             </ol>
           </div>
           <div class="card">
@@ -906,16 +920,16 @@ const I18N = {
     'nav.overview':'Overview','nav.tracker':'Tracker','nav.new':'New companies',
     'nav.add':'Add company','nav.download':'Download','nav.graphs':'Graphs','nav.guide':'Guide',
     'gr.title':'The book in pictures','gr.sub':'Every chart is drawn from the companies currently loaded',
-    'gr.top.title':'Best rated companies','gr.top.note':'Companies with at least 1,000 opinions. Bar colour is the country; the grey figure is the review count.',
+    'gr.top.title':'Best rated companies','gr.top.note':'Pet specialists with at least 1,000 opinions; generalist insurers are not ranked. Bar colour is the country; the grey figure is the review count.',
     'gr.top.foot':'A 4.90 from 180 people is not the same claim as a 4.90 from 3,149, so thinner evidence is left out of the ranking.',
     'gr.pie.title':'Where the book is','gr.pie.note':'Share of tracked companies by country.',
-    'gr.loud.title':'Who has the loudest voice','gr.loud.note':'Companies with the most reviews behind their score.',
+    'gr.loud.title':'Who has the loudest voice','gr.loud.note':'Pet specialists with the most reviews behind their score.',
     'gr.loud.foot':'Review volume is a rough proxy for how many customers a brand is reaching.',
     'gr.leader':'Best in market','gr.other':'Other countries',
     'gr.country.title':'Average score by country',
-    'gr.country.note':'Markets with at least three rated companies, against the average of the whole book.',
+    'gr.country.note':'Markets with at least three rated pet specialists, against the average of all of them. Generalist insurers are left out.',
     'gr.dist.title':'Where the scores sit','gr.dist.note':'How many companies fall in each half-point band of ponderated score.',
-    'gr.pp.title':'Petplan against its market','gr.pp.note':"Each Petplan entry, the best rated company in the same country, and that country's average.",
+    'gr.pp.title':'Petplan against its market','gr.pp.note':"Each Petplan entry, the best rated pet specialist in the same country, and that country's average.",
     'gr.vol.title':'Score against review volume','gr.vol.note':'A high score on a handful of reviews is not the same claim as one on thousands. The volume axis is logarithmic.',
     'gr.src.title':'Trustpilot against Google','gr.src.note':'Companies rated on both. Points below the line score worse on Google than on Trustpilot.',
     'gr.companies':'companies','gr.market':'Market average','gr.petplan':'Petplan','gr.others':'Other companies',
@@ -932,10 +946,10 @@ const I18N = {
     'kpi.top':'Top rated','kpi.top.sub':'by ponderated score',
     'kpi.new':'Newly discovered','kpi.new.sub':'companies found online','kpi.new.none':'none in the last run',
     'ov.top.title':'Best rated companies','ov.top.chip':'Ponderated score',
-    'ov.top.note':'Companies with at least 1,000 opinions across Trustpilot and Google. The ponderated score weights each platform by how many reviews it holds, so a 4.9 from 40 people does not outrank a 4.7 from 12,000.',
+    'ov.top.note':'Pet insurance specialists with at least 1,000 opinions across Trustpilot and Google. Generalist insurers stay in the tracker but are not ranked. The ponderated score weights each platform by how many reviews it holds, so a 4.9 from 40 people does not outrank a 4.7 from 12,000.',
     'ov.country.title':'Companies by country',
     'ov.weak.title':'Lowest rated — worth watching',
-    'ov.weak.note':'Companies with at least 1,000 opinions whose combined reputation sits below the market. Useful when studying who is losing ground.',
+    'ov.weak.note':'Pet specialists with at least 1,000 opinions whose combined reputation sits below the market. Generalist insurers are not ranked here. Useful when studying who is losing ground.',
     'ov.data.title':'Where these numbers come from',
     'ov.data.note':"Trustpilot and Google Maps, read directly from each company's public profile. Google is refreshed live from this site; Trustpilot is a snapshot taken from the office PC, because Trustpilot blocks data-centre traffic.",
     'tr.title':'The book','tr.sub':'Every company being tracked, with both scores side by side',
@@ -945,6 +959,11 @@ const I18N = {
     'tr.sort.g':'Google score ↓','tr.sort.op':'Total reviews ↓','tr.sort.tpr':'Trustpilot reviews ↓',
     'tr.sort.az':'Company A–Z','tr.sort.cz':'Country A–Z','tr.sort.date':'Date (newest)',
     'th.country':'Country','th.company':'Company','th.type':'Type','th.tp':'Trustpilot','th.g':'Google Maps',
+    'th.focus':'Focus',
+    'tr.focus':'Focus:','tr.focus.all':'Pet and generalist',
+    'focus.pet':'Pet only','focus.gen':'Generalist',
+    'focus.pet.hint':'Pet insurance specialist. Ranked.',
+    'focus.gen.hint':'Generalist insurer: pet cover is one line among many, so its reviews are mostly about other policies. Kept in the book, left out of the rankings.',
     'th.pond':'Ponderated','th.avg':'Average','th.op':'Opinions','th.date':'Date','th.group':'Group','th.source':'Source / link',
     'nc.title':'Recently discovered companies','nc.sub':'Emerging insurers found online, not yet part of the core book',
     'nc.found':'Found online','nc.note':'Companies discovered on Trustpilot with a meaningful number of reviews. Check one before adding it to the book.',
@@ -975,6 +994,7 @@ const I18N = {
     'gd.pond.d':'each platform weighted by its number of reviews. This is the fair one: it does not let a handful of five-star reviews outweigh thousands.',
     'gd.avg':'Average score','gd.avg.d':'the plain mean of Trustpilot and Google. Easy to explain, but blind to volume.',
     'gd.op':'Opinions','gd.op.d':'total reviews behind the score. Below a few hundred, treat the score as an indication rather than a verdict.',
+    'gd.who':'Who gets ranked','gd.who.d':'pet insurance specialists with at least 1,000 opinions. Generalist insurers stay in the tracker and the exports, marked Generalist in the Focus column, but they are not ranked: their reviews are mostly about motor, home and health policies, so a score against a pet specialist would not be the same measurement.',
     'gd.fresh':'Freshness','gd.g.d':'refreshed live from this site through the Places API when a key is configured.',
     'gd.tp.d':'a snapshot published from the office PC. Trustpilot blocks data-centre traffic, so it is never overwritten with a blocked read.',
     'gd.refresh':'Refresh','gd.refresh.d':'the button on Overview asks the server to re-check. On the free Render plan the service sleeps after inactivity; the first load after that takes a moment.',
@@ -998,16 +1018,16 @@ const I18N = {
     'nav.overview':'Resumen','nav.tracker':'Seguimiento','nav.new':'Nuevas compañías',
     'nav.add':'Añadir compañía','nav.download':'Descargas','nav.graphs':'Gráficos','nav.guide':'Guía',
     'gr.title':'La cartera en imágenes','gr.sub':'Cada gráfico se dibuja con las compañías cargadas ahora mismo',
-    'gr.top.title':'Compañías mejor valoradas','gr.top.note':'Compañías con al menos 1.000 opiniones. El color es el país; la cifra gris son las opiniones.',
+    'gr.top.title':'Compañías mejor valoradas','gr.top.note':'Especialistas en mascotas con al menos 1.000 opiniones; las generalistas no entran. El color es el país; la cifra gris son las opiniones.',
     'gr.top.foot':'Un 4,90 de 180 personas no dice lo mismo que un 4,90 de 3.149, así que las pruebas más débiles quedan fuera del ranking.',
     'gr.pie.title':'Dónde está la cartera','gr.pie.note':'Reparto de compañías seguidas por país.',
-    'gr.loud.title':'Quién tiene más voz','gr.loud.note':'Compañías con más opiniones detrás de su nota.',
+    'gr.loud.title':'Quién tiene más voz','gr.loud.note':'Especialistas en mascotas con más opiniones detrás de su nota.',
     'gr.loud.foot':'El volumen de opiniones es una aproximación a cuántos clientes alcanza una marca.',
     'gr.leader':'Mejor del mercado','gr.other':'Otros países',
     'gr.country.title':'Nota media por país',
-    'gr.country.note':'Mercados con al menos tres compañías puntuadas, frente a la media de toda la cartera.',
+    'gr.country.note':'Mercados con al menos tres especialistas en mascotas puntuados, frente a la media de todos ellos. Las generalistas quedan fuera.',
     'gr.dist.title':'Dónde se sitúan las notas','gr.dist.note':'Cuántas compañías caen en cada franja de medio punto de nota ponderada.',
-    'gr.pp.title':'Petplan frente a su mercado','gr.pp.note':'Cada entrada de Petplan, la compañía mejor valorada del mismo país y la media de ese país.',
+    'gr.pp.title':'Petplan frente a su mercado','gr.pp.note':'Cada entrada de Petplan, el especialista en mascotas mejor valorado del mismo país y la media de ese país.',
     'gr.vol.title':'Nota frente a volumen de opiniones','gr.vol.note':'Un 5 con veinte opiniones no dice lo mismo que un 4,7 con miles. El eje de volumen es logarítmico.',
     'gr.src.title':'Trustpilot frente a Google','gr.src.note':'Compañías puntuadas en ambas. Los puntos por debajo de la línea puntúan peor en Google que en Trustpilot.',
     'gr.companies':'compañías','gr.market':'Media del mercado','gr.petplan':'Petplan','gr.others':'Otras compañías',
@@ -1024,10 +1044,10 @@ const I18N = {
     'kpi.top':'Mejor valorada','kpi.top.sub':'por nota ponderada',
     'kpi.new':'Recién descubiertas','kpi.new.sub':'compañías encontradas en línea','kpi.new.none':'ninguna en la última ronda',
     'ov.top.title':'Compañías mejor valoradas','ov.top.chip':'Nota ponderada',
-    'ov.top.note':'Compañías con al menos 1.000 opiniones entre Trustpilot y Google. La nota ponderada pesa cada plataforma por el número de opiniones: un 4,9 de 40 personas no adelanta a un 4,7 de 12.000.',
+    'ov.top.note':'Especialistas en mascotas con al menos 1.000 opiniones entre Trustpilot y Google. Las aseguradoras generalistas siguen en el seguimiento, pero no entran en los rankings. La nota ponderada pesa cada plataforma por el número de opiniones: un 4,9 de 40 personas no adelanta a un 4,7 de 12.000.',
     'ov.country.title':'Compañías por país',
     'ov.weak.title':'Peor valoradas — a vigilar',
-    'ov.weak.note':'Compañías con al menos 1.000 opiniones cuya reputación combinada queda por debajo del mercado. Útil para ver quién pierde terreno.',
+    'ov.weak.note':'Especialistas en mascotas con al menos 1.000 opiniones cuya reputación combinada queda por debajo del mercado. Las generalistas no se puntúan aquí. Útil para ver quién pierde terreno.',
     'ov.data.title':'De dónde salen estas cifras',
     'ov.data.note':'De Trustpilot y Google Maps, leídos del perfil público de cada compañía. Google se actualiza en vivo desde este sitio; Trustpilot es una foto tomada desde el PC de la oficina, porque bloquea el tráfico de centros de datos.',
     'tr.title':'La cartera','tr.sub':'Todas las compañías seguidas, con las dos notas una al lado de la otra',
@@ -1037,6 +1057,11 @@ const I18N = {
     'tr.sort.g':'Nota Google ↓','tr.sort.op':'Opiniones totales ↓','tr.sort.tpr':'Opiniones Trustpilot ↓',
     'tr.sort.az':'Compañía A–Z','tr.sort.cz':'País A–Z','tr.sort.date':'Fecha (más reciente)',
     'th.country':'País','th.company':'Compañía','th.type':'Tipo','th.tp':'Trustpilot','th.g':'Google Maps',
+    'th.focus':'Enfoque',
+    'tr.focus':'Enfoque:','tr.focus.all':'Mascotas y generalistas',
+    'focus.pet':'Solo mascotas','focus.gen':'Generalista',
+    'focus.pet.hint':'Especialista en seguros para mascotas. Entra en los rankings.',
+    'focus.gen.hint':'Aseguradora generalista: el seguro de mascotas es un ramo más, así que sus opiniones hablan sobre todo de otras pólizas. Se mantiene en el informe, pero fuera de los rankings.',
     'th.pond':'Ponderada','th.avg':'Media','th.op':'Opiniones','th.date':'Fecha','th.group':'Grupo','th.source':'Fuente / enlace',
     'nc.title':'Compañías descubiertas recientemente','nc.sub':'Aseguradoras emergentes encontradas en línea, aún fuera de la cartera',
     'nc.found':'Encontradas en línea','nc.note':'Compañías descubiertas en Trustpilot con un número relevante de opiniones. Revísalas antes de añadirlas.',
@@ -1067,6 +1092,7 @@ const I18N = {
     'gd.pond.d':'cada plataforma pesa según su número de opiniones. Es la justa: no deja que un puñado de cincos tape a miles de opiniones.',
     'gd.avg':'Nota media','gd.avg.d':'la media simple de Trustpilot y Google. Fácil de explicar, pero ciega al volumen.',
     'gd.op':'Opiniones','gd.op.d':'opiniones totales detrás de la nota. Por debajo de unos cientos, tómala como indicio, no como veredicto.',
+    'gd.who':'Quién entra en los rankings','gd.who.d':'los especialistas en seguros para mascotas con al menos 1.000 opiniones. Las aseguradoras generalistas siguen en el seguimiento y en las exportaciones, marcadas como Generalista en la columna Enfoque, pero no se puntúan: sus opiniones hablan sobre todo de auto, hogar y salud, así que compararlas con un especialista no mediría lo mismo.',
     'gd.fresh':'Actualidad','gd.g.d':'se actualiza en vivo desde este sitio con la API de Places cuando hay clave configurada.',
     'gd.tp.d':'una foto publicada desde el PC de la oficina. Trustpilot bloquea el tráfico de centros de datos, así que nunca se sobrescribe con una lectura bloqueada.',
     'gd.refresh':'Actualizar','gd.refresh.d':'el botón del Resumen pide al servidor que vuelva a comprobar. En el plan gratuito de Render el servicio se duerme tras un rato sin uso; la primera carga tarda un momento.',
@@ -1158,8 +1184,10 @@ function renderOverview() {
   if (!data.length) return;
 
   const rated = data.filter(c => (c.pondScore || 0) > 0);
-  // both rankings need enough opinions behind the score to mean anything
-  const eligible = rated.filter(c => (c.totalOpinions || 0) >= MIN_OPINIONS);
+  // Both rankings need enough opinions behind the score to mean anything, and
+  // both are pet specialists only — a generalist's reviews are mostly about its
+  // other policies, so ranking it here would compare two different things.
+  const eligible = rated.filter(c => (c.totalOpinions || 0) >= MIN_OPINIONS && !isGeneralist(c));
   const top = [...eligible].sort((a, b) => b.pondScore - a.pondScore).slice(0, 8);
   const weak = [...eligible].sort((a, b) => a.pondScore - b.pondScore).slice(0, 8);
 
@@ -1240,6 +1268,8 @@ function askAnswer(raw) {
   const country = askFindCountry(q);
   const inCountry = country ? data.filter(c => (c.country || '').trim() === country) : data;
   const rated = inCountry.filter(c => (c.pondScore || 0) > 0);
+  // Ranking answers follow the panels: pet specialists with enough opinions.
+  const rankable = petOnly(rated).filter(c => (c.totalOpinions || 0) >= MIN_OPINIONS);
   const es = LANG === 'es';
 
   // --- live data questions -------------------------------------------------
@@ -1254,14 +1284,14 @@ function askAnswer(raw) {
   }
 
   if (has('best', 'top', 'leader', 'mejor', 'lidera', 'líder', 'lider')) {
-    const top = [...rated].sort((a, b) => b.pondScore - a.pondScore).slice(0, 5);
+    const top = [...rankable].sort((a, b) => b.pondScore - a.pondScore).slice(0, 5);
     if (!top.length) return es ? 'Todavía no hay datos puntuados para responder eso.' : 'There is no rated data to answer that yet.';
     const list = top.map((c, i) => `${i + 1}. ${c.company} — <strong>${c.pondScore.toFixed(2)}</strong> (${(c.totalOpinions || 0).toLocaleString()} ${T('res.reviews')})`).join('<br>');
     return (es ? `Mejor valoradas${country ? ' en ' + country.trim() : ''} por nota ponderada:<br>` : `Best rated${country ? ' in ' + country.trim() : ''} by ponderated score:<br>`) + list;
   }
 
   if (has('worst', 'lowest', 'peor', 'peores', 'más baja', 'mas baja')) {
-    const bottom = [...rated].filter(c => (c.totalOpinions || 0) >= 100).sort((a, b) => a.pondScore - b.pondScore).slice(0, 5);
+    const bottom = [...rankable].sort((a, b) => a.pondScore - b.pondScore).slice(0, 5);
     if (!bottom.length) return es ? 'No hay suficientes opiniones para responder eso.' : 'There are not enough reviews to answer that.';
     const list = bottom.map((c, i) => `${i + 1}. ${c.company} — <strong>${c.pondScore.toFixed(2)}</strong> (${(c.totalOpinions || 0).toLocaleString()} ${T('res.reviews')})`).join('<br>');
     return (es ? `Peor valoradas${country ? ' en ' + country.trim() : ''} (mínimo 100 opiniones):<br>` : `Lowest rated${country ? ' in ' + country.trim() : ''} (100+ reviews):<br>`) + list;
@@ -1279,11 +1309,14 @@ function askAnswer(raw) {
   const named = data.find(c => c.company && q.includes(c.company.toLowerCase()));
   if (named) {
     return es
-      ? `<strong>${named.company}</strong> (${named.country.trim()}) — Trustpilot ${named.tpScore || '—'} de ${(named.tpReviews || 0).toLocaleString()} opiniones, Google ${named.gScore || '—'} de ${(named.gReviews || 0).toLocaleString()}. Nota ponderada <strong>${named.pondScore || '—'}</strong>, media ${named.avgScore || '—'}. Tipo: ${named.opType || '—'}${named.group ? ', grupo ' + named.group : ''}.`
-      : `<strong>${named.company}</strong> (${named.country.trim()}) — Trustpilot ${named.tpScore || '—'} from ${(named.tpReviews || 0).toLocaleString()} reviews, Google ${named.gScore || '—'} from ${(named.gReviews || 0).toLocaleString()}. Ponderated <strong>${named.pondScore || '—'}</strong>, average ${named.avgScore || '—'}. Type: ${named.opType || '—'}${named.group ? ', group ' + named.group : ''}.`;
+      ? `<strong>${named.company}</strong> (${named.country.trim()}) — Trustpilot ${named.tpScore || '—'} de ${(named.tpReviews || 0).toLocaleString()} opiniones, Google ${named.gScore || '—'} de ${(named.gReviews || 0).toLocaleString()}. Nota ponderada <strong>${named.pondScore || '—'}</strong>, media ${named.avgScore || '—'}. Tipo: ${named.opType || '—'}${named.group ? ', grupo ' + named.group : ''}.${isGeneralist(named) ? ' Es una aseguradora generalista, así que no entra en los rankings.' : ''}`
+      : `<strong>${named.company}</strong> (${named.country.trim()}) — Trustpilot ${named.tpScore || '—'} from ${(named.tpReviews || 0).toLocaleString()} reviews, Google ${named.gScore || '—'} from ${(named.gReviews || 0).toLocaleString()}. Ponderated <strong>${named.pondScore || '—'}</strong>, average ${named.avgScore || '—'}. Type: ${named.opType || '—'}${named.group ? ', group ' + named.group : ''}.${isGeneralist(named) ? ' It is a generalist insurer, so it is not ranked.' : ''}`;
   }
 
   // --- how the panel works -------------------------------------------------
+  if (has('generalist', 'generalista', 'not ranked', 'no aparece', 'why is', 'por qué no', 'porque no',
+          'ranked', 'ranking', 'rankings', 'quién entra', 'quien entra', 'pet only', 'solo mascotas'))
+    return T('gd.who') + ' — ' + T('gd.who.d');
   if (has('ponderated', 'ponderada', 'weighted', 'pondera')) return T('gd.pond') + ' — ' + T('gd.pond.d');
   if (has('average score', 'nota media', 'media simple')) return T('gd.avg') + ' — ' + T('gd.avg.d');
   if (has('trustpilot')) return 'Trustpilot — ' + T('gd.tp.d');
@@ -1442,8 +1475,29 @@ function chartTip() {
 /* A ranking is only worth reading when there is enough evidence behind the
    score, so every ranking needs this many Trustpilot + Google opinions. */
 const MIN_OPINIONS = 1000;
+
+/* Generalist insurers sell pet cover as one line among many, so their public
+   reviews are mostly about motor, home and health policies. They stay in the
+   book — the tracker, the exports, the country counts — because the comparison
+   is useful internally, but they are not ranked against pet specialists, which
+   would be comparing two different things. Matched on the registered domain
+   rather than the name: the name on Trustpilot varies by market. */
+const GENERALIST_DOMAINS = new Set([
+  'mapfre.es', 'santalucia.es', 'sanitas.es', 'lineadirecta.com', 'generali.es',
+  'axa.es', 'caser.es', 'verti.es', 'tuio.com', 'terranea.es', 'dkv.es',
+]);
+function siteDomain(c) {
+  const raw = ((c && (c.website || c.link)) || '').toLowerCase().trim();
+  if (!raw) return '';
+  return raw.replace(/^https?:\/\//, '').replace(/^www\./, '').split(/[/?#]/)[0];
+}
+function isGeneralist(c) { return GENERALIST_DOMAINS.has(siteDomain(c)); }
+function petOnly(list) { return (list || []).filter(c => !isGeneralist(c)); }
+
 function rated() { return (allData || []).filter(c => (c.pondScore || 0) > 0); }
-function ranked() { return rated().filter(c => (c.totalOpinions || 0) >= MIN_OPINIONS); }
+function ranked() {
+  return petOnly(rated()).filter(c => (c.totalOpinions || 0) >= MIN_OPINIONS);
+}
 function noData(el) { el.innerHTML = `<p class="no-data">${T('gr.none')}</p>`; }
 function shortName(n) { return n.length > 26 ? n.slice(0, 25) + '…' : n; }
 
@@ -1507,7 +1561,7 @@ function chTop(el) {
 
 /* ---- 3. most reviewed companies ------------------------------------------ */
 function chLoudest(el) {
-  const rows = (allData || []).filter(c => (c.totalOpinions || 0) > 0)
+  const rows = petOnly(allData || []).filter(c => (c.totalOpinions || 0) > 0)
     .sort((a, b) => b.totalOpinions - a.totalOpinions).slice(0, 10);
   if (!rows.length) return noData(el);
   const cc = countryColours(), c = chartInk();
@@ -1533,7 +1587,7 @@ function chPetplan(el) {
   if (!pp.length) return noData(el);
   const c = chartInk(), cc = countryColours();
   const rows = pp.map(p => {
-    const peers = rated().filter(x => x.country === p.country);
+    const peers = petOnly(rated()).filter(x => x.country === p.country);
     const sorted = [...peers].sort((a, b) => b.pondScore - a.pondScore);
     return {
       p, country: (p.country || '').trim(),
@@ -1574,12 +1628,12 @@ function chPetplan(el) {
 /* ---- 5. average score by country ----------------------------------------- */
 function chCountry(el) {
   const by = {};
-  rated().forEach(c => { const k = (c.country || '').trim(); (by[k] = by[k] || []).push(c); });
+  petOnly(rated()).forEach(c => { const k = (c.country || '').trim(); (by[k] = by[k] || []).push(c); });
   const rows = Object.entries(by).filter(([, v]) => v.length >= 3)
     .map(([k, v]) => ({ k, n: v.length, avg: v.reduce((s, c) => s + c.pondScore, 0) / v.length }))
     .sort((a, b) => b.avg - a.avg);
   if (!rows.length) return noData(el);
-  const all = rated(), mean = all.reduce((s, c) => s + c.pondScore, 0) / all.length;
+  const all = petOnly(rated()), mean = all.reduce((s, c) => s + c.pondScore, 0) / all.length;
   const c = chartInk(), cc = countryColours();
   const L = 118, R = 46, T_ = 8, rowH = 26, h = T_ + rows.length * rowH + 24;
   const w = Math.max(360, el.clientWidth || 460), pw = w - L - R;
@@ -1999,6 +2053,7 @@ function populateCountrySelects() {
 function applyFilters() {
   const search = document.getElementById('searchInput').value.toLowerCase();
   const opType = document.getElementById('opTypeFilter').value;
+  const focus = (document.getElementById('focusFilter') || {}).value || '';
   const group = document.getElementById('groupFilter').value;
   const minScore = parseFloat(document.getElementById('scoreFilter').value) || 0;
   const sortVal = document.getElementById('sortSelect').value;
@@ -2008,6 +2063,8 @@ function applyFilters() {
     if (activeCountry !== 'All' && c.country.trim() !== activeCountry) return false;
     if (search && !c.company.toLowerCase().includes(search) && !c.country.toLowerCase().includes(search)) return false;
     if (opType && c.opType !== opType) return false;
+    if (focus === 'pet' && isGeneralist(c)) return false;
+    if (focus === 'generalist' && !isGeneralist(c)) return false;
     if (group && c.group !== group) return false;
     if (minScore > 0 && c.pondScore < minScore) return false;
     return true;
@@ -2034,6 +2091,7 @@ function sortBy(field) {
 function resetFilters() {
   document.getElementById('searchInput').value = '';
   document.getElementById('opTypeFilter').value = '';
+  const ff = document.getElementById('focusFilter'); if (ff) ff.value = '';
   document.getElementById('groupFilter').value = '';
   document.getElementById('scoreFilter').value = '0';
   document.getElementById('sortSelect').value = 'pondScore-desc';
@@ -2089,7 +2147,7 @@ function renderTable() {
   const tbody = document.getElementById('tableBody');
 
   if (page.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="11"><div class="empty-state"><div class="icon">🔍</div><div>${T('res.nomatch')}</div></div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="12"><div class="empty-state"><div class="icon">🔍</div><div>${T('res.nomatch')}</div></div></td></tr>`;
     renderPagination();
     return;
   }
@@ -2116,6 +2174,9 @@ function renderTable() {
         ${website ? `<a href="${website}" target="_blank" class="company-website">🌐 ${c.website}</a>` : `<span class="no-data" style="font-size:10px">${T('res.nowebsite')}</span>`}
       </td>
       <td><span class="badge ${c.opType === 'Full Service' ? 'badge-op-full' : 'badge-op-sale'}">${c.opType || '—'}</span></td>
+      <td><span class="badge ${isGeneralist(c) ? 'badge-generalist' : 'badge-petonly'}"
+            title="${isGeneralist(c) ? esc(T('focus.gen.hint')) : esc(T('focus.pet.hint'))}"
+            >${isGeneralist(c) ? T('focus.gen') : T('focus.pet')}</span></td>
       <td><div style="cursor:${(c.tpUrl || (c.tpStatus !== 'not_listed' && c.website)) ? 'pointer' : 'default'}" onclick="openTrustpilot('${c.tpUrl || ''}','${c.website || ''}','${c.tpStatus || ''}')">
         ${fmtScore(c.tpScore, c.tpReviews, c.tpStatus, 'tp')}
       </div></td>
@@ -2193,7 +2254,11 @@ function updateStats() {
   const gActive = allData.filter(c => c.gScore > 0);
   const avgG = gActive.length ? (gActive.reduce((s,c) => s + c.gScore, 0) / gActive.length).toFixed(2) : '—';
 
-  const top = [...allData].sort((a,b) => b.pondScore - a.pondScore)[0];
+  // The tile is a ranking, so it obeys the same two rules as every other one:
+  // at least MIN_OPINIONS behind the score, and pet specialists only. It used to
+  // read straight off allData, which is how a 4.90 from 180 people held the
+  // headline spot.
+  const top = [...ranked()].sort((a,b) => b.pondScore - a.pondScore)[0];
   const newCount = allData.filter(c => c._auto_discovered === true).length;
 
   document.getElementById('stat-total').textContent = allData.length;
@@ -2372,11 +2437,12 @@ function downloadExcel(type) {
 
 function exportToXLSX(sheets, filename) {
   const wb = XLSX.utils.book_new();
-  const headers = ['COUNTRY','COMPANY','COMPANY WEBSITE','Type of Operation','Trustpilot Score','Trustpilot Reviews','Google Score','Google Reviews','Ponderated Score','Average Score','Number of Opinions','Date','Group','Source Link','Underwriter'];
+  const headers = ['COUNTRY','COMPANY','COMPANY WEBSITE','Type of Operation','Focus','Trustpilot Score','Trustpilot Reviews','Google Score','Google Reviews','Ponderated Score','Average Score','Number of Opinions','Date','Group','Source Link','Underwriter'];
 
   sheets.forEach(({ name, data }) => {
     const rows = [headers, ...data.map(c => [
       c.country, c.company, c.website, c.opType,
+      isGeneralist(c) ? 'Generalist' : 'Pet only',
       c.tpScore || '', c.tpReviews || '',
       c.gScore || '', c.gReviews || '',
       c.pondScore || '', c.avgScore || '',
