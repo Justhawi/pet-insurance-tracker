@@ -1014,7 +1014,7 @@ const I18N = {
     'nc.found':'Found online','nc.note':'Companies discovered on Trustpilot with a meaningful number of reviews. Check one before adding it to the book.',
     'nc.add.title':'Add a discovered company','nc.add.note':'Found a new pet insurance company? Add it here and it appears in the tracker straight away.',
     'nc.empty':'The last daily run found no insurer that is not already in the book.',
-    'nc.view':'View on Trustpilot ↗','nc.lastCheck':'Last checked','nc.how':'A company lands here when the daily run spots it on Trustpilot with 500+ reviews and it is not tracked yet.',
+    'nc.view':'View on Trustpilot ↗','nc.lastCheck':'Last checked','nc.how':'A company lands here when the daily run spots it on Trustpilot with 1,000+ reviews and it is not tracked yet — the same evidence floor the rankings use.',
     'ac.title':'Add or edit a company','ac.sub':'Entries added here are kept in this browser and included in every export',
     'ac.details':'Company details',
     'rc.title':'Remove a company',
@@ -1125,7 +1125,7 @@ const I18N = {
     'nc.found':'Encontradas en línea','nc.note':'Compañías descubiertas en Trustpilot con un número relevante de opiniones. Revísalas antes de añadirlas.',
     'nc.add.title':'Añadir una compañía descubierta','nc.add.note':'¿Has encontrado una compañía nueva? Añádela aquí y aparecerá en el seguimiento al momento.',
     'nc.empty':'La última ronda diaria no encontró ninguna aseguradora que no esté ya en la cartera.',
-    'nc.view':'Ver en Trustpilot ↗','nc.lastCheck':'Última comprobación','nc.how':'Una compañía aparece aquí cuando la ronda diaria la detecta en Trustpilot con más de 500 opiniones y aún no está en el seguimiento.',
+    'nc.view':'Ver en Trustpilot ↗','nc.lastCheck':'Última comprobación','nc.how':'Una compañía aparece aquí cuando la ronda diaria la detecta en Trustpilot con 1.000 o más opiniones y aún no está en el seguimiento: el mismo umbral que usan los rankings.',
     'ac.title':'Añadir o editar una compañía','ac.sub':'Lo añadido aquí se guarda en este navegador y entra en todas las exportaciones',
     'ac.details':'Datos de la compañía',
     'rc.title':'Eliminar una compañía',
@@ -2521,7 +2521,7 @@ function updateStats() {
 // NEW COMPANIES
 // ============================================================
 function renderNewCompanies() {
-  const newOnes = allData.filter(c => c._auto_discovered === true && (c.totalOpinions || 0) > 500).sort((a,b) => (b.totalOpinions || 0) - (a.totalOpinions || 0));
+  const newOnes = allData.filter(c => c._auto_discovered === true && (c.totalOpinions || 0) >= 1000).sort((a,b) => (b.totalOpinions || 0) - (a.totalOpinions || 0));
   const grid = document.getElementById('newCompanyGrid');
   if (newOnes.length === 0) {
     let asOf = '';

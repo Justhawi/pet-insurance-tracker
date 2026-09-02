@@ -932,7 +932,7 @@ def is_struck_off(company):
     return False
 
 
-def discover_emerging_companies(page, existing_results, min_opinions=500, max_pages=4,
+def discover_emerging_companies(page, existing_results, min_opinions=1000, max_pages=6,
                                 countries=None):
     """
     Sweep Trustpilot's pet-insurance category for companies we do not track yet.
@@ -960,11 +960,20 @@ def discover_emerging_companies(page, existing_results, min_opinions=500, max_pa
     base_url = "https://www.trustpilot.com/categories/pet_insurance_company"
 
     # (Trustpilot country code, the country label this tracker uses)
+    # Sixteen markets over three pages had run out of companies to find: the
+    # sweep was re-reading the same listings every day and reporting nothing new.
+    # These twelve markets are already in the book or hold a real pet-insurance
+    # category on Trustpilot, and the page depth is doubled, so the sweep reaches
+    # past the first screen of household names into the tail where the companies
+    # we do not track yet actually sit.
     ALL_MARKETS = [
         ("US", "USA"), ("GB", "UK"), ("ES", "Spain"), ("FR", "France"),
         ("DE", "Germany"), ("IT", "Italy"), ("SE", "Sweden"), ("NL", "Netherland"),
         ("BE", "Belgium"), ("DK", "Denmark "), ("NO", "Norway"), ("IE", "Ireland"),
         ("CH", "Switzerland"), ("AU", "Australia"), ("CA", "Canada"), ("NZ", "New Zealand"),
+        ("JP", "Japan"), ("ZA", "South Africa"), ("BR", "Brazil"), ("MX", "México"),
+        ("AR", "Argentina"), ("CL", "Chile"), ("CO", "Colombia"), ("PT", "Portugal"),
+        ("AT", "Austria"), ("PL", "Poland"), ("FI", "Finland"), ("CZ", "Czech Republic"),
     ]
     markets = countries if countries is not None else ALL_MARKETS
 
@@ -1281,7 +1290,7 @@ def fetch_trustpilot_http(company_name, website):
         return "not_listed", 0.0, 0, ""   # genuinely no profile
     return "error", 0.0, 0, ""
 
-def discover_emerging_companies_http(existing_results, min_opinions=501, max_pages=4):
+def discover_emerging_companies_http(existing_results, min_opinions=1000, max_pages=6):
     """Browser-free version of emerging-company discovery (Trustpilot category)."""
     log(f"\n🔍 Discovering emerging companies online (> {min_opinions-1} reviews)…")
     known = _known_names()
@@ -1654,7 +1663,7 @@ def run_fetch(companies=None, progress_cb=None, discover=True, use_browser=True,
             if discover:
                 try:
                     emerging = discover_emerging_companies(
-                        disc_page, results, min_opinions=501, max_pages=3
+                        disc_page, results, min_opinions=1000, max_pages=6
                     )
                 except Exception as e:
                     emerging = []
