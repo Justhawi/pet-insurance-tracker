@@ -246,12 +246,16 @@
     "gStatus": "not_listed",
     "tpUrl": "",
     "gUrl": "",
-    "pondScore": 0.0,
-    "avgScore": 0.0,
-    "totalOpinions": 0,
+    "pondScore": 4.6,
+    "avgScore": 4.6,
+    "totalOpinions": 46,
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
-    "gDate": "2026-09-01"
+    "gDate": "2026-09-01",
+    "otherSource": "ProductReview.com.au",
+    "otherScore": 4.6,
+    "otherReviews": 46,
+    "otherUrl": "https://www.productreview.com.au/listings/buddy-pet-insurance"
   },
   {
     "country": "South Africa",
