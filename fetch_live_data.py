@@ -50,6 +50,18 @@ MANUAL_TP_URL = {
 # Force the Google Maps listing URL (navigate directly, skip search).
 # Use the canonical /maps/place/.../data=... URL for a specific place.
 MANUAL_G_URL = {
+    # Japan — Trustpilot is not used there and the Places search cannot match an
+    # English name against a Japanese listing, so these four were reading as
+    # "not on Google Maps" while holding real Google reviews under their
+    # registered Japanese names.
+    "ipet Insurance":
+        "https://www.google.com/maps/place/%E7%AC%AC%E4%B8%80%E3%82%A2%E3%82%A4%E3%83%9A%E3%83%83%E3%83%88%E6%90%8D%E5%AE%B3%E4%BF%9D%E9%99%BA%E3%88%B1/@35.6505456,139.7976429,17z/data=!3m1!4b1!4m6!3m5!1s0x60188b9a4cd32501:0xecc724cfc108521f!8m2!3d35.6505456!4d139.7976429!16s%2Fg%2F11bvt4pg4g",
+    "FPC":
+        "https://www.google.com/maps/place/%E6%A0%AA%E5%BC%8F%E4%BC%9A%E7%A4%BEFPC/@34.4863991,133.367438,17z/data=!3m1!4b1!4m6!3m5!1s0x3551113d2e28c22b:0xafd5380591bcfd28!8m2!3d34.4863991!4d133.367438!16s%2Fg%2F11c30qb_m_",
+    "Little Family":
+        "https://www.google.com/maps/place/%E3%83%AA%E3%83%88%E3%83%AB%E3%83%95%E3%82%A1%E3%83%9F%E3%83%AA%E3%83%BC%E5%B0%91%E9%A1%8D%E7%9F%AD%E6%9C%9F%E4%BF%9D%E9%99%BA%E6%A0%AA%E5%BC%8F%E4%BC%9A%E7%A4%BE/@35.6968874,139.7856375,17z/data=!3m1!4b1!4m6!3m5!1s0x60188b84f999ad2f:0xa979595fa0fe7269!8m2!3d35.6968874!4d139.7856375!16s%2Fg%2F11t3zcyyqb",
+    "Pshoken Japan":
+        "https://www.google.com/maps/place/%E3%83%9A%E3%83%83%E3%83%88%E3%83%A1%E3%83%87%E3%82%A3%E3%82%AB%E3%83%AB%E3%82%B5%E3%83%9D%E3%83%BC%E3%83%88%E6%A0%AA%E5%BC%8F%E4%BC%9A%E7%A4%BE/@35.6726898,139.7263254,17z/data=!3m1!4b1!4m6!3m5!1s0x60188ccfae2d82bb:0x53ddf954f52c08f9!8m2!3d35.6726898!4d139.7263254!16s%2Fg%2F11b5pkb3j8",
     # Goodflair (France) — the auto search reported not_listed; Luis sent the
     # Nantes listing, which carries the reviews.
     "Goodflair":
