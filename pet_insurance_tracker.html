@@ -260,6 +260,17 @@ html[data-theme="dark"] .badge-op-full{color:var(--series-4)}
 .badge-group{background:var(--warning-bg);color:var(--warning-ink)}
 /* Pet specialist vs generalist insurer. The generalist reads as the quieter of
    the two: it is the row that sits out of the rankings. */
+.metric-switch{display:flex;gap:6px}
+.metric-switch .pill{font-size:.72rem;padding:3px 10px}
+.bycountry{display:flex;flex-direction:column;gap:2px;margin-top:12px}
+.bc-row{display:grid;grid-template-columns:26px 150px 1fr auto 54px;gap:10px;align-items:center;
+  padding:7px 8px;border-radius:var(--radius);font-size:.86rem}
+.bc-row:nth-child(odd){background:var(--surface-1)}
+.bc-country{color:var(--text-muted);font-size:.8rem}
+.bc-name{font-weight:600}
+.bc-op{color:var(--text-muted);font-size:.76rem;text-align:right}
+@media (max-width:820px){.bc-row{grid-template-columns:22px 1fr auto;row-gap:2px}
+  .bc-op{grid-column:2/4;text-align:left}}
 .badge-full{background:var(--good-bg);color:var(--good-ink);border-color:transparent}
 /* One platform only: the score is real but it rests on half the evidence. */
 .badge-thin{background:var(--warning-bg);color:var(--warning-ink);border-color:transparent}
@@ -537,7 +548,10 @@ html[data-theme="dark"] .badge-op-full{color:var(--series-4)}
             <div class="card-head">
               <h2 data-i18n="ov.top.title">Best rated companies</h2>
               <div class="spacer"></div>
-              <span class="chip" data-i18n="ov.top.chip">Ponderated score</span>
+              <div class="metric-switch">
+                <button class="pill on" id="mtPond" onclick="setRankMetric('pond')" data-i18n="ov.metric.pond">Ponderated</button>
+                <button class="pill" id="mtAvg" onclick="setRankMetric('avg')" data-i18n="ov.metric.avg">Average</button>
+              </div>
             </div>
             <p data-i18n="ov.top.note">The ponderated score weights each platform by how many reviews it holds, so a 4.9 from 40 people does not outrank a 4.7 from 12,000.</p>
             <ol class="rank" id="ovTop"></ol>
@@ -546,6 +560,16 @@ html[data-theme="dark"] .badge-op-full{color:var(--series-4)}
             <div class="card-head"><h2 data-i18n="ov.country.title">Companies by country</h2></div>
             <div class="bars" id="ovCountries"></div>
           </div>
+        </div>
+
+        <div class="card" style="margin-top:18px">
+          <div class="card-head">
+            <h2 data-i18n="ov.bycountry.title">Best rated in each country</h2>
+            <div class="spacer"></div>
+            <span class="chip" id="ovByCountryChip"></span>
+          </div>
+          <p data-i18n="ov.bycountry.note">One winner per market, pet specialists only. A country is judged on companies with at least 1,000 opinions; where no company there reaches that, the best rated is shown and marked, because a market with thin evidence still has a leader worth knowing.</p>
+          <div class="bycountry" id="ovByCountry"></div>
         </div>
 
         <div class="grid two">
@@ -978,6 +1002,13 @@ const I18N = {
     'kpi.reviews':'Total reviews','kpi.reviews.sub':'combined opinions',
     'kpi.top':'Top rated','kpi.top.sub':'by ponderated score',
     'kpi.new':'Newly discovered','kpi.new.sub':'companies found online','kpi.new.none':'none in the last run',
+    'ov.metric.pond':'Ponderated','ov.metric.avg':'Average',
+    'gr.top.byPond':'Ranked on the ponderated score — switch it on Overview.',
+    'gr.top.byAvg':'Ranked on the average of the platforms — switch it on Overview.',
+    'ov.bycountry.title':'Best rated in each country',
+    'ov.bycountry.note':'One winner per market, pet specialists only. A country is judged on companies with at least 1,000 opinions; where no company there reaches that, the best rated is shown and marked, because a market with thin evidence still has a leader worth knowing.',
+    'ov.bycountry.thin':'under 1,000',
+    'ov.bycountry.thin.hint':'No company in this market has 1,000 opinions yet, so this leader is the best of a thin field.',
     'ov.top.title':'Best rated companies','ov.top.chip':'Ponderated score',
     'ov.top.note':'Pet insurance specialists with at least 1,000 opinions across Trustpilot and Google. Generalist insurers stay in the tracker but are not ranked. The ponderated score weights each platform by how many reviews it holds, so a 4.9 from 40 people does not outrank a 4.7 from 12,000.',
     'ov.country.title':'Companies by country',
@@ -1089,6 +1120,13 @@ const I18N = {
     'kpi.reviews':'Opiniones totales','kpi.reviews.sub':'opiniones combinadas',
     'kpi.top':'Mejor valorada','kpi.top.sub':'por nota ponderada',
     'kpi.new':'Recién descubiertas','kpi.new.sub':'compañías encontradas en línea','kpi.new.none':'ninguna en la última ronda',
+    'ov.metric.pond':'Ponderada','ov.metric.avg':'Media',
+    'gr.top.byPond':'Ordenado por nota ponderada; se cambia en el Resumen.',
+    'gr.top.byAvg':'Ordenado por la media de las plataformas; se cambia en el Resumen.',
+    'ov.bycountry.title':'Mejor valorada en cada país',
+    'ov.bycountry.note':'Un ganador por mercado, solo especialistas en mascotas. Cada país se juzga con las compañías que tienen al menos 1.000 opiniones; donde ninguna llega, se muestra la mejor valorada y se marca, porque un mercado con poca evidencia también tiene un líder que conviene conocer.',
+    'ov.bycountry.thin':'menos de 1.000',
+    'ov.bycountry.thin.hint':'Ninguna compañía de este mercado llega a 1.000 opiniones, así que este líder lo es de un campo escaso.',
     'ov.top.title':'Compañías mejor valoradas','ov.top.chip':'Nota ponderada',
     'ov.top.note':'Especialistas en mascotas con al menos 1.000 opiniones entre Trustpilot y Google. Las aseguradoras generalistas siguen en el seguimiento, pero no entran en los rankings. La nota ponderada pesa cada plataforma por el número de opiniones: un 4,9 de 40 personas no adelanta a un 4,7 de 12.000.',
     'ov.country.title':'Compañías por país',
@@ -1237,6 +1275,60 @@ function setTheme(mode) {
   document.documentElement.setAttribute('data-theme', saved);
 })();
 
+/* ---------- which score the rankings are read on -------------------------
+   The ponderated score weights each platform by the reviews behind it; the
+   average treats the platforms equally. Neither is wrong — they answer
+   different questions, so the panel offers both rather than picking one. */
+let rankMetric = 'pond';
+try { rankMetric = localStorage.getItem('ppRankMetric') || 'pond'; } catch (e) {}
+const metricOf = c => (rankMetric === 'avg' ? (c.avgScore || 0) : (c.pondScore || 0));
+
+function setRankMetric(m) {
+  rankMetric = (m === 'avg') ? 'avg' : 'pond';
+  try { localStorage.setItem('ppRankMetric', rankMetric); } catch (e) {}
+  const p = document.getElementById('mtPond'), a = document.getElementById('mtAvg');
+  if (p) p.classList.toggle('on', rankMetric === 'pond');
+  if (a) a.classList.toggle('on', rankMetric === 'avg');
+  try { renderOverview(); } catch (e) {}
+  if (window.__section === 'graphs') { try { renderGraphs(); } catch (e) {} }
+}
+
+/* One winner per market. The floor still governs — a 4.9 from 40 people is not
+   a market leader — but a country where nobody clears it is not left blank:
+   its best rated is shown and marked, because the reader wants to know who
+   leads Japan even when Japan's evidence is thin. */
+function renderByCountry(ratedRows) {
+  const el = document.getElementById('ovByCountry');
+  if (!el) return;
+  const by = {};
+  petOnly(ratedRows || []).forEach(c => {
+    const k = (c.country || '').trim();
+    if (k) (by[k] = by[k] || []).push(c);
+  });
+  const rows = Object.entries(by).map(([country, list]) => {
+    const solid = list.filter(c => (c.totalOpinions || 0) >= MIN_OPINIONS);
+    const pool = solid.length ? solid : list;
+    const win = [...pool].sort((a, b) => metricOf(b) - metricOf(a))[0];
+    return { country, win, thinMarket: !solid.length, n: list.length };
+  }).filter(r => r.win).sort((a, b) => metricOf(b.win) - metricOf(a.win));
+
+  const chip = document.getElementById('ovByCountryChip');
+  if (chip) chip.textContent = T(rankMetric === 'avg' ? 'ov.metric.avg' : 'ov.metric.pond');
+
+  el.innerHTML = rows.map((r, i) => `<div class="bc-row">
+      <span class="pos">${i + 1}</span>
+      <span class="bc-country">${flagOf(r.country)} ${esc(r.country)}</span>
+      <span class="bc-name">${r.win.website
+          ? `<a href="${r.win.website.startsWith('http') ? r.win.website : 'https://' + r.win.website}"
+                target="_blank" rel="noopener" class="company-link">${esc(r.win.company)}</a>`
+          : esc(r.win.company)}${r.thinMarket
+          ? ` <span class="badge badge-thin" style="font-size:.6rem;padding:1px 6px"
+                title="${esc(T('ov.bycountry.thin.hint'))}">${esc(T('ov.bycountry.thin'))}</span>` : ''}</span>
+      <span class="bc-op">${fmtNum(r.win.totalOpinions)} ${esc(T('res.reviews'))}</span>
+      <span class="vl ${scoreColor(metricOf(r.win))}">${metricOf(r.win).toFixed(2)}</span>
+    </div>`).join('');
+}
+
 /* ---------- overview ---------- */
 function renderOverview() {
   const data = (window.allData || []);
@@ -1247,19 +1339,20 @@ function renderOverview() {
   // both are pet specialists only — a generalist's reviews are mostly about its
   // other policies, so ranking it here would compare two different things.
   const eligible = rated.filter(c => (c.totalOpinions || 0) >= MIN_OPINIONS && !isGeneralist(c));
-  const top = [...eligible].sort((a, b) => b.pondScore - a.pondScore).slice(0, 8);
-  const weak = [...eligible].sort((a, b) => a.pondScore - b.pondScore).slice(0, 8);
+  const top = [...eligible].sort((a, b) => metricOf(b) - metricOf(a)).slice(0, 10);
+  const weak = [...eligible].sort((a, b) => metricOf(a) - metricOf(b)).slice(0, 10);
 
   const line = (c, i) => `<li>
       <span class="pos">${i + 1}</span>
       <span class="nm">${flagOf(c.country)} ${c.company}${isThin(c)
           ? ` <span class="badge badge-thin" style="font-size:.6rem;padding:1px 6px"
                 title="${T('src.thin.hint')}">${T('src.thin')}</span>` : ''}</span>
-      <span class="vl ${scoreColor(c.pondScore)}">${c.pondScore.toFixed(2)}</span>
+      <span class="vl ${scoreColor(metricOf(c))}">${metricOf(c).toFixed(2)}</span>
     </li>`;
 
   const topEl = document.getElementById('ovTop');
   if (topEl) topEl.innerHTML = top.map(line).join('');
+  renderByCountry(rated);
   const weakEl = document.getElementById('ovWeak');
   if (weakEl) weakEl.innerHTML = weak.map(line).join('');
 
@@ -1291,7 +1384,14 @@ function renderOverview() {
     <dt>${T('ov.lastData')}</dt><dd>${latest || '—'}</dd>`;
 }
 function flagOf(country) {
-  try { return COUNTRY_FLAGS[(country || '').trim()] || '🌐'; } catch (e) { return '🌐'; }
+  // Some rows carry a trailing space in the country name, so both the value and
+  // the map key are trimmed before matching.
+  try {
+    const k = (country || '').trim();
+    if (COUNTRY_FLAGS[k]) return COUNTRY_FLAGS[k];
+    const hit = Object.keys(COUNTRY_FLAGS).find(x => x.trim() === k);
+    return hit ? COUNTRY_FLAGS[hit] : '🌐';
+  } catch (e) { return '🌐'; }
 }
 
 /* ---------- assistant ---------- */
@@ -1615,7 +1715,7 @@ function chPie(el) {
 
 /* ---- 2. top rated companies ---------------------------------------------- */
 function chTop(el) {
-  const rows = ranked().sort((a, b) => b.pondScore - a.pondScore).slice(0, 10);
+  const rows = ranked().sort((a, b) => metricOf(b) - metricOf(a)).slice(0, 10);
   // a thin score is flagged in the tooltip, the same as in the Overview list
   if (!rows.length) return noData(el);
   const cc = countryColours(), c = chartInk();
@@ -1626,14 +1726,14 @@ function chTop(el) {
   rows.forEach((r, i) => {
     const y = T_ + i * rowH, bh = 15, col = cc.of(r.country);
     g += `<text x="${L - 8}" y="${y + bh - 2}" fill="${c.ink}" font-size="11" text-anchor="end">${esc(shortName(r.company))}</text>`
-       + `<rect x="${L}" y="${y}" width="${Math.max(3, x(r.pondScore) - L)}" height="${bh}" rx="4" fill="${col}"
-            data-tip="<strong>${esc(r.company)}</strong><br>${esc(r.country.trim())} · ${r.pondScore.toFixed(2)}<br>${(r.totalOpinions || 0).toLocaleString()} ${T('gr.reviews')}<br>${esc(sourcesOf(r).map(x => x.name).join(' + '))}${isThin(r) ? ' · ' + esc(T('src.thin')) : ''}"/>`
-       + `<text x="${x(r.pondScore) + 7}" y="${y + bh - 2}" fill="${c.ink}" font-size="11" font-weight="700">${r.pondScore.toFixed(2)}</text>`
-       + `<text x="${x(r.pondScore) + 42}" y="${y + bh - 2}" fill="${c.mute}" font-size="10">${(r.totalOpinions || 0).toLocaleString()}</text>`;
+       + `<rect x="${L}" y="${y}" width="${Math.max(3, x(metricOf(r)) - L)}" height="${bh}" rx="4" fill="${col}"
+            data-tip="<strong>${esc(r.company)}</strong><br>${esc(r.country.trim())} · ${metricOf(r).toFixed(2)}<br>${(r.totalOpinions || 0).toLocaleString()} ${T('gr.reviews')}<br>${esc(sourcesOf(r).map(x => x.name).join(' + '))}${isThin(r) ? ' · ' + esc(T('src.thin')) : ''}"/>`
+       + `<text x="${x(metricOf(r)) + 7}" y="${y + bh - 2}" fill="${c.ink}" font-size="11" font-weight="700">${metricOf(r).toFixed(2)}</text>`
+       + `<text x="${x(metricOf(r)) + 42}" y="${y + bh - 2}" fill="${c.mute}" font-size="10">${(r.totalOpinions || 0).toLocaleString()}</text>`;
   });
   el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" role="img"
       aria-label="Best rated companies">${g}</svg>
-    <p class="chart-foot">${T('gr.top.foot')}</p>`;
+    <p class="chart-foot">${T('gr.top.foot')} ${T(rankMetric === 'avg' ? 'gr.top.byAvg' : 'gr.top.byPond')}</p>`;
 }
 
 /* ---- 3. most reviewed companies ------------------------------------------ */
@@ -1816,7 +1916,7 @@ let sortDir = 'desc';
 
 const COUNTRY_FLAGS = {
   'USA':'🇺🇸','UK':'🇬🇧','France':'🇫🇷','Germany':'🇩🇪','Spain':'🇪🇸','Italy':'🇮🇹',
-  'Australia':'🇦🇺','Canada':'🇨🇦','Sweden':'🇸🇪','Norway':'🇳🇴','Denmark ':'🇩🇰',
+  'Australia':'🇦🇺','Canada':'🇨🇦','Sweden':'🇸🇪','Norway':'🇳🇴','Denmark':'🇩🇰',
   'Ireland':'🇮🇪','Belgium':'🇧🇪','Netherland':'🇳🇱','Switzerland':'🇨🇭',
   'New Zealand':'🇳🇿','Japan':'🇯🇵','South Africa':'🇿🇦','Argentina':'🇦🇷',
   'Brazil':'🇧🇷','Chile':'🇨🇱','Colombia':'🇨🇴','México':'🇲🇽','Perú':'🇵🇪',
@@ -2126,6 +2226,11 @@ function refreshAfterEdit() {
 }
 
 function init() {
+  // The metric switch is remembered per browser; the markup starts on
+  // ponderated, so the pills are put back in step with the stored choice.
+  const mp = document.getElementById('mtPond'), ma = document.getElementById('mtAvg');
+  if (mp) mp.classList.toggle('on', rankMetric === 'pond');
+  if (ma) ma.classList.toggle('on', rankMetric === 'avg');
   // 1) Render instantly from the data baked into the page.
   applyDataset(SEED_DATA);
   showDataDate(SEED_DATA);
