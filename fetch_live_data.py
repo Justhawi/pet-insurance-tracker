@@ -50,6 +50,13 @@ MANUAL_TP_URL = {
 # Force the Google Maps listing URL (navigate directly, skip search).
 # Use the canonical /maps/place/.../data=... URL for a specific place.
 MANUAL_G_URL = {
+    # Paw Protect (Germany) - a young brand whose Berlin listing the name search
+    # never reached; seven reviews, but real ones.
+    "Paw Protect Germany":
+        "https://www.google.com/maps/place/Paw-Protect/"
+        "@52.4756573,13.6005967,17z/data=!3m1!4b1!4m6!3m5"
+        "!1s0x47a849c8b39eccf9:0x931e263ebfd0b153"
+        "!8m2!3d52.4756573!4d13.6005967!16s%2Fg%2F11sfrx472y",
     # Japan — Trustpilot is not used there and the Places search cannot match an
     # English name against a Japanese listing, so these four were reading as
     # "not on Google Maps" while holding real Google reviews under their
