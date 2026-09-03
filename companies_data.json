@@ -319,12 +319,16 @@
     "gStatus": "not_listed",
     "tpUrl": "",
     "gUrl": "",
-    "pondScore": 0.0,
-    "avgScore": 0.0,
-    "totalOpinions": 0,
+    "pondScore": 2.8,
+    "avgScore": 2.8,
+    "totalOpinions": 35,
     "date": "2026-09-01",
     "tpDate": "2026-09-01",
-    "gDate": "2026-09-01"
+    "gDate": "2026-09-01",
+    "otherSource": "Minhyo (みん評)",
+    "otherScore": 2.8,
+    "otherReviews": 35,
+    "otherUrl": "https://minhyo.jp/nihonpet"
   },
   {
     "country": "Japan",
