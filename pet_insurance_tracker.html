@@ -1000,7 +1000,7 @@ const I18N = {
     'kpi.total':'Total companies','kpi.total.sub':'across 25 countries',
     'kpi.tp':'Avg Trustpilot','kpi.g':'Avg Google score','kpi.avg.sub':'average of rated companies',
     'kpi.reviews':'Total reviews','kpi.reviews.sub':'combined opinions',
-    'kpi.top':'Top rated','kpi.top.sub':'by ponderated score',
+    'kpi.top':'Top rated','kpi.top.sub':'by ponderated score','kpi.top.sub.avg':'by average score',
     'kpi.new':'Newly discovered','kpi.new.sub':'companies found online','kpi.new.none':'none in the last run',
     'ov.metric.pond':'Ponderated','ov.metric.avg':'Average',
     'gr.top.byPond':'Ranked on the ponderated score — switch it on Overview.',
@@ -1123,7 +1123,7 @@ const I18N = {
     'kpi.total':'Compañías totales','kpi.total.sub':'en 25 países',
     'kpi.tp':'Media Trustpilot','kpi.g':'Media Google','kpi.avg.sub':'media de las compañías puntuadas',
     'kpi.reviews':'Opiniones totales','kpi.reviews.sub':'opiniones combinadas',
-    'kpi.top':'Mejor valorada','kpi.top.sub':'por nota ponderada',
+    'kpi.top':'Mejor valorada','kpi.top.sub':'por nota ponderada','kpi.top.sub.avg':'por nota media',
     'kpi.new':'Recién descubiertas','kpi.new.sub':'compañías encontradas en línea','kpi.new.none':'ninguna en la última ronda',
     'ov.metric.pond':'Ponderada','ov.metric.avg':'Media',
     'gr.top.byPond':'Ordenado por nota ponderada; se cambia en el Resumen.',
@@ -1299,6 +1299,7 @@ function setRankMetric(m) {
   const p = document.getElementById('mtPond'), a = document.getElementById('mtAvg');
   if (p) p.classList.toggle('on', rankMetric === 'pond');
   if (a) a.classList.toggle('on', rankMetric === 'avg');
+  try { updateStats(); } catch (e) {}
   try { renderOverview(); } catch (e) {}
   if (window.__section === 'graphs') { try { renderGraphs(); } catch (e) {} }
 }
@@ -2654,7 +2655,9 @@ function updateStats() {
   // at least MIN_OPINIONS behind the score, and pet specialists only. It used to
   // read straight off allData, which is how a 4.90 from 180 people held the
   // headline spot.
-  const top = [...ranked()].sort((a,b) => b.pondScore - a.pondScore)[0];
+  // The headline follows whichever score the reader has chosen, so it can never
+  // name one company while the list below it names another.
+  const top = [...ranked()].sort((a,b) => metricOf(b) - metricOf(a))[0];
   const newCount = allData.filter(c => c._auto_discovered === true).length;
 
   document.getElementById('stat-total').textContent = allData.length;
@@ -2662,6 +2665,8 @@ function updateStats() {
   document.getElementById('stat-g').textContent = avgG;
   document.getElementById('stat-reviews').textContent = totalReviews > 1000000 ? (totalReviews/1000000).toFixed(1)+'M' : totalReviews > 1000 ? (totalReviews/1000).toFixed(0)+'K' : totalReviews;
   document.getElementById('stat-top').textContent = top ? top.company : '—';
+  const topSub = document.querySelector('.stats-bar .stat-card:nth-child(5) .stat-sub');
+  if (topSub) topSub.textContent = T(rankMetric === 'avg' ? 'kpi.top.sub.avg' : 'kpi.top.sub');
   document.getElementById('stat-new').textContent = newCount;
   const newSub = document.querySelector('.stats-bar .stat-card:nth-child(6) .stat-sub');
   if (newSub) newSub.textContent = newCount ? T('kpi.new.sub') : T('kpi.new.none');
