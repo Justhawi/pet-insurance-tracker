@@ -45,6 +45,11 @@ MANUAL_TP_URL = {
     # PD Insurance NZ is registered on Trustpilot as pd.co.nz, not
     # pdinsurance.co.nz — auto-lookup by website domain misses it.
     "PD Insurance": "https://www.trustpilot.com/review/pd.co.nz",
+    # Heckin Good was called Buddycare until 2026 and kept the old Trustpilot
+    # profile; the buddycare.co.uk domain has since been sold to an unrelated
+    # grooming business, which is why a lookup by website finds nothing. The
+    # company confirms the profile is theirs in its replies on that page.
+    "Heckin Good": "https://uk.trustpilot.com/review/buddycare.co.uk",
 }
 
 # Force the Google Maps listing URL (navigate directly, skip search).
