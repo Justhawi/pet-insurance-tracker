@@ -1026,6 +1026,8 @@ const I18N = {
     'th.sources':'Sources','src.one':'source','src.many':'sources','src.none':'No platform holds a score for this company yet.',
     'src.thin':'1 source','src.thin.hint':'Only one platform holds a score for this company, so it is being compared with companies rated on two. Add a third source on the Add company page to even it up.',
     'src.addhint':'No other source entered yet. Add one on the Add company page.',
+    'src.odd.tp':'This company is on Trustpilot under a different address than its own website, so the profile is linked here.',
+    'src.odd.g':'The Google listing was pinned by hand because a search by name does not reach it.',
     'res.other':'Other source',
     'os.title':'Add another source to a company',
     'os.sub':'A company rated on one platform only is being compared with companies rated on two. Give it a third source — any review site that holds real numbers for it — and the score is weighted the same way, by how many reviews each platform holds.',
@@ -1144,6 +1146,8 @@ const I18N = {
     'th.sources':'Fuentes','src.one':'fuente','src.many':'fuentes','src.none':'Todavía ninguna plataforma puntúa a esta compañía.',
     'src.thin':'1 fuente','src.thin.hint':'Solo una plataforma la puntúa, así que se está comparando con compañías puntuadas en dos. Añade una tercera fuente en la página Añadir compañía para igualarlo.',
     'src.addhint':'Todavía no hay otra fuente. Añádela en la página Añadir compañía.',
+    'src.odd.tp':'Esta compañía figura en Trustpilot con una dirección distinta a la de su web, por eso se enlaza aquí el perfil.',
+    'src.odd.g':'La ficha de Google se fijó a mano porque la búsqueda por nombre no llega a ella.',
     'res.other':'Otra fuente',
     'os.title':'Añadir otra fuente a una compañía',
     'os.sub':'Una compañía puntuada en una sola plataforma se está comparando con otras puntuadas en dos. Dale una tercera fuente —cualquier sitio de opiniones con cifras reales— y se pondera igual que las demás, por el número de opiniones de cada plataforma.',
@@ -1666,6 +1670,27 @@ function siteDomain(c) {
   const raw = ((c && (c.website || c.link)) || '').toLowerCase().trim();
   if (!raw) return '';
   return raw.replace(/^https?:\/\//, '').replace(/^www\./, '').split(/[/?#]/)[0];
+}
+// A profile nobody would find from the company's own address: a Trustpilot page
+// filed under a different domain (a rename, a sold domain), or a Google place we
+// had to pin by hand. Those belong in the Source Link column too — the reader
+// cannot get to them from anywhere else on the row.
+function oddProfileLink(c) {
+  if (!c) return null;
+  const site = siteDomain(c);
+  const tp = (c.tpUrl || '').trim();
+  if (tp) {
+    const slug = (tp.match(/\/review\/([^/?#]+)/) || [])[1] || '';
+    const clean = slug.toLowerCase().replace(/^www\./, '');
+    if (clean && site && clean !== site) {
+      return { url: tp, label: 'Trustpilot · ' + clean, hint: T('src.odd.tp') };
+    }
+    return null;
+  }
+  if ((c.gScore || 0) > 0 && (c.gUrl || '').trim()) {
+    return { url: c.gUrl.trim(), label: 'Google Maps', hint: T('src.odd.g') };
+  }
+  return null;
 }
 function isGeneralist(c) { return GENERALIST_DOMAINS.has(siteDomain(c)); }
 function petOnly(list) { return (list || []).filter(c => !isGeneralist(c)); }
@@ -2505,12 +2530,16 @@ function renderTable() {
     // Trustpilot and Google already have their own score columns, so this column
     // carries the other sources of information — the third platform brought in to
     // even up a company that only one of the two had rated.
+    const oddProfile = oddProfileLink(c);
     const sourceLink = (c.otherScore || 0) > 0
       ? (c.otherUrl
           ? `<a href="${c.otherUrl}" target="_blank" rel="noopener" style="color:var(--accent);font-size:11px"
                title="${esc(c.otherSource || '')} ${Number(c.otherScore).toFixed(1)} · ${(c.otherReviews || 0).toLocaleString()}">🔗 ${esc(c.otherSource || T('res.other'))}</a>`
           : `<span style="font-size:11px;color:var(--text-muted)">${esc(c.otherSource || '')} ${Number(c.otherScore).toFixed(1)}</span>`)
-      : `<span class="no-data" title="${esc(T('src.addhint'))}">—</span>`;
+      : (oddProfile
+          ? `<a href="${oddProfile.url}" target="_blank" rel="noopener" style="color:var(--accent);font-size:11px"
+               title="${esc(oddProfile.hint)}">🔗 ${esc(oddProfile.label)}</a>`
+          : `<span class="no-data" title="${esc(T('src.addhint'))}">—</span>`);
 
     return `<tr>
       <td><span class="country-flag">${flag}</span>${c.country.trim()}</td>
