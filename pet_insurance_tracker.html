@@ -1406,10 +1406,49 @@ function flagOf(country) {
 }
 
 /* ---------- assistant ---------- */
+// Market names in the reader's language, so a Spanish answer does not say "en Spain".
+const COUNTRY_ES = {
+  'Spain':'España','UK':'Reino Unido','USA':'Estados Unidos','Germany':'Alemania','France':'Francia',
+  'Italy':'Italia','Netherland':'Países Bajos','Belgium':'Bélgica','Switzerland':'Suiza','Ireland':'Irlanda',
+  'Sweden':'Suecia','Norway':'Noruega','Denmark':'Dinamarca','Japan':'Japón','Australia':'Australia',
+  'New Zealand':'Nueva Zelanda','South Africa':'Sudáfrica','Canada':'Canadá','Brazil':'Brasil',
+  'Chile':'Chile','Argentina':'Argentina','Colombia':'Colombia','México':'México','Perú':'Perú',
+  'Czech Republic':'República Checa'
+};
+function countryName(c, es) {
+  const k = (c || '').trim();
+  return (es && COUNTRY_ES[k]) ? COUNTRY_ES[k] : k;
+}
 // Names the score the assistant is quoting, matching the Overview switch.
 function askMetricName(es) {
   if (rankMetric === 'avg') return es ? 'por nota media (Google/Trustpilot)' : 'by average score (Google/Trustpilot)';
   return es ? 'por nota ponderada' : 'by ponderated score';
+}
+
+/* Luis asked for the two options, so a ranking answer gives both at once: the
+   ponderated order and the average order side by side, because they disagree —
+   that disagreement is the useful part. The one matching the Overview switch is
+   marked, so the chat and the panels still read as one page. */
+function askTwoLists(pool, dir) {
+  const es = LANG === 'es';
+  const sortBy = key => [...pool].sort((a, b) =>
+    dir === 'asc' ? (a[key] || 0) - (b[key] || 0) : (b[key] || 0) - (a[key] || 0)).slice(0, 10);
+  const block = (key, title, on) => {
+    const rows = sortBy(key).map((c, i) =>
+      `<div style="display:flex;gap:6px;line-height:1.45">
+         <span style="opacity:.55;min-width:14px">${i + 1}</span>
+         <span style="flex:1">${esc(shortName(c.company))}</span>
+         <strong>${(c[key] || 0).toFixed(2)}</strong>
+       </div>`).join('');
+    return `<div style="flex:1;min-width:150px">
+        <div style="font-weight:700;margin:8px 0 3px">${title}${on ? ' <span style="font-weight:400;opacity:.6">· ' + (es ? 'en pantalla' : 'on screen') + '</span>' : ''}</div>
+        ${rows}
+      </div>`;
+  };
+  return `<div style="display:flex;gap:14px;flex-wrap:wrap">
+      ${block('pondScore', es ? 'Ponderada' : 'Ponderated', rankMetric !== 'avg')}
+      ${block('avgScore',  es ? 'Media'     : 'Average',    rankMetric === 'avg')}
+    </div>`;
 }
 const COUNTRY_ALIASES = {
   'spain':'Spain','españa':'Spain','espana':'Spain','uk':'UK','reino unido':'UK','britain':'UK','england':'UK',
@@ -1461,20 +1500,18 @@ function askAnswer(raw) {
   }
 
   if (has('best', 'top', 'leader', 'mejor', 'lidera', 'líder', 'lider')) {
-    // The answer is drawn on the score the reader picked on the Overview, and
-    // names it, so the assistant can never disagree with the panel beside it.
-    const top = [...rankable].sort((a, b) => metricOf(b) - metricOf(a)).slice(0, 10);
-    if (!top.length) return es ? 'Todavía no hay datos puntuados para responder eso.' : 'There is no rated data to answer that yet.';
-    const list = top.map((c, i) => `${i + 1}. ${c.company} — <strong>${metricOf(c).toFixed(2)}</strong> (${(c.totalOpinions || 0).toLocaleString()} ${T('res.reviews')})`).join('<br>');
-    return (es ? `Mejor valoradas${country ? ' en ' + country.trim() : ''} ${askMetricName(es)}:<br>` : `Best rated${country ? ' in ' + country.trim() : ''} ${askMetricName(es)}:<br>`) + list;
+    if (!rankable.length) return es ? 'Todavía no hay datos puntuados para responder eso.' : 'There is no rated data to answer that yet.';
+    const where = country ? (es ? ' en ' + countryName(country, es) : ' in ' + countryName(country, es)) : '';
+    return (es ? `Mejor valoradas${where} — las dos lecturas:` : `Best rated${where} — both readings:`)
+         + askTwoLists(rankable, 'desc');
   }
 
   if (has('worst', 'lowest', 'peor', 'peores', 'más baja', 'mas baja')) {
-    const bottom = [...rankable].sort((a, b) => metricOf(a) - metricOf(b)).slice(0, 10);
-    if (!bottom.length) return es ? 'No hay suficientes opiniones para responder eso.' : 'There are not enough reviews to answer that.';
-    const list = bottom.map((c, i) => `${i + 1}. ${c.company} — <strong>${metricOf(c).toFixed(2)}</strong> (${(c.totalOpinions || 0).toLocaleString()} ${T('res.reviews')})`).join('<br>');
-    return (es ? `Peor valoradas${country ? ' en ' + country.trim() : ''} ${askMetricName(es)}, mínimo ${MIN_OPINIONS.toLocaleString()} opiniones:<br>`
-               : `Lowest rated${country ? ' in ' + country.trim() : ''} ${askMetricName(es)}, ${MIN_OPINIONS.toLocaleString()}+ reviews:<br>`) + list;
+    if (!rankable.length) return es ? 'No hay suficientes opiniones para responder eso.' : 'There are not enough reviews to answer that.';
+    const where = country ? (es ? ' en ' + countryName(country, es) : ' in ' + countryName(country, es)) : '';
+    return (es ? `Peor valoradas${where} (mínimo ${MIN_OPINIONS.toLocaleString()} opiniones) — las dos lecturas:`
+               : `Lowest rated${where} (${MIN_OPINIONS.toLocaleString()}+ reviews) — both readings:`)
+         + askTwoLists(rankable, 'asc');
   }
 
   if (has('average', 'media', 'promedio') && rated.length) {
