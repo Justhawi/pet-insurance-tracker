@@ -63,5 +63,17 @@ jobs:
           else
             STAMP=$(date -u +'%Y-%m-%d %H:%M UTC')
             git commit -m "Auto-refresh data ${STAMP}"
-            git push
+            # The sweep takes ~25 minutes, so main has often moved on by the time
+            # it finishes. A bare push is rejected then and the whole day's data
+            # is thrown away, so rebase onto whatever landed meanwhile and retry.
+            for attempt in 1 2 3; do
+              if git push; then
+                exit 0
+              fi
+              echo "Push rejected (attempt ${attempt}); rebasing onto origin/main."
+              git pull --rebase --autostash origin main || exit 1
+              sleep 5
+            done
+            echo "Could not push the refreshed data after three attempts." >&2
+            exit 1
           fi
