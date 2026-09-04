@@ -2711,7 +2711,13 @@ function updateStats() {
   document.getElementById('stat-reviews').textContent = totalReviews > 1000000 ? (totalReviews/1000000).toFixed(1)+'M' : totalReviews > 1000 ? (totalReviews/1000).toFixed(0)+'K' : totalReviews;
   document.getElementById('stat-top').textContent = top ? top.company : '—';
   const topSub = document.querySelector('.stats-bar .stat-card:nth-child(5) .stat-sub');
-  if (topSub) topSub.textContent = T(rankMetric === 'avg' ? 'kpi.top.sub.avg' : 'kpi.top.sub');
+  if (topSub) {
+    // The key travels with the element, so a later language pass re-renders the
+    // caption for the chosen score instead of resetting it to "ponderated".
+    const key = rankMetric === 'avg' ? 'kpi.top.sub.avg' : 'kpi.top.sub';
+    topSub.setAttribute('data-i18n', key);
+    topSub.textContent = T(key);
+  }
   document.getElementById('stat-new').textContent = newCount;
   const newSub = document.querySelector('.stats-bar .stat-card:nth-child(6) .stat-sub');
   if (newSub) newSub.textContent = newCount ? T('kpi.new.sub') : T('kpi.new.none');
