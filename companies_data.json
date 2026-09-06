@@ -8,7 +8,7 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.3,
-    "tpReviews": 6448,
+    "tpReviews": 6453,
     "gScore": 3.7,
     "gReviews": 0,
     "tpStatus": "ok",
@@ -17,10 +17,10 @@
     "gUrl": "https://www.google.es/maps/place/Petgevity/@52.2277057,-0.8644478,740m/data=!3m3!1e3!4b1!5s0x487708d77e3c7de7:0x522fb5676fbae663!4m6!3m5!1s0x4877090d15fb8bab:0x937b3217ba649c35!8m2!3d52.2277057!4d-0.8618675!16s%2Fg%2F11rsg7vrx0",
     "pondScore": 4.3,
     "avgScore": 4.0,
-    "totalOpinions": 6448,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 6453,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Australia",
@@ -45,9 +45,9 @@
     "pondScore": 4.6,
     "avgScore": 4.6,
     "totalOpinions": 46,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "South Africa",
@@ -59,18 +59,18 @@
     "underwriter": "",
     "tpScore": 0.0,
     "tpReviews": 0,
-    "gScore": 4.6,
-    "gReviews": 6879,
+    "gScore": 3.7,
+    "gReviews": 20,
     "tpStatus": "not_listed",
     "gStatus": "ok",
     "tpUrl": "",
-    "gUrl": "https://www.google.com/maps/search/%22Oneplan+Pet+Insurance%22+South+Africa+pet+insurance",
-    "pondScore": 4.6,
-    "avgScore": 4.6,
-    "totalOpinions": 6879,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "gUrl": "https://www.google.com/maps/search/www.onepet.co.za",
+    "pondScore": 3.7,
+    "avgScore": 3.7,
+    "totalOpinions": 20,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Japan",
@@ -91,9 +91,9 @@
     "pondScore": 0.0,
     "avgScore": 0.0,
     "totalOpinions": 0,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Japan",
@@ -118,9 +118,9 @@
     "pondScore": 2.8,
     "avgScore": 2.8,
     "totalOpinions": 35,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Japan",
@@ -141,9 +141,9 @@
     "pondScore": 0.0,
     "avgScore": 0.0,
     "totalOpinions": 0,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Canada",
@@ -155,18 +155,18 @@
     "underwriter": "",
     "tpScore": 2.9,
     "tpReviews": 20,
-    "gScore": 0.0,
-    "gReviews": 0,
+    "gScore": 5.0,
+    "gReviews": 1,
     "tpStatus": "ok",
-    "gStatus": "not_listed",
+    "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/petshield.com.au",
-    "gUrl": "",
-    "pondScore": 2.9,
-    "avgScore": 2.9,
-    "totalOpinions": 20,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "gUrl": "https://www.google.com/maps/search/www.petshield.ca",
+    "pondScore": 3.0,
+    "avgScore": 3.95,
+    "totalOpinions": 21,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "New Zealand",
@@ -191,9 +191,9 @@
     "pondScore": 4.6,
     "avgScore": 4.6,
     "totalOpinions": 710,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Sweden",
@@ -204,7 +204,7 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.8,
-    "tpReviews": 1444,
+    "tpReviews": 1458,
     "gScore": 3.9,
     "gReviews": 108,
     "tpStatus": "ok",
@@ -213,10 +213,10 @@
     "gUrl": "https://www.google.com/maps/search/%22Sveland+Djurforsakring%22+Sweden+pet+insurance",
     "pondScore": 4.74,
     "avgScore": 4.35,
-    "totalOpinions": 1552,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 1566,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Denmark",
@@ -237,9 +237,9 @@
     "pondScore": 4.7,
     "avgScore": 4.7,
     "totalOpinions": 6053,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Brazil",
@@ -260,9 +260,9 @@
     "pondScore": 4.9,
     "avgScore": 4.9,
     "totalOpinions": 181,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Netherland",
@@ -273,7 +273,7 @@
     "link": "",
     "underwriter": "",
     "tpScore": 3.8,
-    "tpReviews": 1778,
+    "tpReviews": 1779,
     "gScore": 3.5,
     "gReviews": 693,
     "tpStatus": "ok",
@@ -282,10 +282,10 @@
     "gUrl": "https://www.google.com/maps/search/petsecur.nl",
     "pondScore": 3.72,
     "avgScore": 3.65,
-    "totalOpinions": 2471,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 2472,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "USA",
@@ -296,7 +296,7 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.6,
-    "tpReviews": 2888,
+    "tpReviews": 2889,
     "gScore": 4.7,
     "gReviews": 714,
     "tpStatus": "ok",
@@ -305,10 +305,10 @@
     "gUrl": "https://www.google.com/maps/place/Prudent+Pet+Insurance/@41.8317925,-88.0395754,17z/data=!3m1!4b1!4m6!3m5!1s0x880e4b5467379593:0x196b48cc0ff64bee!8m2!3d41.8317925!4d-88.0369951!16s%2Fg%2F11gn1w8t7s",
     "pondScore": 4.62,
     "avgScore": 4.65,
-    "totalOpinions": 3602,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 3603,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "USA",
@@ -319,19 +319,19 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.8,
-    "tpReviews": 3749,
-    "gScore": 4.6,
-    "gReviews": 3253,
+    "tpReviews": 3751,
+    "gScore": 5.0,
+    "gReviews": 13,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.pumpkin.care",
-    "gUrl": "https://www.google.com/maps/search/%22Pumpkin%22+USA+pet+insurance",
-    "pondScore": 4.71,
-    "avgScore": 4.7,
-    "totalOpinions": 7002,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "gUrl": "https://www.google.com/maps/search/www.pumpkin.care",
+    "pondScore": 4.8,
+    "avgScore": 4.9,
+    "totalOpinions": 3764,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -346,7 +346,7 @@
     "otherReviews": 1015,
     "otherUrl": "https://www.petinsurancereview.co.uk/insurer/royal-kennel-club-pet-insurance",
     "tpScore": 4.9,
-    "tpReviews": 3166,
+    "tpReviews": 3168,
     "gScore": 0.0,
     "gReviews": 0,
     "tpStatus": "ok",
@@ -355,10 +355,10 @@
     "gUrl": "",
     "pondScore": 4.83,
     "avgScore": 4.75,
-    "totalOpinions": 4181,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 4183,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Italy",
@@ -379,9 +379,9 @@
     "pondScore": 4.58,
     "avgScore": 4.65,
     "totalOpinions": 3786,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -392,19 +392,19 @@
     "link": "",
     "underwriter": "Allianz",
     "tpScore": 4.4,
-    "tpReviews": 20889,
+    "tpReviews": 20891,
     "gScore": 4.8,
-    "gReviews": 7018,
+    "gReviews": 7019,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.petplan.co.uk",
     "gUrl": "https://www.google.com/maps/place/Petplan/@47.73855,12.5088275,4z/data=!3m1!4b1!4m6!3m5!1s0x48760da7d0b93291:0xf772e4ffbf06f6e9!8m2!3d47.73855!4d12.5088275!16s%2Fg%2F1tdrdvn4",
     "pondScore": 4.5,
     "avgScore": 4.6,
-    "totalOpinions": 27907,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 27910,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Ireland",
@@ -425,9 +425,9 @@
     "pondScore": 4.8,
     "avgScore": 4.8,
     "totalOpinions": 1100,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Sweden",
@@ -438,7 +438,7 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.7,
-    "tpReviews": 15591,
+    "tpReviews": 15619,
     "gScore": 4.4,
     "gReviews": 731,
     "tpStatus": "ok",
@@ -447,10 +447,10 @@
     "gUrl": "https://www.google.com/maps/search/www.lassie.co",
     "pondScore": 4.69,
     "avgScore": 4.55,
-    "totalOpinions": 16322,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 16350,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Spain",
@@ -461,19 +461,19 @@
     "link": "",
     "underwriter": "Telefonica",
     "tpScore": 4.5,
-    "tpReviews": 1326,
+    "tpReviews": 1328,
     "gScore": 4.5,
     "gReviews": 404,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.petplan.es",
-    "gUrl": "https://www.google.com/maps/place/Petplan/@40.4267144,-42.8238578,4z/data=!4m10!1m2!2m1!1swww.petplan.es!3m6!1s0xd1269d6ad1c1c2b:0x501d5b0e630a1346!8m2!3d37.4098808!4d-5.9499035!15sCg53d3cucGV0cGxhbi5lc5IBEWluc3VyYW5jZV9jb21wYW554AEA!16s%2Fg%2F11fht3j97m?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
+    "gUrl": "https://www.google.com/maps/search/www.petplan.es",
     "pondScore": 4.5,
     "avgScore": 4.5,
-    "totalOpinions": 1730,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 1732,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Italy",
@@ -484,19 +484,19 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.6,
-    "tpReviews": 7756,
+    "tpReviews": 7757,
     "gScore": 4.3,
-    "gReviews": 1444,
+    "gReviews": 1445,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.bene.it",
     "gUrl": "https://www.google.com/maps/search/www.bene.it",
     "pondScore": 4.55,
     "avgScore": 4.45,
-    "totalOpinions": 9200,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 9202,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "South Africa",
@@ -517,9 +517,9 @@
     "pondScore": 3.0,
     "avgScore": 3.0,
     "totalOpinions": 118,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Sweden",
@@ -540,9 +540,9 @@
     "pondScore": 3.57,
     "avgScore": 3.1,
     "totalOpinions": 718,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "New Zealand",
@@ -563,9 +563,9 @@
     "pondScore": 4.35,
     "avgScore": 4.3,
     "totalOpinions": 63,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Germany",
@@ -576,7 +576,7 @@
     "link": "",
     "underwriter": "Allianz",
     "tpScore": 4.3,
-    "tpReviews": 3058,
+    "tpReviews": 3059,
     "gScore": 4.4,
     "gReviews": 218,
     "tpStatus": "ok",
@@ -585,10 +585,10 @@
     "gUrl": "https://www.google.com/maps/place/Sant%C3%A9vet/@50.1211377,8.4714171,49542m/data=!3m2!1e3!4b1!4m6!3m5!1s0x4194bc43456b9f0b:0x819d87fbc8509bb2!8m2!3d50.1212548!4d8.6365638!16s%2Fg%2F11vkv5rdk3",
     "pondScore": 4.31,
     "avgScore": 4.35,
-    "totalOpinions": 3276,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 3277,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "USA",
@@ -599,19 +599,19 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.6,
-    "tpReviews": 7632,
+    "tpReviews": 7640,
     "gScore": 5.0,
-    "gReviews": 31,
+    "gReviews": 69,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.fetchpet.com",
     "gUrl": "https://www.google.com/maps/search/www.fetchpet.com",
     "pondScore": 4.6,
     "avgScore": 4.8,
-    "totalOpinions": 7663,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 7709,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Australia",
@@ -632,9 +632,9 @@
     "pondScore": 4.45,
     "avgScore": 4.4,
     "totalOpinions": 2045,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "USA",
@@ -645,19 +645,19 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.6,
-    "tpReviews": 11846,
-    "gScore": 2.9,
-    "gReviews": 19,
+    "tpReviews": 11850,
+    "gScore": 4.2,
+    "gReviews": 3385,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/spotpet.com",
     "gUrl": "https://www.google.com/maps/search/spotpet.com",
-    "pondScore": 4.6,
-    "avgScore": 3.75,
-    "totalOpinions": 11865,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "pondScore": 4.51,
+    "avgScore": 4.4,
+    "totalOpinions": 15235,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -670,17 +670,17 @@
     "tpScore": 4.5,
     "tpReviews": 964,
     "gScore": 4.2,
-    "gReviews": 3382,
+    "gReviews": 3385,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.spotonpetinsurance.co.uk",
-    "gUrl": "https://www.google.com/maps/place/Spot+Pet+Insurance/@25.7834767,-119.2133496,7920043m/data=!3m2!1e3!5s0x889acf5c262423e7:0xf4b87fa9b271048b!4m10!1m2!2m1!1s%22Spot+On+Pet+Insurance%22+UK+pet+insurance!3m6!1s0x88d8d7a8393b19b7:0xc43c7ba4c5da7802!8m2!3d25.7834767!4d-80.1899121!15sCiZTcG90IE9uIFBldCBJbnN1cmFuY2UgVUsgcGV0IGluc3VyYW5jZVooIiZzcG90IG9uIHBldCBpbnN1cmFuY2UgdWsgcGV0IGluc3VyYW5jZZIBEWluc3VyYW5jZV9jb21wYW55mgFEQ2k5RFFVbFJRVU52WkVOb2RIbGpSamx2VDI1Q2JXRldjR1phUldoV1lsWmFSV05UTVhsak1XY3dVekpOZVZSSFl4QULgAQD6AQQIABA-!16s%2Fg%2F11hf91gmx0?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
+    "gUrl": "https://www.google.com/maps/place/Spot+Pet+Insurance/@25.7834767,-158.2367871,15840086m/data=!3m2!1e3!5s0x889acf5c262423e7:0xf4b87fa9b271048b!4m10!1m2!2m1!1s%22Spot+On+Pet+Insurance%22+UK+pet+insurance!3m6!1s0x88d8d7a8393b19b7:0xc43c7ba4c5da7802!8m2!3d25.7834767!4d-80.1899121!15sCiZTcG90IE9uIFBldCBJbnN1cmFuY2UgVUsgcGV0IGluc3VyYW5jZVooIiZzcG90IG9uIHBldCBpbnN1cmFuY2UgdWsgcGV0IGluc3VyYW5jZZIBEWluc3VyYW5jZV9jb21wYW55mgFEQ2k5RFFVbFJRVU52WkVOb2RIbGpSamx2VDI1Q2JXRldjR1phUldoV1lsWmFSV05UTVhsak1XY3dVekpOZVZSSFl4QULgAQD6AQQIABA-!16s%2Fg%2F11hf91gmx0?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
     "pondScore": 4.27,
     "avgScore": 4.35,
-    "totalOpinions": 4346,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 4349,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "France",
@@ -690,20 +690,20 @@
     "group": "Correlation",
     "link": "https://www.assurland.com/assurance/assureurs/kozoo.html",
     "underwriter": "",
-    "tpScore": 4.6,
-    "tpReviews": 12093,
+    "tpScore": 4.5,
+    "tpReviews": 12133,
     "gScore": 4.2,
     "gReviews": 705,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.kozoo.eu",
     "gUrl": "https://www.google.com/maps/place/kozoo/@46.1581942,-1.1019043,744m/data=!3m1!1e3!4m10!1m2!2m1!1swww.kozoo.eu!3m6!1s0x48014de63d42f503:0x65302db5958abc46!8m2!3d46.1581942!4d-1.1019043!15sCgx3d3cua296b28uZXWSARBpbnN1cmFuY2VfYnJva2Vy4AEA!16s%2Fg%2F11xsrkqft3?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
-    "pondScore": 4.58,
-    "avgScore": 4.4,
-    "totalOpinions": 12798,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "pondScore": 4.48,
+    "avgScore": 4.35,
+    "totalOpinions": 12838,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -714,7 +714,7 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.8,
-    "tpReviews": 1293,
+    "tpReviews": 1294,
     "gScore": 4.2,
     "gReviews": 107,
     "tpStatus": "ok",
@@ -723,10 +723,10 @@
     "gUrl": "https://www.google.com/maps/search/%22Vetsure+Pet+Insurance%22+UK+pet+insurance",
     "pondScore": 4.75,
     "avgScore": 4.5,
-    "totalOpinions": 1400,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 1401,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Germany",
@@ -737,19 +737,19 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.6,
-    "tpReviews": 12306,
+    "tpReviews": 12309,
     "gScore": 4.4,
-    "gReviews": 3955,
+    "gReviews": 3961,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.petolo.de",
     "gUrl": "https://www.google.com/maps/search/www.petolo.de",
     "pondScore": 4.55,
     "avgScore": 4.5,
-    "totalOpinions": 16261,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 16270,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Spain",
@@ -759,20 +759,20 @@
     "group": "",
     "link": "",
     "underwriter": "",
-    "tpScore": 4.4,
-    "tpReviews": 15935,
+    "tpScore": 4.5,
+    "tpReviews": 15976,
     "gScore": 4.3,
-    "gReviews": 3589,
+    "gReviews": 3595,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.barkibu.com",
-    "gUrl": "https://www.google.com/maps/search/%22Barkibu%22+Spain+pet+insurance",
-    "pondScore": 4.38,
-    "avgScore": 4.35,
-    "totalOpinions": 19524,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "gUrl": "https://www.google.com/maps/search/www.barkibu.com",
+    "pondScore": 4.46,
+    "avgScore": 4.4,
+    "totalOpinions": 19571,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "France",
@@ -783,19 +783,19 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.5,
-    "tpReviews": 5761,
-    "gScore": 4.7,
-    "gReviews": 12,
+    "tpReviews": 5772,
+    "gScore": 4.3,
+    "gReviews": 3328,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.dalma.co",
     "gUrl": "https://www.google.com/maps/search/www.dalma.co",
-    "pondScore": 4.5,
-    "avgScore": 4.6,
-    "totalOpinions": 5773,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "pondScore": 4.43,
+    "avgScore": 4.4,
+    "totalOpinions": 9100,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -816,9 +816,9 @@
     "pondScore": 4.48,
     "avgScore": 4.3,
     "totalOpinions": 5044,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "USA",
@@ -839,9 +839,9 @@
     "pondScore": 4.28,
     "avgScore": 4.25,
     "totalOpinions": 2936,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "New Zealand",
@@ -862,9 +862,9 @@
     "pondScore": 4.48,
     "avgScore": 4.45,
     "totalOpinions": 808,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Germany",
@@ -875,19 +875,19 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.3,
-    "tpReviews": 4264,
+    "tpReviews": 4266,
     "gScore": 4.3,
-    "gReviews": 4411,
+    "gReviews": 4412,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.agila.de",
     "gUrl": "https://www.google.com/maps/search/%22AGILA+Haustierversicherung%22+Germany+pet+insurance",
     "pondScore": 4.3,
     "avgScore": 4.3,
-    "totalOpinions": 8675,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 8678,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "USA",
@@ -898,7 +898,7 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.7,
-    "tpReviews": 12121,
+    "tpReviews": 12160,
     "gScore": 4.1,
     "gReviews": 2534,
     "tpStatus": "ok",
@@ -907,10 +907,10 @@
     "gUrl": "https://www.google.com/maps/search/www.metlifepetinsurance.com",
     "pondScore": 4.6,
     "avgScore": 4.4,
-    "totalOpinions": 14655,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 14694,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -931,9 +931,9 @@
     "pondScore": 4.3,
     "avgScore": 4.3,
     "totalOpinions": 413,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Spain",
@@ -958,9 +958,9 @@
     "pondScore": 4.56,
     "avgScore": 4.6,
     "totalOpinions": 8953,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "France",
@@ -971,7 +971,7 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.6,
-    "tpReviews": 1440,
+    "tpReviews": 1441,
     "gScore": 4.8,
     "gReviews": 520,
     "tpStatus": "ok",
@@ -980,10 +980,10 @@
     "gUrl": "https://www.google.com/maps/search/%22Agria+Assurance+pour+Animaux%22+France+pet+insurance",
     "pondScore": 4.65,
     "avgScore": 4.7,
-    "totalOpinions": 1960,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 1961,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -994,19 +994,19 @@
     "link": "https://www.pet-insurance-guide.co.uk/provider-ratings/pdsa-pet-insurance-review/",
     "underwriter": "",
     "tpScore": 4.5,
-    "tpReviews": 3426,
+    "tpReviews": 3427,
     "gScore": 4.1,
     "gReviews": 314,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.pdsa.org.uk",
-    "gUrl": "https://www.google.com/maps/place/PDSA+Pet+Aid+Hospital/@52.4644855,-21.5049125,2679406m/data=!3m1!1e3!4m10!1m2!2m1!1s%22PDSA+Pet+Insurance%22+UK+pet+insurance!3m6!1s0x4870962e33c90c01:0xf5e1b3cf079b27b0!8m2!3d52.4644855!4d-1.9931937!15sCiUiUERTQSBQZXQgSW5zdXJhbmNlIiBVSyBwZXQgaW5zdXJhbmNlIgOIAQHgAQA!16s%2Fg%2F1th1th36?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
+    "gUrl": "https://www.google.com/maps/place/PDSA+Pet+Aid+Hospital/@52.4644855,-21.5049125,2679406m/data=!3m1!1e3!4m10!1m2!2m1!1s%22PDSA+Pet+Insurance%22+UK+pet+insurance!3m6!1s0x4870962e33c90c01:0xf5e1b3cf079b27b0!8m2!3d52.4644855!4d-1.9931937!15sCiNQRFNBIFBldCBJbnN1cmFuY2UgVUsgcGV0IGluc3VyYW5jZSIDiAEB4AEA!16s%2Fg%2F1th1th36?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
     "pondScore": 4.47,
     "avgScore": 4.3,
-    "totalOpinions": 3740,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 3741,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Italy",
@@ -1027,9 +1027,9 @@
     "pondScore": 4.67,
     "avgScore": 4.3,
     "totalOpinions": 17903,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Switzerland",
@@ -1050,9 +1050,9 @@
     "pondScore": 4.33,
     "avgScore": 3.75,
     "totalOpinions": 1814,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Germany",
@@ -1065,17 +1065,17 @@
     "tpScore": 4.6,
     "tpReviews": 1062,
     "gScore": 2.8,
-    "gReviews": 1286,
+    "gReviews": 1288,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.figopet.de",
     "gUrl": "https://www.google.com/maps/search/www.figopet.de",
     "pondScore": 3.61,
     "avgScore": 3.7,
-    "totalOpinions": 2348,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 2350,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -1086,7 +1086,7 @@
     "link": "",
     "underwriter": "Agria",
     "tpScore": 4.8,
-    "tpReviews": 12758,
+    "tpReviews": 12769,
     "gScore": 3.6,
     "gReviews": 487,
     "tpStatus": "ok",
@@ -1095,10 +1095,10 @@
     "gUrl": "https://www.google.com/maps/place/Agria+Pet+Insurance/@51.8135348,-0.8105076,664m/data=!3m1!1e3!4m10!1m2!2m1!1swww.agriapet.co.uk!3m6!1s0x4876f71040bb2299:0x82e1d30b68a41d2e!8m2!3d51.8135348!4d-0.8105076!15sChJ3d3cuYWdyaWFwZXQuY28udWuSARFpbnN1cmFuY2VfY29tcGFueeABAA!16s%2Fg%2F1hc15fksq?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
     "pondScore": 4.76,
     "avgScore": 4.2,
-    "totalOpinions": 13245,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 13256,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -1123,9 +1123,9 @@
     "pondScore": 4.49,
     "avgScore": 4.2,
     "totalOpinions": 2496,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -1136,7 +1136,7 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.5,
-    "tpReviews": 14548,
+    "tpReviews": 14558,
     "gScore": 3.9,
     "gReviews": 905,
     "tpStatus": "ok",
@@ -1145,10 +1145,10 @@
     "gUrl": "https://www.google.com/maps/search/www.waggel.co.uk",
     "pondScore": 4.46,
     "avgScore": 4.2,
-    "totalOpinions": 15453,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 15463,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Belgium",
@@ -1161,17 +1161,17 @@
     "tpScore": 4.0,
     "tpReviews": 7641,
     "gScore": 4.3,
-    "gReviews": 2545,
+    "gReviews": 2546,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.santevet.be",
     "gUrl": "https://www.google.com/maps/search/www.santevet.be",
     "pondScore": 4.07,
     "avgScore": 4.15,
-    "totalOpinions": 10186,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 10187,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "USA",
@@ -1192,9 +1192,9 @@
     "pondScore": 3.8,
     "avgScore": 3.8,
     "totalOpinions": 2,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "USA",
@@ -1205,7 +1205,7 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.4,
-    "tpReviews": 12125,
+    "tpReviews": 12144,
     "gScore": 3.9,
     "gReviews": 1012,
     "tpStatus": "ok",
@@ -1214,10 +1214,10 @@
     "gUrl": "https://www.google.com/maps/search/%22Trupanion%22+USA+pet+insurance",
     "pondScore": 4.36,
     "avgScore": 4.15,
-    "totalOpinions": 13137,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 13156,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -1238,9 +1238,9 @@
     "pondScore": 4.54,
     "avgScore": 4.05,
     "totalOpinions": 2319,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Denmark",
@@ -1261,9 +1261,9 @@
     "pondScore": 4.44,
     "avgScore": 4.15,
     "totalOpinions": 1840,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Netherland",
@@ -1274,7 +1274,7 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.4,
-    "tpReviews": 2473,
+    "tpReviews": 2476,
     "gScore": 3.7,
     "gReviews": 666,
     "tpStatus": "ok",
@@ -1283,10 +1283,10 @@
     "gUrl": "https://www.google.com/maps/search/www.figopet.nl",
     "pondScore": 4.25,
     "avgScore": 4.05,
-    "totalOpinions": 3139,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 3142,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "France",
@@ -1297,7 +1297,7 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.2,
-    "tpReviews": 26642,
+    "tpReviews": 26645,
     "gScore": 4.0,
     "gReviews": 5638,
     "tpStatus": "ok",
@@ -1306,10 +1306,10 @@
     "gUrl": "https://www.google.com/maps/place/Sant%C3%A9vet/@45.7508125,4.8399863,17z/data=!3m1!4b1!4m6!3m5!1s0x47f4eaf1c01e1d99:0x4d4e6d5b967aa81f!8m2!3d45.7508125!4d4.8399863!16s%2Fg%2F1tmpd8fd",
     "pondScore": 4.17,
     "avgScore": 4.1,
-    "totalOpinions": 32280,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 32283,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "USA",
@@ -1320,9 +1320,9 @@
     "link": "",
     "underwriter": "",
     "tpScore": 3.7,
-    "tpReviews": 10991,
+    "tpReviews": 10992,
     "gScore": 4.0,
-    "gReviews": 14973,
+    "gReviews": 14972,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.embracepetinsurance.com",
@@ -1330,9 +1330,9 @@
     "pondScore": 3.87,
     "avgScore": 3.85,
     "totalOpinions": 25964,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Italy",
@@ -1343,7 +1343,7 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.1,
-    "tpReviews": 919,
+    "tpReviews": 920,
     "gScore": 4.1,
     "gReviews": 167,
     "tpStatus": "ok",
@@ -1352,10 +1352,10 @@
     "gUrl": "https://www.google.com/maps/search/www.santevet.it",
     "pondScore": 4.1,
     "avgScore": 4.1,
-    "totalOpinions": 1086,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 1087,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -1366,7 +1366,7 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.4,
-    "tpReviews": 4037,
+    "tpReviews": 4038,
     "gScore": 3.9,
     "gReviews": 685,
     "tpStatus": "ok",
@@ -1375,10 +1375,10 @@
     "gUrl": "https://www.google.com/maps/search/%22Pet+Protect%22+UK+pet+insurance",
     "pondScore": 4.33,
     "avgScore": 4.15,
-    "totalOpinions": 4722,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 4723,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Spain",
@@ -1389,7 +1389,7 @@
     "link": "",
     "underwriter": "",
     "tpScore": 3.9,
-    "tpReviews": 7662,
+    "tpReviews": 7663,
     "gScore": 3.8,
     "gReviews": 1552,
     "tpStatus": "ok",
@@ -1398,10 +1398,10 @@
     "gUrl": "https://www.google.com/maps/place/Sant%C3%A9vet/@41.3824833,2.1713838,806m/data=!3m1!1e3!4m10!1m2!2m1!1swww.santevet.es!3m6!1s0x12a49c6b613404bd:0xb66416e83fdcb196!8m2!3d41.3824833!4d2.1713838!15sCg93d3cuc2FudGV2ZXQuZXOSARBpbnN1cmFuY2VfYWdlbmN54AEA!16s%2Fg%2F11f03m9g3l?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
     "pondScore": 3.88,
     "avgScore": 3.85,
-    "totalOpinions": 9214,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 9215,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -1412,7 +1412,7 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.6,
-    "tpReviews": 16967,
+    "tpReviews": 16969,
     "gScore": 3.1,
     "gReviews": 611,
     "tpStatus": "ok",
@@ -1421,10 +1421,10 @@
     "gUrl": "https://www.google.com/maps/search/www.perfectpetinsurance.co.uk",
     "pondScore": 4.55,
     "avgScore": 3.85,
-    "totalOpinions": 17578,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 17580,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -1435,7 +1435,7 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.2,
-    "tpReviews": 10902,
+    "tpReviews": 10904,
     "gScore": 3.4,
     "gReviews": 716,
     "tpStatus": "ok",
@@ -1444,10 +1444,10 @@
     "gUrl": "https://www.google.com/maps/place/The+Insurance+Emporium/@54.0279368,-1.2903843,631m/data=!3m1!1e3!4m10!1m2!2m1!1swww.theinsuranceemporium.co.uk!3m6!1s0x48794b17329f6f87:0xdb1a6470e049afe5!8m2!3d54.0279368!4d-1.2903843!15sCh53d3cudGhlaW5zdXJhbmNlZW1wb3JpdW0uY28udWuSARFpbnN1cmFuY2VfY29tcGFueeABAA!16s%2Fg%2F11bv6ptzrz?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
     "pondScore": 4.15,
     "avgScore": 3.8,
-    "totalOpinions": 11618,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 11620,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "USA",
@@ -1457,20 +1457,20 @@
     "group": "JAB",
     "link": "",
     "underwriter": "",
-    "tpScore": 3.6,
-    "tpReviews": 6373,
+    "tpScore": 3.7,
+    "tpReviews": 6375,
     "gScore": 3.8,
-    "gReviews": 6490,
+    "gReviews": 6492,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.petsbest.com",
     "gUrl": "https://www.google.com/maps/search/www.petsbest.com",
-    "pondScore": 3.7,
-    "avgScore": 3.7,
-    "totalOpinions": 12863,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "pondScore": 3.75,
+    "avgScore": 3.75,
+    "totalOpinions": 12867,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -1491,9 +1491,9 @@
     "pondScore": 3.93,
     "avgScore": 3.95,
     "totalOpinions": 1043,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "USA",
@@ -1504,19 +1504,19 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.1,
-    "tpReviews": 3783,
+    "tpReviews": 3785,
     "gScore": 4.3,
-    "gReviews": 2716,
+    "gReviews": 2712,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.healthypawspetinsurance.com",
-    "gUrl": "https://www.google.com/maps/place/Healthy+Paws,+a+Chubb+Company/@41.5247951,-77.3437801,411567m/data=!3m1!1e3!4m10!1m2!2m1!1swww.healthypawspetinsurance.com!3m6!1s0x54906cf6b76c3b2d:0x50dce943546e6c66!8m2!3d39.9472645!4d-75.1492183!15sCh93d3cuaGVhbHRoeXBhd3NwZXRpbnN1cmFuY2UuY29tWiEiH3d3dyBoZWFsdGh5cGF3c3BldGluc3VyYW5jZSBjb22SARFpbnN1cmFuY2VfY29tcGFueZoBRENpOURRVWxSUVVOdlpFTm9kSGxqUmpsdlQyeFNRbG93T1dGaU0wSjRXREZHVFU0elZqUmxWMFkwWld4a1dXTllZeEFC4AEA-gEFCLoBEDk!16s%2Fg%2F11cnymynyj?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
+    "gUrl": "https://www.google.com/maps/search/www.healthypawspetinsurance.com",
     "pondScore": 4.18,
     "avgScore": 4.2,
-    "totalOpinions": 6499,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 6497,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "France",
@@ -1529,17 +1529,17 @@
     "tpScore": 4.2,
     "tpReviews": 27041,
     "gScore": 3.8,
-    "gReviews": 4982,
+    "gReviews": 4984,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.assuropoil.fr",
     "gUrl": "https://www.google.com/maps/place/Assur+O'Poil+%7C+L'assurance+chien+et+chat/@48.8115198,2.3756379,707m/data=!3m1!1e3!4m10!1m2!2m1!1swww.assuropoil.fr!3m6!1s0x47e673cd9539076d:0x48764ca6e69d5118!8m2!3d48.8115198!4d2.3756379!15sChF3d3cuYXNzdXJvcG9pbC5mcpIBEGluc3VyYW5jZV9icm9rZXLgAQA!16s%2Fg%2F1ptwbfnky?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
     "pondScore": 4.14,
     "avgScore": 4.0,
-    "totalOpinions": 32023,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 32025,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Italy",
@@ -1550,19 +1550,19 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.2,
-    "tpReviews": 3416,
+    "tpReviews": 3417,
     "gScore": 3.8,
-    "gReviews": 4982,
+    "gReviews": 4984,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.assuropoil.it",
     "gUrl": "https://www.google.com/maps/place/Assur+O'Poil+%7C+L'assurance+chien+et+chat/@48.8115198,2.3756379,707m/data=!3m1!1e3!4m10!1m2!2m1!1swww.assuropoil.it!3m6!1s0x47e673cd9539076d:0x48764ca6e69d5118!8m2!3d48.8115198!4d2.3756379!15sChF3d3cuYXNzdXJvcG9pbC5pdJIBEGluc3VyYW5jZV9icm9rZXLgAQA!16s%2Fg%2F1ptwbfnky?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
     "pondScore": 3.96,
     "avgScore": 4.0,
-    "totalOpinions": 8398,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 8401,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -1573,7 +1573,7 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.6,
-    "tpReviews": 55694,
+    "tpReviews": 55705,
     "gScore": 3.2,
     "gReviews": 2555,
     "tpStatus": "ok",
@@ -1582,10 +1582,10 @@
     "gUrl": "https://www.google.com/maps/place/Animal+Friends+Insurance/@51.1744192,-1.759422,673m/data=!3m1!1e3!4m10!1m2!2m1!1swww.animalfriends.co.uk!3m6!1s0x4873e58f9f5b5925:0x413e580f783147e6!8m2!3d51.1744192!4d-1.759422!15sChd3d3cuYW5pbWFsZnJpZW5kcy5jby51a5IBEWluc3VyYW5jZV9jb21wYW554AEA!16s%2Fg%2F12hxltxk1?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
     "pondScore": 4.54,
     "avgScore": 3.9,
-    "totalOpinions": 58249,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 58260,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -1606,9 +1606,9 @@
     "pondScore": 3.78,
     "avgScore": 3.75,
     "totalOpinions": 4655,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "France",
@@ -1619,7 +1619,7 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.3,
-    "tpReviews": 103,
+    "tpReviews": 104,
     "gScore": 4.0,
     "gReviews": 775,
     "tpStatus": "ok",
@@ -1628,10 +1628,10 @@
     "gUrl": "https://www.google.com/maps/search/www.fidanimo.com",
     "pondScore": 4.04,
     "avgScore": 4.15,
-    "totalOpinions": 878,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 879,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Sweden",
@@ -1652,9 +1652,9 @@
     "pondScore": 4.17,
     "avgScore": 3.75,
     "totalOpinions": 3721,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Australia",
@@ -1665,7 +1665,7 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.6,
-    "tpReviews": 130,
+    "tpReviews": 132,
     "gScore": 0.0,
     "gReviews": 0,
     "tpStatus": "ok",
@@ -1674,10 +1674,10 @@
     "gUrl": "",
     "pondScore": 4.6,
     "avgScore": 4.6,
-    "totalOpinions": 130,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 132,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -1698,9 +1698,9 @@
     "pondScore": 4.42,
     "avgScore": 3.7,
     "totalOpinions": 1341,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -1717,13 +1717,13 @@
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.everypaw.com",
-    "gUrl": "https://www.google.com/maps/search/www.everypaw.com",
+    "gUrl": "https://www.google.com/maps/search/%22Everypaw%22+UK+pet+insurance",
     "pondScore": 4.08,
     "avgScore": 3.5,
     "totalOpinions": 1530,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "USA",
@@ -1744,9 +1744,9 @@
     "pondScore": 2.58,
     "avgScore": 2.95,
     "totalOpinions": 1523,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -1767,9 +1767,9 @@
     "pondScore": 4.56,
     "avgScore": 4.65,
     "totalOpinions": 1232,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -1780,7 +1780,7 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.5,
-    "tpReviews": 3660,
+    "tpReviews": 3661,
     "gScore": 2.3,
     "gReviews": 184,
     "tpStatus": "ok",
@@ -1789,10 +1789,10 @@
     "gUrl": "https://www.google.com/maps/search/%22Healthy+Pets+Insurance%22+UK+pet+insurance",
     "pondScore": 4.39,
     "avgScore": 3.4,
-    "totalOpinions": 3844,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 3845,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "USA",
@@ -1805,17 +1805,17 @@
     "tpScore": 3.4,
     "tpReviews": 2325,
     "gScore": 2.8,
-    "gReviews": 1286,
+    "gReviews": 1288,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.figopetinsurance.com",
     "gUrl": "https://www.google.com/maps/search/www.figopetinsurance.com",
     "pondScore": 3.19,
     "avgScore": 3.1,
-    "totalOpinions": 3611,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 3613,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Ireland",
@@ -1825,20 +1825,20 @@
     "group": "",
     "link": "",
     "underwriter": "",
-    "tpScore": 4.3,
-    "tpReviews": 1643,
+    "tpScore": 4.4,
+    "tpReviews": 1644,
     "gScore": 2.2,
     "gReviews": 36,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.petinsurance.ie",
     "gUrl": "https://www.google.com/maps/search/www.petinsurance.ie",
-    "pondScore": 4.25,
-    "avgScore": 3.25,
-    "totalOpinions": 1679,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "pondScore": 4.35,
+    "avgScore": 3.3,
+    "totalOpinions": 1680,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -1859,9 +1859,9 @@
     "pondScore": 4.43,
     "avgScore": 3.45,
     "totalOpinions": 2257,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "New Zealand",
@@ -1882,9 +1882,9 @@
     "pondScore": 4.18,
     "avgScore": 3.0,
     "totalOpinions": 1139,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "USA",
@@ -1895,19 +1895,19 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.4,
-    "tpReviews": 4642,
+    "tpReviews": 4643,
     "gScore": 2.2,
-    "gReviews": 867,
+    "gReviews": 868,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.petinsurance.com",
-    "gUrl": "https://www.google.com/maps/place/Nationwide+Pet+Insurance/@46.423669,152.0104164,12126118m/data=!3m1!1e3!4m10!1m2!2m1!1s%22Nationwide+pet+insurance%22+USA+pet+insurance!3m6!1s0x80dcd45d7693672f:0xf963d2cfc6c65f70!8m2!3d46.423669!4d-129.9427086!15sCiwiTmF0aW9ud2lkZSBwZXQgaW5zdXJhbmNlIiBVU0EgcGV0IGluc3VyYW5jZVosIipuYXRpb253aWRlIHBldCBpbnN1cmFuY2UgdXNhIHBldCBpbnN1cmFuY2WSARFpbnN1cmFuY2VfY29tcGFueZoBI0NoWkRTVWhOTUc5blMwVkpRMEZuU1VOT05tRnFja2RuRUFF4AEA-gEECAAQJw!16s%2Fg%2F1tk1n8wk?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
+    "gUrl": "https://www.google.com/maps/search/%22Nationwide+pet+insurance%22+USA+pet+insurance",
     "pondScore": 4.05,
     "avgScore": 3.3,
-    "totalOpinions": 5509,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 5511,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "USA",
@@ -1924,13 +1924,13 @@
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.aspcapetinsurance.com",
-    "gUrl": "https://www.google.com/maps/search/www.aspcapetinsurance.com",
+    "gUrl": "https://www.google.com/maps/search/%22ASPCA+Pet+Health+Insurance%22+USA+pet+insurance",
     "pondScore": 3.59,
     "avgScore": 3.5,
     "totalOpinions": 6955,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -1941,7 +1941,7 @@
     "link": "",
     "underwriter": "",
     "tpScore": 3.9,
-    "tpReviews": 19123,
+    "tpReviews": 19126,
     "gScore": 2.7,
     "gReviews": 875,
     "tpStatus": "ok",
@@ -1950,10 +1950,10 @@
     "gUrl": "https://www.google.com/maps/search/www.purelypetsinsurance.co.uk",
     "pondScore": 3.85,
     "avgScore": 3.3,
-    "totalOpinions": 19998,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 20001,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -1974,9 +1974,9 @@
     "pondScore": 3.76,
     "avgScore": 2.9,
     "totalOpinions": 3443,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Germany",
@@ -1997,9 +1997,9 @@
     "pondScore": 2.91,
     "avgScore": 2.65,
     "totalOpinions": 1432,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Switzerland",
@@ -2012,17 +2012,17 @@
     "tpScore": 2.3,
     "tpReviews": 219,
     "gScore": 2.9,
-    "gReviews": 1169,
+    "gReviews": 1181,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.epona.ch",
     "gUrl": "https://www.google.com/maps/search/www.epona.ch",
     "pondScore": 2.81,
     "avgScore": 2.6,
-    "totalOpinions": 1388,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 1400,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Belgium",
@@ -2043,9 +2043,9 @@
     "pondScore": 4.13,
     "avgScore": 4.15,
     "totalOpinions": 633,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Czech Republic",
@@ -2066,9 +2066,9 @@
     "pondScore": 3.9,
     "avgScore": 3.9,
     "totalOpinions": 382,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -2089,9 +2089,9 @@
     "pondScore": 2.1,
     "avgScore": 2.2,
     "totalOpinions": 294,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Australia",
@@ -2112,9 +2112,9 @@
     "pondScore": 4.67,
     "avgScore": 4.7,
     "totalOpinions": 345,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -2135,9 +2135,9 @@
     "pondScore": 1.7,
     "avgScore": 1.7,
     "totalOpinions": 234,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Australia",
@@ -2158,9 +2158,9 @@
     "pondScore": 4.59,
     "avgScore": 4.5,
     "totalOpinions": 892,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Canada",
@@ -2181,9 +2181,9 @@
     "pondScore": 4.39,
     "avgScore": 4.25,
     "totalOpinions": 240,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Australia",
@@ -2204,9 +2204,9 @@
     "pondScore": 3.77,
     "avgScore": 2.95,
     "totalOpinions": 223,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Norway",
@@ -2217,7 +2217,7 @@
     "link": "",
     "underwriter": "",
     "tpScore": 3.6,
-    "tpReviews": 77,
+    "tpReviews": 78,
     "gScore": 2.7,
     "gReviews": 145,
     "tpStatus": "ok",
@@ -2226,10 +2226,10 @@
     "gUrl": "https://www.google.com/maps/search/www.agria.no",
     "pondScore": 3.01,
     "avgScore": 3.15,
-    "totalOpinions": 222,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 223,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Spain",
@@ -2250,9 +2250,9 @@
     "pondScore": 4.4,
     "avgScore": 4.4,
     "totalOpinions": 186,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Canada",
@@ -2264,18 +2264,18 @@
     "underwriter": "",
     "tpScore": 1.6,
     "tpReviews": 187,
-    "gScore": 2.1,
-    "gReviews": 101,
+    "gScore": 1.0,
+    "gReviews": 1,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.petsplusus.com",
-    "gUrl": "https://www.google.com/maps/place/Pets+Plus+Us/@43.4436067,-79.7025917,780m/data=!3m1!1e3!4m10!1m2!2m1!1s%22Pets+Plus+Us%22+Canada+pet+insurance!3m6!1s0x882b5d006747ce83:0x6182bded2e0c0fbe!8m2!3d43.4436067!4d-79.6978281!15sCiMiUGV0cyBQbHVzIFVzIiBDYW5hZGEgcGV0IGluc3VyYW5jZVojIiFwZXRzIHBsdXMgdXMgY2FuYWRhIHBldCBpbnN1cmFuY2WSARFpbnN1cmFuY2VfY29tcGFueZoBI0NoWkRTVWhOTUc5blMwVkxaVEJ5TlMxSmJUaFliMlJCRUFF4AEA-gEECAAQOQ!16s%2Fg%2F11m74y3lj_?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
-    "pondScore": 1.78,
-    "avgScore": 1.85,
-    "totalOpinions": 288,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "gUrl": "https://www.google.com/maps/search/www.petsplusus.com",
+    "pondScore": 1.6,
+    "avgScore": 1.3,
+    "totalOpinions": 188,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Germany",
@@ -2296,9 +2296,9 @@
     "pondScore": 3.15,
     "avgScore": 3.05,
     "totalOpinions": 213,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -2309,19 +2309,19 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.6,
-    "tpReviews": 243,
-    "gScore": 5.0,
-    "gReviews": 0,
+    "tpReviews": 244,
+    "gScore": 3.9,
+    "gReviews": 905,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.whistleandwag.co.uk",
-    "gUrl": "https://www.google.com/maps/place/Whistle+%26+Wag/@51.5158026,-39.1051679,5473557m/data=!3m2!1e3!5s0x48761cb281493007:0x1869819094d2454c!4m10!1m2!2m1!1swww.whistleandwag.co.uk!3m6!1s0x48761cb2a4353701:0xfb4fb23a3687ffe4!8m2!3d51.5158026!4d-0.0817304!15sChd3d3cud2hpc3RsZWFuZHdhZy5jby51a5IBEGNvcnBvcmF0ZV9vZmZpY2XgAQA!16s%2Fg%2F11y4t4xlxc?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
-    "pondScore": 4.6,
-    "avgScore": 4.8,
-    "totalOpinions": 243,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "gUrl": "https://www.google.com/maps/search/www.whistleandwag.co.uk",
+    "pondScore": 4.05,
+    "avgScore": 4.25,
+    "totalOpinions": 1149,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Spain",
@@ -2338,13 +2338,13 @@
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.veteasy.es",
-    "gUrl": "https://www.google.com/maps/place/VetEasy/@41.9968482,-38.4671298,6536807m/data=!3m1!1e3!4m10!1m2!2m1!1swww.veteasy.es!3m6!1s0x12a4999df0bdc0ed:0x74ff3aea24bd2058!8m2!3d40.9554137!4d-0.6880639!15sCg53d3cudmV0ZWFzeS5lc5IBDHZldGVyaW5hcmlhbuABAA!16s%2Fg%2F11qylkkx5n?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
+    "gUrl": "https://www.google.com/maps/search/www.veteasy.es",
     "pondScore": 4.48,
     "avgScore": 4.45,
     "totalOpinions": 159,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "USA",
@@ -2365,9 +2365,9 @@
     "pondScore": 2.72,
     "avgScore": 2.8,
     "totalOpinions": 157,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Japan",
@@ -2388,9 +2388,9 @@
     "pondScore": 2.9,
     "avgScore": 2.9,
     "totalOpinions": 149,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "South Africa",
@@ -2411,9 +2411,9 @@
     "pondScore": 4.8,
     "avgScore": 4.8,
     "totalOpinions": 148,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "New Zealand",
@@ -2434,9 +2434,9 @@
     "pondScore": 3.6,
     "avgScore": 3.6,
     "totalOpinions": 150,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "USA",
@@ -2447,19 +2447,19 @@
     "link": "",
     "underwriter": "",
     "tpScore": 2.1,
-    "tpReviews": 227,
-    "gScore": 2.2,
-    "gReviews": 5,
+    "tpReviews": 228,
+    "gScore": 0.0,
+    "gReviews": 0,
     "tpStatus": "ok",
-    "gStatus": "ok",
+    "gStatus": "not_listed",
     "tpUrl": "https://www.trustpilot.com/review/www.getodie.com",
-    "gUrl": "https://www.google.com/maps/search/%22Odie+Pet+Insurance%22+USA+pet+insurance",
+    "gUrl": "",
     "pondScore": 2.1,
-    "avgScore": 2.15,
-    "totalOpinions": 232,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "avgScore": 2.1,
+    "totalOpinions": 228,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "USA",
@@ -2480,9 +2480,9 @@
     "pondScore": 3.3,
     "avgScore": 3.25,
     "totalOpinions": 81,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Switzerland",
@@ -2495,17 +2495,17 @@
     "tpScore": 2.9,
     "tpReviews": 7,
     "gScore": 3.8,
-    "gReviews": 272,
+    "gReviews": 273,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.wau-miau.ch",
     "gUrl": "https://www.google.com/maps/search/www.wau-miau.ch",
     "pondScore": 3.78,
     "avgScore": 3.35,
-    "totalOpinions": 279,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 280,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "USA",
@@ -2517,18 +2517,18 @@
     "underwriter": "",
     "tpScore": 0.0,
     "tpReviews": 0,
-    "gScore": 0.0,
-    "gReviews": 0,
+    "gScore": 5.0,
+    "gReviews": 925,
     "tpStatus": "not_listed",
-    "gStatus": "not_listed",
+    "gStatus": "ok",
     "tpUrl": "",
-    "gUrl": "",
-    "pondScore": 0.0,
-    "avgScore": 0.0,
-    "totalOpinions": 0,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "gUrl": "https://www.google.com/maps/place/Felix+Insurance+Services/@33.8890172,-123.0717103,912686m/data=!3m1!1e3!4m10!1m2!2m1!1s%22Felix+Pet+Insurance%22+USA+pet+insurance!3m6!1s0x80c2ccbb3735d9f3:0x283327c7805e2bf9!8m2!3d33.8890172!4d-118.1937806!15sCiciRmVsaXggUGV0IEluc3VyYW5jZSIgVVNBIHBldCBpbnN1cmFuY2VaJyIlZmVsaXggcGV0IGluc3VyYW5jZSB1c2EgcGV0IGluc3VyYW5jZZIBEGluc3VyYW5jZV9hZ2VuY3maASNDaFpEU1VoTk1HOW5TMFZKUTBGblNVTTVMVXhsYzA1QkVBReABAPoBBAgAEDI!16s%2Fg%2F11hctkvk9x?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
+    "pondScore": 5.0,
+    "avgScore": 5.0,
+    "totalOpinions": 925,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Italy",
@@ -2540,18 +2540,18 @@
     "underwriter": "",
     "tpScore": 3.4,
     "tpReviews": 52,
-    "gScore": 4.1,
-    "gReviews": 142,
+    "gScore": 4.9,
+    "gReviews": 9,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.zampol.it",
-    "gUrl": "https://www.google.com/maps/search/www.zampol.it",
-    "pondScore": 3.91,
-    "avgScore": 3.75,
-    "totalOpinions": 194,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "gUrl": "https://www.google.com/maps/place/Zampol+Productions/@40.7206044,-73.992921,814m/data=!3m1!1e3!4m10!1m2!2m1!1swww.zampol.it!3m6!1s0x89c2598bb54abf55:0xdb5641418c15fe72!8m2!3d40.7206044!4d-73.992921!15sCg13d3cuemFtcG9sLml0kgEQcmVjb3JkaW5nX3N0dWRpb-ABAA!16s%2Fg%2F1tmcn4dc?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
+    "pondScore": 3.62,
+    "avgScore": 4.15,
+    "totalOpinions": 61,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "USA",
@@ -2572,9 +2572,9 @@
     "pondScore": 2.74,
     "avgScore": 2.4,
     "totalOpinions": 112,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -2595,9 +2595,9 @@
     "pondScore": 2.3,
     "avgScore": 2.3,
     "totalOpinions": 97,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "South Africa",
@@ -2622,9 +2622,9 @@
     "pondScore": 5.0,
     "avgScore": 5.0,
     "totalOpinions": 116,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -2645,9 +2645,9 @@
     "pondScore": 3.92,
     "avgScore": 3.45,
     "totalOpinions": 81,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "USA",
@@ -2664,13 +2664,13 @@
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.animalia.pet",
-    "gUrl": "https://www.google.com/maps/search/www.animalia.pet",
+    "gUrl": "https://www.google.com/maps/search/%22Animalia+Pet+Insurance%22+USA+pet+insurance",
     "pondScore": 4.41,
     "avgScore": 4.1,
     "totalOpinions": 77,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Japan",
@@ -2691,9 +2691,9 @@
     "pondScore": 2.9,
     "avgScore": 2.9,
     "totalOpinions": 79,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "USA",
@@ -2706,17 +2706,17 @@
     "tpScore": 1.4,
     "tpReviews": 48,
     "gScore": 5.0,
-    "gReviews": 147,
+    "gReviews": 148,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.trydoggo.com",
-    "gUrl": "https://www.google.com/maps/place/THE+DOGGO+USA/@33.835649,163.9125435,14612099m/data=!3m1!1e3!4m10!1m2!2m1!1s%22Doggo%22+USA+pet+insurance!3m6!1s0x8891cac5194923bf:0x397656c3da68f53d!8m2!3d33.835649!4d-118.0405815!15sChkiRG9nZ28iIFVTQSBwZXQgaW5zdXJhbmNlWhkiF2RvZ2dvIHVzYSBwZXQgaW5zdXJhbmNlkgELZG9nX3RyYWluZXKaASNDaFpEU1VoTk1HOW5TMFZKUTBGblRVUjNPWFEzVUU5M0VBReABAPoBBAgAED8!16s%2Fg%2F11s75vz_vt?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
-    "pondScore": 4.11,
+    "gUrl": "https://www.google.com/maps/search/%22Doggo%22+USA+pet+insurance",
+    "pondScore": 4.12,
     "avgScore": 3.2,
-    "totalOpinions": 195,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 196,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Argentina",
@@ -2737,9 +2737,9 @@
     "pondScore": 4.0,
     "avgScore": 4.0,
     "totalOpinions": 91,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -2750,19 +2750,19 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.5,
-    "tpReviews": 232,
-    "gScore": 4.1,
-    "gReviews": 314,
+    "tpReviews": 234,
+    "gScore": 4.5,
+    "gReviews": 325,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.rspca-petinsurance.com",
-    "gUrl": "https://www.google.com/maps/place/Napo+Pet+Insurance/@55.3627278,-22.9548638,2499648m/data=!3m1!1e3!4m10!1m2!2m1!1s%22RSPCA+Pet+Insurance%22+UK+pet+insurance!3m6!1s0x40ff956e58b92cf5:0x961ecc7ef8ada5c!8m2!3d55.3627278!4d-3.4431451!15sCiYiUlNQQ0EgUGV0IEluc3VyYW5jZSIgVUsgcGV0IGluc3VyYW5jZSIDiAEBWiYiJHJzcGNhIHBldCBpbnN1cmFuY2UgdWsgcGV0IGluc3VyYW5jZZIBEWluc3VyYW5jZV9jb21wYW55mgEjQ2haRFNVaE5NRzluUzBWSlEwRm5TVU5LT0U1aFprZG5FQUXgAQD6AQQIABAv!16s%2Fg%2F11pc9y7w1t?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
-    "pondScore": 4.27,
-    "avgScore": 4.3,
-    "totalOpinions": 546,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "gUrl": "https://www.google.com/maps/place/RSPCA+Derby/@52.9209771,-3.9218862,331442m/data=!3m1!1e3!4m10!1m2!2m1!1s%22RSPCA+Pet+Insurance%22+UK+pet+insurance!3m6!1s0x4879f13c8668b707:0x26a9e67733f4a31!8m2!3d52.9209771!4d-1.4829214!15sCiYiUlNQQ0EgUGV0IEluc3VyYW5jZSIgVUsgcGV0IGluc3VyYW5jZSIDiAEBWiYiJHJzcGNhIHBldCBpbnN1cmFuY2UgdWsgcGV0IGluc3VyYW5jZZIBB2NoYXJpdHngAQA!16s%2Fg%2F1vwlnntl?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
+    "pondScore": 4.5,
+    "avgScore": 4.5,
+    "totalOpinions": 559,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Japan",
@@ -2783,9 +2783,9 @@
     "pondScore": 3.0,
     "avgScore": 3.0,
     "totalOpinions": 60,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "USA",
@@ -2806,9 +2806,9 @@
     "pondScore": 4.8,
     "avgScore": 4.8,
     "totalOpinions": 50,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "México",
@@ -2825,13 +2825,13 @@
     "tpStatus": "not_listed",
     "gStatus": "ok",
     "tpUrl": "",
-    "gUrl": "https://www.google.com/maps/search/%22MediPet+MX%22+M%C3%A9xico+pet+insurance",
+    "gUrl": "https://www.google.com/maps/place/Veterinary+Hospital+Medipet/@19.3563851,-99.2087487,2026m/data=!3m1!1e3!4m10!1m2!2m1!1s%22MediPet+MX%22+M%C3%A9xico+pet+insurance!3m6!1s0x85d20019b35194b9:0x996690a3c634e9d4!8m2!3d19.3563851!4d-99.1992215!15sCiIiTWVkaVBldCBNWCIgTcOpeGljbyBwZXQgaW5zdXJhbmNlkgEPYW5pbWFsX2hvc3BpdGFs4AEA!16s%2Fg%2F1ptxbxx21?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
     "pondScore": 4.2,
     "avgScore": 4.2,
     "totalOpinions": 816,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "South Africa",
@@ -2852,9 +2852,9 @@
     "pondScore": 4.3,
     "avgScore": 4.3,
     "totalOpinions": 46,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Argentina",
@@ -2875,9 +2875,9 @@
     "pondScore": 0.0,
     "avgScore": 0.0,
     "totalOpinions": 0,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "France",
@@ -2889,18 +2889,18 @@
     "underwriter": "",
     "tpScore": 4.5,
     "tpReviews": 18,
-    "gScore": 3.3,
-    "gReviews": 139,
+    "gScore": 4.4,
+    "gReviews": 20,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.animalia-protect.com",
-    "gUrl": "https://www.google.com/maps/place/World+Animal+Protection+Canada/@43.7076268,-118.4193774,6358198m/data=!3m2!1e3!5s0x882b333b97cd906b:0x6bc3efa62baca3ca!4m10!1m2!2m1!1swww.animalia-protect.com!3m6!1s0x882b3324b5f046f7:0x9571ad153325920f!8m2!3d43.7076268!4d-79.3959399!15sChh3d3cuYW5pbWFsaWEtcHJvdGVjdC5jb21aGiIYd3d3IGFuaW1hbGlhIHByb3RlY3QgY29tkgEeYW5pbWFsX3Byb3RlY3Rpb25fb3JnYW5pemF0aW9umgEkQ2hkRFNVaE5NRzluUzBWSlEwRm5TVVJsYkRoWU1XOW5SUkFC4AEA-gEFCI0FEEc!16s%2Fg%2F1wf39780?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
-    "pondScore": 3.44,
-    "avgScore": 3.9,
-    "totalOpinions": 157,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "gUrl": "https://www.google.com/maps/search/www.animalia-protect.com",
+    "pondScore": 4.45,
+    "avgScore": 4.45,
+    "totalOpinions": 38,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "South Africa",
@@ -2921,9 +2921,9 @@
     "pondScore": 4.7,
     "avgScore": 4.7,
     "totalOpinions": 43,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Spain",
@@ -2935,18 +2935,18 @@
     "underwriter": "",
     "tpScore": 4.1,
     "tpReviews": 93,
-    "gScore": 4.3,
-    "gReviews": 289,
+    "gScore": 0.0,
+    "gReviews": 0,
     "tpStatus": "ok",
-    "gStatus": "ok",
+    "gStatus": "not_listed",
     "tpUrl": "https://www.trustpilot.com/review/www.kalibo.com",
-    "gUrl": "https://www.google.com/maps/search/%22Kalibo%22+Spain+pet+insurance",
-    "pondScore": 4.25,
-    "avgScore": 4.2,
-    "totalOpinions": 382,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "gUrl": "",
+    "pondScore": 4.1,
+    "avgScore": 4.1,
+    "totalOpinions": 93,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Switzerland",
@@ -2959,17 +2959,17 @@
     "tpScore": 2.0,
     "tpReviews": 27,
     "gScore": 5.0,
-    "gReviews": 12,
+    "gReviews": 9,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.smartpaws.ch",
     "gUrl": "https://www.google.com/maps/search/www.smartpaws.ch",
-    "pondScore": 2.92,
+    "pondScore": 2.75,
     "avgScore": 3.5,
-    "totalOpinions": 39,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 36,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Switzerland",
@@ -2982,17 +2982,17 @@
     "tpScore": 0.0,
     "tpReviews": 0,
     "gScore": 4.4,
-    "gReviews": 595,
+    "gReviews": 596,
     "tpStatus": "not_listed",
     "gStatus": "ok",
     "tpUrl": "",
     "gUrl": "https://www.google.com/maps/place/Calingo+Insurance+AG/@47.3632788,8.551694,17z/data=!3m1!4b1!4m6!3m5!1s0x479aa730aa5fa4d7:0xaabf8fe5e766520!8m2!3d47.3632788!4d8.551694!16s%2Fg%2F11nwxkqng8",
     "pondScore": 4.4,
     "avgScore": 4.4,
-    "totalOpinions": 595,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 596,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -3013,9 +3013,9 @@
     "pondScore": 0.0,
     "avgScore": 0.0,
     "totalOpinions": 0,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Germany",
@@ -3027,18 +3027,18 @@
     "underwriter": "",
     "tpScore": 2.5,
     "tpReviews": 5,
-    "gScore": 5.0,
-    "gReviews": 12,
+    "gScore": 0.0,
+    "gReviews": 0,
     "tpStatus": "ok",
-    "gStatus": "ok",
+    "gStatus": "not_listed",
     "tpUrl": "https://www.trustpilot.com/review/www.smartpaws.de",
-    "gUrl": "https://www.google.com/maps/search/www.smartpaws.de",
-    "pondScore": 4.26,
-    "avgScore": 3.75,
-    "totalOpinions": 17,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "gUrl": "",
+    "pondScore": 2.5,
+    "avgScore": 2.5,
+    "totalOpinions": 5,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -3050,18 +3050,18 @@
     "underwriter": "",
     "tpScore": 1.8,
     "tpReviews": 14,
-    "gScore": 5.0,
-    "gReviews": 5,
+    "gScore": 1.0,
+    "gReviews": 1,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.buddies.co.uk",
-    "gUrl": "https://www.google.com/maps/search/www.buddies.co.uk",
-    "pondScore": 2.64,
-    "avgScore": 3.4,
-    "totalOpinions": 19,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "gUrl": "https://www.google.com/maps/search/%22Buddies+Pet+Insurance%22+UK+pet+insurance",
+    "pondScore": 1.75,
+    "avgScore": 1.4,
+    "totalOpinions": 15,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Canada",
@@ -3082,9 +3082,9 @@
     "pondScore": 3.3,
     "avgScore": 3.3,
     "totalOpinions": 21,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Germany",
@@ -3105,9 +3105,9 @@
     "pondScore": 5.0,
     "avgScore": 5.0,
     "totalOpinions": 7,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "USA",
@@ -3128,9 +3128,9 @@
     "pondScore": 3.3,
     "avgScore": 3.3,
     "totalOpinions": 6,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Belgium",
@@ -3142,18 +3142,18 @@
     "underwriter": "",
     "tpScore": 0.0,
     "tpReviews": 0,
-    "gScore": 5.0,
-    "gReviews": 72,
+    "gScore": 4.7,
+    "gReviews": 28,
     "tpStatus": "not_listed",
     "gStatus": "ok",
     "tpUrl": "",
-    "gUrl": "https://www.google.com/maps/search/www.petexpert.be",
-    "pondScore": 5.0,
-    "avgScore": 5.0,
-    "totalOpinions": 72,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "gUrl": "https://www.google.com/maps/search/%22Petexpert+by+trupanion+BE%22+Belgium+pet+insurance",
+    "pondScore": 4.7,
+    "avgScore": 4.7,
+    "totalOpinions": 28,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Spain",
@@ -3174,9 +3174,9 @@
     "pondScore": 3.2,
     "avgScore": 3.2,
     "totalOpinions": 1,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Chile",
@@ -3201,9 +3201,9 @@
     "pondScore": 4.6,
     "avgScore": 4.6,
     "totalOpinions": 32,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Perú",
@@ -3228,9 +3228,9 @@
     "pondScore": 4.6,
     "avgScore": 4.6,
     "totalOpinions": 32,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Colombia",
@@ -3247,13 +3247,13 @@
     "tpStatus": "not_listed",
     "gStatus": "ok",
     "tpUrl": "",
-    "gUrl": "https://www.google.com/maps/place/Mascota+Sura+mascota+Segura+-+Seguro+para+Mascotas/@4.6733566,-76.5001124,547904m/data=!3m1!1e3!4m10!1m2!2m1!1s%22Seguro+Salud+Mascotas+SURA%22+Colombia+pet+insurance!3m6!1s0x8e3f9b41e1f3c675:0xa9d90675db3a8a!8m2!3d4.6733566!4d-74.0611476!15sCjMiU2VndXJvIFNhbHVkIE1hc2NvdGFzIFNVUkEiIENvbG9tYmlhIHBldCBpbnN1cmFuY2WSARBpbnN1cmFuY2VfYnJva2Vy4AEA!16s%2Fg%2F11s_xpl4_q?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
+    "gUrl": "https://www.google.com/maps/place/Mascota+Sura+mascota+Segura+-+Seguro+para+Mascotas/@4.0278697,-75.2987765,274187m/data=!3m1!1e3!4m10!1m2!2m1!1s%22Seguro+Salud+Mascotas+SURA%22+Colombia+pet+insurance!3m6!1s0x8e3f9b41e1f3c675:0xa9d90675db3a8a!8m2!3d4.6733566!4d-74.0611476!15sCjMiU2VndXJvIFNhbHVkIE1hc2NvdGFzIFNVUkEiIENvbG9tYmlhIHBldCBpbnN1cmFuY2WSARBpbnN1cmFuY2VfYnJva2Vy4AEA!16s%2Fg%2F11s_xpl4_q?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
     "pondScore": 4.7,
     "avgScore": 4.7,
     "totalOpinions": 36,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Chile",
@@ -3270,13 +3270,13 @@
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/woofplus.com",
-    "gUrl": "https://www.google.com/maps/place/Mascotas+Woof/@10.4837074,-105.8779896,8648877m/data=!3m1!1e3!4m10!1m2!2m1!1s%22Woof*21+Seguros+de+mascotas%22+Chile+pet+insurance!3m6!1s0x8c2a59a157610133:0x3dde87e49852c81d!8m2!3d10.4837074!4d-66.8545521!15sCi8iV29vZiEgU2VndXJvcyBkZSBtYXNjb3RhcyIgQ2hpbGUgcGV0IGluc3VyYW5jZVouIix3b29mIHNlZ3Vyb3MgZGUgbWFzY290YXMgY2hpbGUgcGV0IGluc3VyYW5jZZIBEHBldF9zdXBwbHlfc3RvcmXgAQA!16s%2Fg%2F11trvpx8mh?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
+    "gUrl": "https://www.google.com/maps/search/%22Woof%21+Seguros+de+mascotas%22+Chile+pet+insurance",
     "pondScore": 4.89,
     "avgScore": 4.75,
     "totalOpinions": 64,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Brazil",
@@ -3297,9 +3297,9 @@
     "pondScore": 0.0,
     "avgScore": 0.0,
     "totalOpinions": 0,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Spain",
@@ -3320,9 +3320,9 @@
     "pondScore": 4.81,
     "avgScore": 4.75,
     "totalOpinions": 486,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Spain",
@@ -3333,7 +3333,7 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.5,
-    "tpReviews": 488,
+    "tpReviews": 490,
     "gScore": 4.2,
     "gReviews": 26,
     "tpStatus": "ok",
@@ -3342,10 +3342,10 @@
     "gUrl": "https://www.google.com/maps/place/Milo+Seguro+para+Perros/@41.3961118,2.1486988,17z/data=!3m1!4b1!4m6!3m5!1s0x12a4a3d7e99ff1ed:0xc5e24a1979df6479!8m2!3d41.3961118!4d2.1512791!16s%2Fg%2F11ym3tvm80",
     "pondScore": 4.48,
     "avgScore": 4.35,
-    "totalOpinions": 514,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 516,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Spain",
@@ -3356,7 +3356,7 @@
     "link": "",
     "underwriter": "",
     "tpScore": 1.6,
-    "tpReviews": 3105,
+    "tpReviews": 3106,
     "gScore": 0.0,
     "gReviews": 0,
     "tpStatus": "ok",
@@ -3365,10 +3365,10 @@
     "gUrl": "",
     "pondScore": 1.6,
     "avgScore": 1.6,
-    "totalOpinions": 3105,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 3106,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Spain",
@@ -3378,20 +3378,20 @@
     "group": "",
     "link": "",
     "underwriter": "",
-    "tpScore": 1.4,
-    "tpReviews": 1618,
-    "gScore": 2.7,
-    "gReviews": 346,
+    "tpScore": 1.5,
+    "tpReviews": 1619,
+    "gScore": 0.0,
+    "gReviews": 0,
     "tpStatus": "ok",
-    "gStatus": "ok",
+    "gStatus": "not_listed",
     "tpUrl": "https://www.trustpilot.com/review/www.santalucia.es",
-    "gUrl": "https://www.google.com/maps/search/%22Santalucia%22+Spain+pet+insurance",
-    "pondScore": 1.63,
-    "avgScore": 2.05,
-    "totalOpinions": 1964,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "gUrl": "",
+    "pondScore": 1.5,
+    "avgScore": 1.5,
+    "totalOpinions": 1619,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Spain",
@@ -3412,9 +3412,9 @@
     "pondScore": 1.6,
     "avgScore": 1.6,
     "totalOpinions": 1002,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Spain",
@@ -3425,19 +3425,19 @@
     "link": "",
     "underwriter": "",
     "tpScore": 3.7,
-    "tpReviews": 11468,
+    "tpReviews": 11495,
     "gScore": 3.8,
-    "gReviews": 8207,
+    "gReviews": 8224,
     "tpStatus": "ok",
     "gStatus": "ok",
     "tpUrl": "https://www.trustpilot.com/review/www.lineadirecta.com",
     "gUrl": "https://www.google.com/maps/search/%22Linea+Directa%22+Spain+pet+insurance",
     "pondScore": 3.74,
     "avgScore": 3.75,
-    "totalOpinions": 19675,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "totalOpinions": 19719,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Spain",
@@ -3448,19 +3448,19 @@
     "link": "",
     "underwriter": "",
     "tpScore": 2.0,
-    "tpReviews": 1862,
-    "gScore": 2.3,
-    "gReviews": 189,
+    "tpReviews": 1866,
+    "gScore": 0.0,
+    "gReviews": 0,
     "tpStatus": "ok",
-    "gStatus": "ok",
+    "gStatus": "not_listed",
     "tpUrl": "https://www.trustpilot.com/review/www.generali.es",
-    "gUrl": "https://www.google.com/maps/search/%22Generali%22+Spain+pet+insurance",
-    "pondScore": 2.03,
-    "avgScore": 2.15,
-    "totalOpinions": 2051,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "gUrl": "",
+    "pondScore": 2.0,
+    "avgScore": 2.0,
+    "totalOpinions": 1866,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Spain",
@@ -3471,19 +3471,19 @@
     "link": "",
     "underwriter": "",
     "tpScore": 1.1,
-    "tpReviews": 1495,
-    "gScore": 2.4,
-    "gReviews": 32,
+    "tpReviews": 1496,
+    "gScore": 0.0,
+    "gReviews": 0,
     "tpStatus": "ok",
-    "gStatus": "ok",
+    "gStatus": "not_listed",
     "tpUrl": "https://www.trustpilot.com/review/www.axa.es",
-    "gUrl": "https://www.google.com/maps/search/%22AXA+Espa%C3%B1a%22+Spain+pet+insurance",
-    "pondScore": 1.13,
-    "avgScore": 1.75,
-    "totalOpinions": 1527,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "gUrl": "",
+    "pondScore": 1.1,
+    "avgScore": 1.1,
+    "totalOpinions": 1496,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Spain",
@@ -3494,19 +3494,19 @@
     "link": "",
     "underwriter": "",
     "tpScore": 3.4,
-    "tpReviews": 4129,
-    "gScore": 3.1,
-    "gReviews": 22,
+    "tpReviews": 4135,
+    "gScore": 0.0,
+    "gReviews": 0,
     "tpStatus": "ok",
-    "gStatus": "ok",
+    "gStatus": "not_listed",
     "tpUrl": "https://www.trustpilot.com/review/www.caser.es",
-    "gUrl": "https://www.google.com/maps/search/%22Caser%22+Spain+pet+insurance",
+    "gUrl": "",
     "pondScore": 3.4,
-    "avgScore": 3.25,
-    "totalOpinions": 4151,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "avgScore": 3.4,
+    "totalOpinions": 4135,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Spain",
@@ -3527,9 +3527,9 @@
     "pondScore": 2.54,
     "avgScore": 2.15,
     "totalOpinions": 2201,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Spain",
@@ -3540,19 +3540,19 @@
     "link": "",
     "underwriter": "",
     "tpScore": 4.3,
-    "tpReviews": 17466,
-    "gScore": 4.6,
-    "gReviews": 39,
+    "tpReviews": 17476,
+    "gScore": 0.0,
+    "gReviews": 0,
     "tpStatus": "ok",
-    "gStatus": "ok",
+    "gStatus": "not_listed",
     "tpUrl": "https://www.trustpilot.com/review/tuio.com",
-    "gUrl": "https://www.google.com/maps/search/tuio.com",
+    "gUrl": "",
     "pondScore": 4.3,
-    "avgScore": 4.45,
-    "totalOpinions": 17505,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "avgScore": 4.3,
+    "totalOpinions": 17476,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Spain",
@@ -3573,9 +3573,9 @@
     "pondScore": 4.89,
     "avgScore": 4.8,
     "totalOpinions": 13031,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
@@ -3596,9 +3596,9 @@
     "pondScore": 0.0,
     "avgScore": 0.0,
     "totalOpinions": 0,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Spain",
@@ -3610,18 +3610,18 @@
     "underwriter": "",
     "tpScore": 4.3,
     "tpReviews": 31,
-    "gScore": 3.5,
-    "gReviews": 16,
+    "gScore": 0.0,
+    "gReviews": 0,
     "tpStatus": "ok",
-    "gStatus": "ok",
+    "gStatus": "not_listed",
     "tpUrl": "https://www.trustpilot.com/review/swipet.es",
-    "gUrl": "https://www.google.com/maps/place/Swipet/@48.6503712,-49.4199484,11621805m/data=!3m2!1e3!5s0xd42289534e8deb5:0xc00113286f0a1dae!4m10!1m2!2m1!1sswipet.es!3m6!1s0xd42298287351609:0x4f506221070359e9!8m2!3d40.4337265!4d-3.6840964!15sCglzd2lwZXQuZXOSARBpbnN1cmFuY2VfYWdlbmN54AEA!16s%2Fg%2F11z9pcj8h6?entry=ttu&g_ep=EgoyMDI2MDkwMi4wIKXMDSoASAFQAw%3D%3D",
-    "pondScore": 4.03,
-    "avgScore": 3.9,
-    "totalOpinions": 47,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "gUrl": "",
+    "pondScore": 4.3,
+    "avgScore": 4.3,
+    "totalOpinions": 31,
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Spain",
@@ -3642,9 +3642,9 @@
     "pondScore": 0.0,
     "avgScore": 0.0,
     "totalOpinions": 0,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "Spain",
@@ -3665,9 +3665,9 @@
     "pondScore": 4.81,
     "avgScore": 3.65,
     "totalOpinions": 160,
-    "date": "2026-09-05",
-    "tpDate": "2026-09-05",
-    "gDate": "2026-09-05"
+    "date": "2026-09-06",
+    "tpDate": "2026-09-06",
+    "gDate": "2026-09-06"
   },
   {
     "country": "UK",
