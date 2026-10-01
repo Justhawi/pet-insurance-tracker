@@ -18,6 +18,8 @@ import hashlib
 import hmac
 import os
 import secrets
+import threading
+import time
 from datetime import timedelta
 
 from flask import redirect, request, session, Response
@@ -56,6 +58,55 @@ def _signed_in():
     return session.get("auth") == _fingerprint()
 
 
+# Small in-memory throttle (from SEO Lens): 8 wrong passwords per address per
+# 15 minutes. Enough to make guessing the shared password pointless on a single
+# instance; it resets when the service restarts.
+_ATTEMPTS = {}
+_WINDOW = 15 * 60
+_MAX_TRIES = 8
+_ATTEMPTS_LOCK = threading.Lock()
+
+
+def _client_key():
+    fwd = (request.headers.get("X-Forwarded-For") or "").split(",")[0].strip()
+    return fwd or request.remote_addr or "unknown"
+
+
+def _throttled(key):
+    with _ATTEMPTS_LOCK:
+        rec = _ATTEMPTS.get(key)
+        if not rec:
+            return False
+        if time.time() > rec["until"]:
+            del _ATTEMPTS[key]
+            return False
+        return rec["n"] >= _MAX_TRIES
+
+
+def _note_failure(key):
+    now = time.time()
+    with _ATTEMPTS_LOCK:
+        rec = _ATTEMPTS.get(key)
+        if not rec or now > rec["until"]:
+            _ATTEMPTS[key] = {"n": 1, "until": now + _WINDOW}
+        else:
+            rec["n"] += 1
+
+
+# SEO Lens's page reads JSON from these, so they answer a lapsed session in JSON.
+_JSON_API = {"/api/audit", "/api/cwv", "/api/drafts", "/api/dupe"}
+
+
+@app.after_request
+def _security_headers(resp):
+    resp.headers.setdefault("X-Content-Type-Options", "nosniff")
+    resp.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
+    resp.headers.setdefault("X-Frame-Options", "DENY")
+    if os.environ.get("RENDER"):
+        resp.headers.setdefault("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
+    return resp
+
+
 @app.before_request
 def _gate():
     if not _PW:
@@ -66,6 +117,9 @@ def _gate():
     if _signed_in():
         return None
     if path.startswith("/api/"):
+        if path in _JSON_API:
+            return Response('{"ok":false,"error":"Session expired. Sign in again.","authRequired":true}',
+                            401, {"Content-Type": "application/json; charset=utf-8"})
         return Response("Authentication required.", 401, {"Content-Type": "text/plain"})
     return redirect("/login?next=" + _safe_next(path))
 
@@ -79,16 +133,26 @@ def login():
         return redirect(nxt)
 
     error = ""
+    status = 200
     if request.method == "POST":
-        supplied = request.form.get("password", "")
-        if hmac.compare_digest(supplied, _PW):
-            session.permanent = True
-            session["auth"] = _fingerprint()
-            return redirect(nxt)
-        error = "That password is not right."
+        key = _client_key()
+        if _throttled(key):
+            error = "Too many attempts. Try again in 15 minutes."
+            status = 429
+        else:
+            supplied = request.form.get("password", "")
+            if hmac.compare_digest(supplied.encode("utf-8"), _PW.encode("utf-8")):
+                with _ATTEMPTS_LOCK:
+                    _ATTEMPTS.pop(key, None)
+                session.permanent = True
+                session["auth"] = _fingerprint()
+                return redirect(nxt)
+            _note_failure(key)
+            error = "That password is not right."
+            status = 401
 
     signed_out = request.args.get("signedout") == "1"
-    return Response(_login_page(nxt, error, signed_out), 200 if not error else 401,
+    return Response(_login_page(nxt, error, signed_out), status,
                     {"Content-Type": "text/html; charset=utf-8"})
 
 

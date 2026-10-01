@@ -202,6 +202,11 @@ def api_refresh():
 def api_refresh_status():
     return jsonify(_refresh)
 
+# -- SEO Lens (on-page audit, cloaking check, Core Web Vitals, compare) ---
+# Served at /seo with its API under /api/audit, /api/cwv, /api/drafts, /api/dupe.
+from seo_lens import bp as seo_lens_bp  # noqa: E402
+app.register_blueprint(seo_lens_bp)
+
 # -- entry point ------------------------------------------------------
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

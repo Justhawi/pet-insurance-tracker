@@ -1,0 +1,623 @@
+{
+ "cta": {
+  "alt": "Solicita precio de tu seguro veterinario",
+  "text": "SOLICITA PRECIO DE TU SEGURO VETERINARIO",
+  "note": "Imagen CTA existente de Petplan. No sustituir por un botón de texto."
+ },
+ "facts": {
+  "maxAnual": 3100,
+  "copago": 45,
+  "reembolso": "100%",
+  "carenciaAcc": 15,
+  "carenciaEnf": 30,
+  "rcPrecio": 25,
+  "rcCobertura": 300000,
+  "vacunasLimite": 90,
+  "pppMinimo": 120000,
+  "desde": "0,7 euros al día"
+ },
+ "drafts": [
+  {
+   "id": "d1",
+   "slug": "periodos-de-carencia-seguro-veterinario",
+   "title": "Periodos de carencia en el seguro veterinario: cuánto hay que esperar",
+   "meta": "El periodo de carencia es el tiempo entre contratar el seguro y poder usarlo. En Petplan son 15 días para accidentes y 30 para enfermedades. Te explicamos por qué existe.",
+   "lede": "Has contratado el seguro, tu perro se pone enfermo esa misma semana y descubres que todavía no puedes reclamar. No es letra pequeña escondida: se llama periodo de carencia, lo tienen todas las aseguradoras y conviene entenderlo antes de contratar, no después.",
+   "body": [
+    [
+     "h2",
+     "Qué es exactamente un periodo de carencia"
+    ],
+    [
+     "p",
+     "Es el tiempo que transcurre entre el momento en que contratas la póliza y el momento en que puedes empezar a usarla. Durante esos días la póliza está activa y la estás pagando, pero los gastos veterinarios que surjan todavía no se reembolsan."
+    ],
+    [
+     "p",
+     "Existe por una razón concreta: sin carencia, cualquiera podría contratar un seguro de camino a la clínica con el animal ya enfermo. Eso haría inviable el producto para todos los demás. La carencia es lo que mantiene el precio bajo para quien asegura a su mascota estando sana."
+    ],
+    [
+     "h2",
+     "Cuánto dura en Petplan"
+    ],
+    [
+     "p",
+     "En Petplan el periodo de carencia es de <strong>15 días para accidentes</strong> y <strong>30 días para enfermedades</strong>."
+    ],
+    [
+     "p",
+     "La diferencia entre los dos plazos no es arbitraria. Un accidente es un hecho súbito y verificable: una fractura, un atropello, una herida. Una enfermedad puede haber empezado a gestarse antes de contratar, y es mucho más difícil de datar. De ahí que el plazo sea mayor."
+    ],
+    [
+     "h2",
+     "Cómo se compara con el resto del mercado"
+    ],
+    [
+     "p",
+     "Los principales seguros para perros, gatos y conejos en España establecen periodos de carencia de 1, 2 e incluso 6 meses para cirugías. Petplan aplica 15 días para accidentes y 1 mes para enfermedades, sin un plazo distinto y más largo para la cirugía."
+    ],
+    [
+     "p",
+     "Es un detalle que casi nadie compara y que cambia mucho las cosas si el problema aparece en los primeros meses."
+    ],
+    [
+     "h2",
+     "Qué pasa si el problema aparece durante la carencia"
+    ],
+    [
+     "p",
+     "Ese gasto concreto no se reembolsa. Y hay una consecuencia que conviene tener clara: si la dolencia se diagnostica durante la carencia, pasa a considerarse una condición preexistente, y las condiciones preexistentes quedan excluidas de forma permanente. No es que tengas que esperar a que termine el plazo para reclamar por esa misma dolencia: esa dolencia queda fuera."
+    ],
+    [
+     "p",
+     "Por eso el mejor momento para contratar un seguro veterinario es cuando el animal está sano, no cuando ya hay síntomas."
+    ],
+    [
+     "h2",
+     "Qué sí está cubierto desde el primer día"
+    ],
+    [
+     "p",
+     "La carencia afecta al reembolso de gastos veterinarios. Los servicios de asistencia de Petplan están disponibles desde que la póliza entra en vigor: el servicio de urgencias veterinarias por teléfono, accesible 24 horas al día y 7 días a la semana, y el chat con veterinarios colegiados de lunes a viernes de 9:00 a 18:00."
+    ],
+    [
+     "p",
+     "Si tienes una duda en los primeros días de póliza, puedes usarlos."
+    ]
+   ],
+   "faq": [
+    [
+     "¿Puedo contratar el seguro si mi perro ya está enfermo?",
+     "Puedes contratar la póliza, pero esa enfermedad quedará excluida como condición preexistente. Ningún seguro veterinario en España cubre las condiciones anteriores a la contratación, y Petplan tampoco."
+    ],
+    [
+     "¿La carencia se aplica cada año al renovar?",
+     "No. El periodo de carencia se aplica al contratar. Mientras la póliza siga en vigor sin interrupción, no vuelve a aplicarse en las renovaciones."
+    ],
+    [
+     "¿Hay carencia para los accidentes?",
+     "Sí, de 15 días. Es la mitad del plazo que se aplica a las enfermedades."
+    ],
+    [
+     "¿Qué cubre Petplan una vez pasada la carencia?",
+     "El 100% de los gastos veterinarios por enfermedad o accidente hasta 3.100 € al año, con un copago de 45 € por enfermedad, en cualquier veterinario de España."
+    ]
+   ],
+   "related": [
+    "copago-seguro-veterinario-que-es",
+    "condiciones-preexistentes-seguro-veterinario"
+   ],
+   "image": {
+    "url": "https://petplan.es/wp-content/uploads/2026/09/primer-ano-cachorro-gatito-seguro.jpg",
+    "alt": "Cachorro de golden retriever tumbado en la hierba",
+    "credit": "Biblioteca de medios de Petplan",
+    "licence": "Ya en el sitio · 1536x1024"
+   },
+   "imageQuery": "golden retriever puppy at veterinary clinic calm",
+   "facts": [
+    [
+     "15 días carencia accidentes",
+     "petplan.es/seguro-veterinario"
+    ],
+    [
+     "30 días carencia enfermedades",
+     "petplan.es/seguro-veterinario"
+    ],
+    [
+     "competencia 1, 2 y 6 meses para cirugías",
+     "petplan.es/seguro-veterinario, texto propio de Petplan"
+    ],
+    [
+     "3.100 € máximo anual",
+     "petplan.es/seguro-veterinario"
+    ],
+    [
+     "45 € copago por enfermedad",
+     "petplan.es/seguro-veterinario"
+    ],
+    [
+     "urgencias 24/7 y chat L-V 9:00-18:00",
+     "petplan.es/seguro-veterinario"
+    ]
+   ]
+  },
+  {
+   "id": "d2",
+   "slug": "copago-seguro-veterinario-que-es",
+   "title": "Qué es el copago en un seguro veterinario y cómo se calcula",
+   "meta": "El copago es la parte de la factura que paga el asegurado. En Petplan son 45 € por enfermedad, no por cada visita. Te explicamos la diferencia y lo que supone.",
+   "lede": "El copago es la parte de la factura veterinaria que asumes tú. Es uno de los tres números que de verdad determinan lo que te cuesta un seguro, junto al porcentaje de reembolso y al límite anual, y es también el que más se malinterpreta.",
+   "body": [
+    [
+     "h2",
+     "Copago y porcentaje de reembolso no son lo mismo"
+    ],
+    [
+     "p",
+     "Se confunden constantemente, y son cosas distintas."
+    ],
+    [
+     "p",
+     "El <strong>porcentaje de reembolso</strong> es qué proporción de la factura te devuelven. Existen pólizas en España que cubren el 50% de la factura del veterinario, otras el 70% y otras el 90%. Petplan reembolsa el 100%."
+    ],
+    [
+     "p",
+     "El <strong>copago</strong> es una cantidad fija que se descuenta del reembolso. En Petplan son 45 €."
+    ],
+    [
+     "p",
+     "Un seguro con 90% de reembolso y sin copago no es necesariamente mejor que uno con 100% y 45 € de copago: depende del tamaño de la factura. En facturas grandes, que son justamente las que hacen falta que estén cubiertas, el porcentaje pesa mucho más que la cantidad fija."
+    ],
+    [
+     "h2",
+     "Por enfermedad, no por visita"
+    ],
+    [
+     "p",
+     "Esta es la parte que conviene leer despacio, porque es donde las pólizas se diferencian de verdad."
+    ],
+    [
+     "p",
+     "En Petplan el copago de 45 € se aplica <strong>por enfermedad, no por cada visita</strong>."
+    ],
+    [
+     "p",
+     "La diferencia es considerable. Un proceso veterinario rara vez se resuelve en una consulta: hay una primera visita, pruebas, una revisión, a veces una intervención y luego el seguimiento. Si el copago fuera por visita, cada uno de esos pasos descontaría de nuevo. Al aplicarse por enfermedad, se descuenta una vez por ese proceso, por muchas visitas que requiera."
+    ],
+    [
+     "h2",
+     "Un ejemplo de cómo se calcula"
+    ],
+    [
+     "p",
+     "Si tu perro desarrolla una dolencia que requiere consulta, pruebas diagnósticas y una intervención, todo ello es un mismo proceso. Se suman los gastos veterinarios de ese proceso, se aplica el 100% de reembolso y se descuentan 45 € una sola vez, dentro del límite de 3.100 € anuales."
+    ],
+    [
+     "p",
+     "Si más adelante en el mismo año aparece una dolencia distinta y no relacionada, ésa es otra enfermedad, y lleva su propio copago."
+    ],
+    [
+     "h2",
+     "Qué mirar al comparar pólizas"
+    ],
+    [
+     "p",
+     "Antes de contratar, hay cuatro cifras que conviene tener delante de cualquier aseguradora: el porcentaje de reembolso, el copago y si se aplica por visita o por proceso, el límite máximo anual, y los periodos de carencia. Con esas cuatro se puede comparar de verdad. Sin ellas, se comparan precios mensuales que no significan lo mismo."
+    ]
+   ],
+   "faq": [
+    [
+     "¿El copago se paga al veterinario o a la aseguradora?",
+     "A ninguno de los dos directamente. Tú pagas la factura completa en tu veterinario, envías la factura y el informe, y el reembolso que recibes por transferencia ya lleva descontado el copago."
+    ],
+    [
+     "¿Cuánto es el copago en Petplan?",
+     "45 € por enfermedad, no por cada visita."
+    ],
+    [
+     "¿Hay copago en las indemnizaciones?",
+     "El copago se aplica al reembolso de gastos veterinarios. Las indemnizaciones, como la de muerte por accidente o la de robo, funcionan con sus propios límites."
+    ],
+    [
+     "¿Qué porcentaje de la factura reembolsa Petplan?",
+     "El 100%, hasta un máximo de 3.100 € al año."
+    ]
+   ],
+   "related": [
+    "periodos-de-carencia-seguro-veterinario",
+    "condiciones-preexistentes-seguro-veterinario"
+   ],
+   "image": {
+    "url": "https://petplan.es/wp-content/uploads/2026/07/ejemplo-de-factura-veterinaria-con-reembolso-featured.webp",
+    "alt": "Ejemplo de factura veterinaria con reembolso",
+    "credit": "Biblioteca de medios de Petplan",
+    "licence": "Ya en el sitio · 1536x1024"
+   },
+   "imageQuery": "person paying at veterinary reception with dog",
+   "facts": [
+    [
+     "45 € copago por enfermedad, no por visita",
+     "petplan.es/seguro-veterinario"
+    ],
+    [
+     "100% porcentaje de reembolso",
+     "petplan.es/seguro-veterinario"
+    ],
+    [
+     "pólizas del mercado con 50%, 70% y 90%",
+     "petplan.es/seguro-veterinario, texto propio de Petplan"
+    ],
+    [
+     "3.100 € máximo anual",
+     "petplan.es/seguro-veterinario"
+    ],
+    [
+     "reembolso por transferencia tras enviar factura e informe",
+     "petplan.es/seguro-veterinario"
+    ]
+   ]
+  },
+  {
+   "id": "d3",
+   "slug": "condiciones-preexistentes-seguro-veterinario",
+   "title": "Condiciones preexistentes: por qué ningún seguro veterinario las cubre",
+   "meta": "Las condiciones preexistentes son las que tu mascota ya tenía antes de contratar. Ningún seguro veterinario en España las cubre, Petplan tampoco. Te explicamos por qué y qué puedes hacer.",
+   "lede": "Es la pregunta que más se repite antes de contratar, y la respuesta honesta no es la que a nadie le gustaría oír: ningún seguro veterinario en España cubre las condiciones preexistentes. Petplan tampoco. Conviene entender qué significa exactamente, porque el término es más amplio de lo que parece.",
+   "body": [
+    [
+     "h2",
+     "Qué cuenta como condición preexistente"
+    ],
+    [
+     "p",
+     "Es cualquier enfermedad o dolencia que tu perro, gato o conejo ya tuviera antes de contratar el seguro. No hace falta que estuviera diagnosticada: basta con que los signos ya estuvieran presentes."
+    ],
+    [
+     "p",
+     "Esto incluye tres situaciones que la gente no siempre asocia con el término: una dolencia diagnosticada antes de contratar; una dolencia que ya daba síntomas aunque nadie le hubiera puesto nombre todavía; y una dolencia que aparece durante el periodo de carencia."
+    ],
+    [
+     "h2",
+     "Por qué es así en todo el sector"
+    ],
+    [
+     "p",
+     "Un seguro reparte entre muchos asegurados el coste de los imprevistos de unos pocos. Si se pudiera contratar una póliza con el problema ya presente, dejaría de ser un reparto de riesgo y pasaría a ser una forma de financiar un gasto ya conocido. El precio tendría que subir para todos hasta hacerlo inviable."
+    ],
+    [
+     "p",
+     "Por eso no es una particularidad de una compañía concreta. Es la razón por la que ninguna aseguradora veterinaria en España las cubre."
+    ],
+    [
+     "h2",
+     "Lo que sí cambia entre compañías"
+    ],
+    [
+     "p",
+     "Que la exclusión sea universal no significa que todas las pólizas sean iguales. Lo que varía, y mucho, es todo lo demás: el porcentaje de reembolso, el límite anual, el copago, los periodos de carencia y si puedes elegir veterinario."
+    ],
+    [
+     "p",
+     "En Petplan el reembolso es del 100% hasta 3.100 € al año, el copago es de 45 € por enfermedad, la carencia es de 15 días para accidentes y 30 para enfermedades, y puedes acudir al veterinario que tú elijas en toda España."
+    ],
+    [
+     "h2",
+     "Qué puedes hacer si tu mascota ya tiene una dolencia"
+    ],
+    [
+     "p",
+     "Que una dolencia quede excluida no deja al animal sin cobertura para todo lo demás. Un perro con una afección crónica diagnosticada sigue expuesto a accidentes, a enfermedades nuevas y sin relación con la anterior, y a urgencias de cualquier tipo. Todo eso sí entra."
+    ],
+    [
+     "p",
+     "La conclusión práctica es sencilla y vale la pena decirla claramente: el momento de contratar un seguro veterinario es cuando el animal está sano. Cada mes que pasa es un mes en el que puede aparecer algo que después quedará excluido de forma permanente."
+    ],
+    [
+     "h2",
+     "Qué más queda fuera de la póliza"
+    ],
+    [
+     "p",
+     "Además de las condiciones preexistentes, Petplan no cubre la desparasitación, la castración o esterilización, ni las visitas rutinarias o preventivas. Las vacunas no entran en el seguro de salud, pero pueden contratarse aparte mediante el plan opcional de Salud + Vacunas, que reembolsa el 100% de las vacunas prescritas por tu veterinario, incluida la de la leishmaniosis, hasta 90 € al año."
+    ]
+   ],
+   "faq": [
+    [
+     "¿Me pueden rechazar la póliza por una dolencia previa?",
+     "La exclusión afecta a esa dolencia concreta, no necesariamente a la contratación. Lo que no se cubrirá es esa condición y lo que derive de ella."
+    ],
+    [
+     "¿Cómo sabe la aseguradora que era preexistente?",
+     "Por el informe veterinario que acompaña a la reclamación. En él consta el historial y la evolución del proceso."
+    ],
+    [
+     "¿Y si la dolencia aparece durante la carencia?",
+     "Se considera preexistente y queda excluida de forma permanente. No basta con esperar a que termine el plazo."
+    ],
+    [
+     "¿Qué no cubre Petplan además de las preexistentes?",
+     "La desparasitación, la castración o esterilización y las visitas rutinarias o preventivas. La lista completa de exclusiones está en las condiciones generales de la póliza."
+    ]
+   ],
+   "related": [
+    "periodos-de-carencia-seguro-veterinario",
+    "copago-seguro-veterinario-que-es"
+   ],
+   "image": {
+    "url": "https://petplan.es/wp-content/uploads/2026/09/senales-de-dolor-perros-gatos.jpg",
+    "alt": "Primer plano del rostro de un gato atigrado mirando a la cámara",
+    "credit": "Biblioteca de medios de Petplan",
+    "licence": "Ya en el sitio · 1536x1024"
+   },
+   "imageQuery": "senior dog resting at home soft light",
+   "facts": [
+    [
+     "ningún seguro en España cubre preexistentes, Petplan tampoco",
+     "petplan.es/seguro-veterinario, texto propio de Petplan"
+    ],
+    [
+     "no cubre desparasitación, castración/esterilización, visitas rutinarias",
+     "petplan.es/seguro-veterinario"
+    ],
+    [
+     "plan opcional vacunas 100% hasta 90 € incluida leishmaniosis",
+     "petplan.es/seguro-veterinario"
+    ],
+    [
+     "100% hasta 3.100 €, copago 45 €, carencias 15/30 días",
+     "petplan.es/seguro-veterinario"
+    ]
+   ]
+  },
+  {
+   "id": "d4",
+   "slug": "seguro-responsabilidad-civil-perros-obligatorio-espana",
+   "title": "¿Es obligatorio el seguro de responsabilidad civil para perros en España?",
+   "meta": "Para perros potencialmente peligrosos sí, con un mínimo de 120.000 €. Para el resto, la Ley 7/2023 lo prevé pero sigue pendiente del reglamento. Te explicamos qué es exigible hoy.",
+   "lede": "La respuesta corta es: depende del perro y de dónde vivas. Circula mucha información confusa sobre este tema, en buena parte porque la Ley de Bienestar Animal anunció una obligación que todavía no se ha desarrollado. Esto es lo que es exigible a día de hoy.",
+   "body": [
+    [
+     "h2",
+     "Perros potencialmente peligrosos: sí, es obligatorio"
+    ],
+    [
+     "p",
+     "Si tu perro está catalogado como potencialmente peligroso (PPP), el seguro de responsabilidad civil es obligatorio en toda España y lo ha sido desde mucho antes de la Ley 7/2023. La cobertura mínima exigida es de <strong>120.000 €</strong>."
+    ],
+    [
+     "p",
+     "Va acompañado de otros requisitos: licencia administrativa del ayuntamiento, certificado de capacidad física y psicológica, certificado de antecedentes penales, e inscripción en el registro municipal correspondiente."
+    ],
+    [
+     "h2",
+     "El resto de perros: previsto, pero todavía no exigible"
+    ],
+    [
+     "p",
+     "La Ley 7/2023 de protección de los derechos y el bienestar de los animales, en vigor desde el 29 de septiembre de 2023, contempla la obligación de que todos los propietarios de perros tengan un seguro de responsabilidad civil."
+    ],
+    [
+     "p",
+     "Ahora bien, esa obligación <strong>sigue pendiente del reglamento de desarrollo</strong>, que es la norma que debe concretar importes, plazos y cómo se acredita. Mientras ese reglamento no se publique, la obligación no es exigible a nivel nacional. A fecha de octubre de 2026 ese desarrollo no se ha producido."
+    ],
+    [
+     "p",
+     "Lo decimos con claridad porque hemos visto afirmarse lo contrario en bastantes sitios: hoy, tener un perro no PPP sin seguro de responsabilidad civil no es, por sí mismo, una infracción de ámbito estatal."
+    ],
+    [
+     "h2",
+     "Salvo que vivas en Madrid o en el País Vasco"
+    ],
+    [
+     "p",
+     "Hay comunidades autónomas que ya lo exigen por su propia normativa, con independencia del reglamento estatal pendiente. Es el caso de la <strong>Comunidad de Madrid</strong> y del <strong>País Vasco</strong>, donde el seguro de responsabilidad civil es exigible para todos los perros, no sólo para los PPP."
+    ],
+    [
+     "p",
+     "Como la normativa varía por territorio, conviene comprobar la de tu comunidad antes de dar por hecho que no te aplica."
+    ],
+    [
+     "h2",
+     "Por qué tiene sentido aunque no te obligue"
+    ],
+    [
+     "p",
+     "La responsabilidad civil no cubre a tu perro: cubre los daños que tu perro pueda causar a terceros. Un perro que se suelta y provoca una caída, un mordisco a otro animal o a una persona, o un accidente de tráfico, generan una responsabilidad que recae sobre el propietario y que puede superar con holgura lo que cuesta asegurarla."
+    ],
+    [
+     "p",
+     "Conviene revisar antes si ya la tienes. Muchos seguros de hogar incluyen la responsabilidad civil del animal de compañía, y en ese caso no tiene sentido pagarla dos veces."
+    ],
+    [
+     "h2",
+     "La responsabilidad civil en Petplan"
+    ],
+    [
+     "p",
+     "En Petplan el seguro de responsabilidad civil es opcional y cuesta <strong>25 € al año</strong>, con una cobertura de hasta <strong>300.000 € anuales</strong>. No viene incluido de forma obligatoria en el seguro de salud, precisamente para que no lo pagues si tu seguro de hogar ya lo cubre."
+    ],
+    [
+     "p",
+     "Esa cobertura está por encima del mínimo de 120.000 € que se exige para los perros potencialmente peligrosos."
+    ]
+   ],
+   "faq": [
+    [
+     "¿Qué cobertura mínima se exige para un perro PPP?",
+     "120.000 € de responsabilidad civil. Es un requisito estatal y va unido a la licencia municipal y a la inscripción en el registro."
+    ],
+    [
+     "¿Me pueden multar por no tener seguro si mi perro no es PPP?",
+     "A nivel estatal, la obligación para todos los perros está prevista en la Ley 7/2023 pero pendiente de reglamento. En comunidades como Madrid o el País Vasco sí es exigible por normativa autonómica propia."
+    ],
+    [
+     "¿El seguro de salud de Petplan incluye la responsabilidad civil?",
+     "No. Es una cobertura opcional de 25 € al año con hasta 300.000 € de cobertura, para que no la pagues si tu seguro de hogar ya la incluye."
+    ],
+    [
+     "¿La responsabilidad civil cubre los gastos veterinarios de mi perro?",
+     "No. Cubre los daños que tu perro cause a terceros. Los gastos veterinarios de tu propia mascota corresponden al seguro de salud."
+    ]
+   ],
+   "related": [
+    "copago-seguro-veterinario-que-es",
+    "periodos-de-carencia-seguro-veterinario"
+   ],
+   "image": {
+    "url": "https://petplan.es/wp-content/uploads/2026/09/perro-en-piso-comunidad-vecinos-espana.jpg",
+    "alt": "Dos perros y un gato en el portal de una casa",
+    "credit": "Biblioteca de medios de Petplan",
+    "licence": "Ya en el sitio · 1536x1024"
+   },
+   "imageQuery": "dog on lead walking in spanish park with owner",
+   "facts": [
+    [
+     "PPP: RC obligatoria, mínimo 120.000 €",
+     "blog.tuio.com (verificado 2026-10-01)"
+    ],
+    [
+     "Ley 7/2023 en vigor desde 29-09-2023",
+     "blog.tuio.com (verificado 2026-10-01)"
+    ],
+    [
+     "RC para todos los perros pendiente de reglamento",
+     "blog.tuio.com (verificado 2026-10-01)"
+    ],
+    [
+     "Madrid y País Vasco ya lo exigen",
+     "blog.tuio.com (verificado 2026-10-01)"
+    ],
+    [
+     "Petplan RC opcional 25 €/año hasta 300.000 €",
+     "petplan.es/seguro-veterinario"
+    ],
+    [
+     "no incluida por defecto para no duplicar el seguro de hogar",
+     "petplan.es/seguro-veterinario"
+    ]
+   ],
+   "flag": "Afirmaciones legales. Revisar con asesoría antes de publicar."
+  },
+  {
+   "id": "d5",
+   "slug": "parvovirus-canino-sintomas-urgencia",
+   "title": "Parvovirus canino: por qué es una urgencia y qué supone el tratamiento",
+   "meta": "El parvovirus es una de las urgencias más graves en cachorros. Requiere hospitalización y tratamiento intensivo. Te explicamos los signos de alarma y cómo encaja con el seguro.",
+   "lede": "El parvovirus canino es una de esas enfermedades en las que las horas cuentan. Afecta sobre todo a cachorros y a perros no vacunados, avanza deprisa y su tratamiento pasa casi siempre por la hospitalización. Saber reconocerlo a tiempo cambia el pronóstico.",
+   "body": [
+    [
+     "h2",
+     "Qué es y a quién afecta"
+    ],
+    [
+     "p",
+     "Es una enfermedad vírica muy contagiosa que ataca sobre todo al tracto digestivo. Los cachorros son el grupo de mayor riesgo, en particular entre el destete y el final de la pauta de vacunación, cuando la protección que reciben de la madre ya ha bajado y la propia todavía no está completa."
+    ],
+    [
+     "p",
+     "Se transmite por contacto con heces de animales infectados y con superficies contaminadas. El virus resiste mucho tiempo en el ambiente, lo que explica que un cachorro pueda infectarse sin haber estado nunca cerca de un perro enfermo."
+    ],
+    [
+     "h2",
+     "Signos de alarma"
+    ],
+    [
+     "p",
+     "Los signos que deben llevarte al veterinario el mismo día, sin esperar a ver si mejora: vómitos repetidos, diarrea intensa y a menudo con sangre, apatía marcada, rechazo completo del alimento y del agua, y deshidratación."
+    ],
+    [
+     "p",
+     "En un cachorro, la combinación de vómitos y diarrea deshidrata en cuestión de horas. Esto no es una dolencia que convenga observar un par de días."
+    ],
+    [
+     "h2",
+     "Por qué el tratamiento es caro"
+    ],
+    [
+     "p",
+     "No existe un fármaco que elimine el virus. Lo que se trata son sus consecuencias, y eso exige sostener al animal mientras su sistema inmunitario responde: hospitalización, fluidoterapia intravenosa continuada, medicación de soporte, control del dolor y pruebas repetidas para seguir la evolución."
+    ],
+    [
+     "p",
+     "Son varios días de ingreso con atención constante. Como recuerda Petplan en su propia información de producto, muchos tratamientos aplicados a nuestras mascotas pueden superar los 1.000 euros, y un ingreso por parvovirus está entre los que lo hacen con facilidad."
+    ],
+    [
+     "h2",
+     "Cómo encaja con el seguro"
+    ],
+    [
+     "p",
+     "El seguro de salud de Petplan cubre la hospitalización, las consultas, las pruebas y analíticas, los procedimientos de diagnóstico, la enfermería y las medicinas prescritas por tu veterinario, con un reembolso del 100% hasta 3.100 € al año y un copago de 45 € por enfermedad."
+    ],
+    [
+     "p",
+     "Hay dos matices que conviene tener presentes con un cachorro recién llegado a casa. El primero es el periodo de carencia: 30 días para enfermedades. El segundo es que si la enfermedad ya estaba presente al contratar, se considera condición preexistente y queda excluida. Con un cachorro, contratar pronto y estando sano es exactamente el caso en el que el seguro hace lo que tiene que hacer."
+    ],
+    [
+     "h2",
+     "La vacunación es lo que de verdad lo evita"
+    ],
+    [
+     "p",
+     "El parvovirus es prevenible. La pauta de vacunación del cachorro y sus recuerdos posteriores son la medida que realmente reduce el riesgo, y hasta completarla conviene limitar el contacto con zonas de paso de muchos perros."
+    ],
+    [
+     "p",
+     "Las vacunas no forman parte del seguro de salud, pero Petplan ofrece un plan opcional de Salud + Vacunas que reembolsa el 100% de las vacunas prescritas por tu veterinario, incluida la de la leishmaniosis, hasta un máximo de 90 € al año."
+    ]
+   ],
+   "faq": [
+    [
+     "¿El parvovirus se contagia a las personas?",
+     "No. El parvovirus canino afecta a los perros. No se transmite a las personas."
+    ],
+    [
+     "¿Cubre el seguro la hospitalización por parvovirus?",
+     "Sí, siempre que haya pasado el periodo de carencia de 30 días para enfermedades y no se trate de una condición preexistente. La hospitalización, las pruebas y las medicinas prescritas están cubiertas al 100% hasta 3.100 € al año."
+    ],
+    [
+     "¿Entran las vacunas en el seguro de salud?",
+     "No. Se contratan opcionalmente mediante el plan de Salud + Vacunas, que reembolsa hasta 90 € al año."
+    ],
+    [
+     "¿Puedo llamar a un veterinario si sospecho de parvovirus por la noche?",
+     "Petplan incluye un servicio de urgencias veterinarias por teléfono accesible 24 horas al día, 7 días a la semana. Ante estos signos, además, hay que acudir a una clínica."
+    ]
+   ],
+   "related": [
+    "periodos-de-carencia-seguro-veterinario",
+    "condiciones-preexistentes-seguro-veterinario"
+   ],
+   "image": {
+    "url": "https://petplan.es/wp-content/uploads/2026/09/urgencia-veterinaria-espana-consulta.jpg",
+    "alt": "Veterinario explorando a un perro pequeño sobre la mesa de consulta",
+    "credit": "Biblioteca de medios de Petplan",
+    "licence": "Ya en el sitio · 1536x1024"
+   },
+   "imageQuery": "puppy sleeping curled up vet blanket",
+   "facts": [
+    [
+     "cubre hospitalización, consultas, pruebas, enfermería, medicinas",
+     "petplan.es/seguro-veterinario"
+    ],
+    [
+     "100% hasta 3.100 €, copago 45 € por enfermedad",
+     "petplan.es/seguro-veterinario"
+    ],
+    [
+     "carencia 30 días enfermedades",
+     "petplan.es/seguro-veterinario"
+    ],
+    [
+     "muchos tratamientos pueden superar los 1.000 €",
+     "petplan.es/seguro-veterinario, cita literal de Petplan"
+    ],
+    [
+     "plan opcional vacunas 100% hasta 90 €",
+     "petplan.es/seguro-veterinario"
+    ]
+   ],
+   "flag": "Contenido veterinario. Conviene una lectura por un veterinario colegiado antes de publicar."
+  }
+ ]
+}

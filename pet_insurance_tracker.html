@@ -108,6 +108,7 @@ a{color:var(--brand)}
 .rail-nav a:nth-child(6) .ic{color:var(--pp-blue-dark)}
 .rail-nav a:nth-child(7) .ic{color:var(--pp-purple)}
 html[data-theme="dark"] .rail-nav a:nth-child(5) .ic{color:var(--series-1)}
+.rail-sec{margin-top:8px;padding:14px 22px 5px;border-top:1px solid var(--border);font-size:.66rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text-muted)}
 
 /* ---- TOPBAR ------------------------------------------------------------- */
 .main-col{flex:1 1 auto;min-width:0;display:flex;flex-direction:column}
@@ -439,6 +440,19 @@ html[data-theme="dark"] .badge-op-full{color:var(--series-4)}
         <a data-nav="guide" onclick="go('guide')">
           <span class="ic"><svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M5 3h11l4 4v14H5V3zm10 1.5V8h3.5L15 4.5zM7 11h10v2H7v-2zm0 4h10v2H7v-2z"/></svg></span>
           <span class="tx" data-i18n="nav.guide">Guide</span>
+        </a>
+        <div class="rail-sec" data-i18n="nav.seoSec">SEO Lens</div>
+        <a class="seo-link" href="/seo">
+          <span class="ic" style="color:#f5b800"><svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M10 2a8 8 0 1 0 4.9 14.3l5.4 5.4 1.4-1.4-5.4-5.4A8 8 0 0 0 10 2zm0 2a6 6 0 1 1 0 12 6 6 0 0 1 0-12z"/></svg></span>
+          <span class="tx" data-i18n="nav.seoAudit">SEO audit</span>
+        </a>
+        <a class="seo-link" href="/seo#compare">
+          <span class="ic" style="color:var(--pp-orange)"><svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M3 4h8v16H3zm10 0h8v16h-8zM5 6v12h4V6zm10 0v12h4V6z"/></svg></span>
+          <span class="tx" data-i18n="nav.seoCmp">SEO compare</span>
+        </a>
+        <a class="seo-link" href="/seo#guide">
+          <span class="ic" style="color:var(--pp-green)"><svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M6 3h12a2 2 0 0 1 2 2v16l-8-4-8 4V5a2 2 0 0 1 2-2z"/></svg></span>
+          <span class="tx" data-i18n="nav.seoGuide">SEO guide</span>
         </a>
       </nav>
     </div>
@@ -976,6 +990,7 @@ const I18N = {
     'brand.licence':'Licence: Petplan Ibérica SL',
     'nav.overview':'Overview','nav.tracker':'Tracker','nav.new':'New companies',
     'nav.add':'Add company','nav.download':'Download','nav.graphs':'Graphs','nav.guide':'Guide',
+    'nav.seoSec':'SEO Lens','nav.seoAudit':'SEO audit','nav.seoCmp':'SEO compare','nav.seoGuide':'SEO guide',
     'gr.title':'The book in pictures','gr.sub':'Every chart is drawn from the companies currently loaded',
     'gr.top.title':'Best rated companies','gr.top.note':'Pet specialists with at least 1,000 opinions; generalist insurers are not ranked. Bar colour is the country; the grey figure is the review count.',
     'gr.top.foot':'A 4.90 from 180 people is not the same claim as a 4.90 from 3,149, so thinner evidence is left out of the ranking.',
@@ -1099,6 +1114,7 @@ const I18N = {
     'brand.licence':'Licencia: Petplan Ibérica SL',
     'nav.overview':'Resumen','nav.tracker':'Seguimiento','nav.new':'Nuevas compañías',
     'nav.add':'Añadir compañía','nav.download':'Descargas','nav.graphs':'Gráficos','nav.guide':'Guía',
+    'nav.seoSec':'SEO Lens','nav.seoAudit':'Auditoría SEO','nav.seoCmp':'Comparar SEO','nav.seoGuide':'Guía SEO',
     'gr.title':'La cartera en imágenes','gr.sub':'Cada gráfico se dibuja con las compañías cargadas ahora mismo',
     'gr.top.title':'Compañías mejor valoradas','gr.top.note':'Especialistas en mascotas con al menos 1.000 opiniones; las generalistas no entran. El color es el país; la cifra gris son las opiniones.',
     'gr.top.foot':'Un 4,90 de 180 personas no dice lo mismo que un 4,90 de 3.149, así que las pruebas más débiles quedan fuera del ranking.',
