@@ -153,6 +153,15 @@ MANUAL_G_URL = {
         "@41.3961118,2.1486988,17z/data=!3m1!4b1!4m6!3m5"
         "!1s0x12a4a3d7e99ff1ed:0xc5e24a1979df6479"
         "!8m2!3d41.3961118!4d2.1512791!16s%2Fg%2F11ym3tvm80",
+    # Dyrekassen (Denmark) — the name search never reached it: its Google
+    # listing is under the sister brand "Dansk Hesteforsikring" (Statene 12,
+    # 5970 Ærøskøbing, same CVR 17394630). The building carries both signs;
+    # the company sells pet and horse insurance. Luis sent this listing.
+    "Dyrekassen":
+        "https://www.google.com/maps/place/Dansk+Hesteforsikring/"
+        "@54.88975,10.405053,17z/data=!3m1!4b1!4m6!3m5"
+        "!1s0x465253a741c82ccb:0x36464ed9a6a0edae"
+        "!8m2!3d54.88975!4d10.405053!16s%2Fg%2F11xk_gbjw",
     "Calingo Insurance": "https://www.google.com/maps/place/Calingo+Insurance+AG/@47.3632788,8.551694,17z/data=!3m1!4b1!4m6!3m5!1s0x479aa730aa5fa4d7:0xaabf8fe5e766520!8m2!3d47.3632788!4d8.551694!16s%2Fg%2F11nwxkqng8",
     "Petgevity": "https://www.google.es/maps/place/Petgevity/@52.2277057,-0.8644478,740m/data=!3m3!1e3!4b1!5s0x487708d77e3c7de7:0x522fb5676fbae663!4m6!3m5!1s0x4877090d15fb8bab:0x937b3217ba649c35!8m2!3d52.2277057!4d-0.8618675!16s%2Fg%2F11rsg7vrx0",
 }
