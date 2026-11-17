@@ -3054,12 +3054,16 @@
     "gStatus": "ok",
     "tpUrl": "",
     "gUrl": "https://www.google.com/maps/place/Heckin+Good/@47.73855,-26.51461,5915242m/data=!3m1!1e3!4m10!1m2!2m1!1s%22Heckin+Good%22+UK+pet+insurance!3m6!1s0x43c06e96c5cac26d:0x9fef55c295e01eb1!8m2!3d47.73855!4d12.5088275!15sCh4iSGVja2luIEdvb2QiIFVLIHBldCBpbnN1cmFuY2WSAQx2ZXRlcmluYXJpYW7gAQA!16s%2Fg%2F11ty4xt06m?entry=ttu&g_ep=EgoyMDI2MTExMC4wIKXMDSoASAFQAw%3D%3D",
-    "pondScore": 0.0,
-    "avgScore": 5.0,
-    "totalOpinions": 0,
+    "pondScore": 3.9,
+    "avgScore": 4.45,
+    "totalOpinions": 28,
     "date": "2026-11-16",
     "tpDate": "2026-11-16",
-    "gDate": "2026-11-16"
+    "gDate": "2026-11-16",
+    "otherSource": "Trustpilot (Buddycare, former name)",
+    "otherScore": 3.9,
+    "otherReviews": 28,
+    "otherUrl": "https://uk.trustpilot.com/review/buddycare.co.uk"
   },
   {
     "country": "Germany",
