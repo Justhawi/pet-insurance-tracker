@@ -164,6 +164,13 @@ MANUAL_G_URL = {
         "!8m2!3d54.88975!4d10.405053!16s%2Fg%2F11xk_gbjw",
     "Calingo Insurance": "https://www.google.com/maps/place/Calingo+Insurance+AG/@47.3632788,8.551694,17z/data=!3m1!4b1!4m6!3m5!1s0x479aa730aa5fa4d7:0xaabf8fe5e766520!8m2!3d47.3632788!4d8.551694!16s%2Fg%2F11nwxkqng8",
     "Petgevity": "https://www.google.es/maps/place/Petgevity/@52.2277057,-0.8644478,740m/data=!3m3!1e3!4b1!5s0x487708d77e3c7de7:0x522fb5676fbae663!4m6!3m5!1s0x4877090d15fb8bab:0x937b3217ba649c35!8m2!3d52.2277057!4d-0.8618675!16s%2Fg%2F11rsg7vrx0",
+    # Dogcare24 (Germany) — the Hürth listing trades as "dogcare24 - Barmenia
+    # Hundekrankenversicherung", so a search by brand name never reached it.
+    "Dogcare24": "https://www.google.com/maps/place/dogcare24+-+Barmenia+Hundekrankenversicherung/@50.8884194,6.9042202,17z/data=!3m1!4b1!4m6!3m5!1s0x47bf3b2889334bf5:0x102cb45f0dc69ee!8m2!3d50.8884194!4d6.9042202!16s%2Fg%2F11qt212j7l",
+    # Insure Your Paws (UK) — Uxbridge office listing, missed by the name search.
+    "Insure Your Paws": "https://www.google.com/maps/place/Insure+Your+Paws/@51.5487417,-0.4837165,17z/data=!3m1!4b1!4m6!3m5!1s0x48766e7b2da40e79:0x381fb5f6a0144514!8m2!3d51.5487417!4d-0.4837165!16s%2Fg%2F11vjj81ryn",
+    # Pets Plus Us (Canada) — Oakville head office listing, missed by the name search.
+    "Pets Plus Us": "https://www.google.com/maps/place/Pets+Plus+Us/data=!4m7!3m6!1s0x882b5d006747ce83:0x6182bded2e0c0fbe!8m2!3d43.4436067!4d-79.6978281!16s%2Fg%2F11m74y3lj_!19sChIJg85HZwBdK4gRvg8MLu29gmE",
 }
 
 # Companies whose Google results must NEVER be attached
