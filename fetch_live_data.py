@@ -2,7 +2,7 @@
 """
 Pet Insurance Live Data Fetcher — v3
 Trustpilot  : navigates search page to find exact company, then extracts score
-Google Maps : uses JavaScript evaluation for reliable score + review count
+Google : uses JavaScript evaluation for reliable score + review count
 """
 
 import json, re, time, os, sys, urllib.parse, random, urllib.request, urllib.error
@@ -52,7 +52,7 @@ MANUAL_TP_URL = {
     "Heckin Good": "https://uk.trustpilot.com/review/buddycare.co.uk",
 }
 
-# Force the Google Maps listing URL (navigate directly, skip search).
+# Force the Google listing URL (navigate directly, skip search).
 # Use the canonical /maps/place/.../data=... URL for a specific place.
 MANUAL_G_URL = {
     # Paw Protect (Germany) - a young brand whose Berlin listing the name search
@@ -64,7 +64,7 @@ MANUAL_G_URL = {
         "!8m2!3d52.4756573!4d13.6005967!16s%2Fg%2F11sfrx472y",
     # Japan — Trustpilot is not used there and the Places search cannot match an
     # English name against a Japanese listing, so these four were reading as
-    # "not on Google Maps" while holding real Google reviews under their
+    # "not on Google" while holding real Google reviews under their
     # registered Japanese names.
     "ipet Insurance":
         "https://www.google.com/maps/place/%E7%AC%AC%E4%B8%80%E3%82%A2%E3%82%A4%E3%83%9A%E3%83%83%E3%83%88%E6%90%8D%E5%AE%B3%E4%BF%9D%E9%99%BA%E3%88%B1/@35.6505456,139.7976429,17z/data=!3m1!4b1!4m6!3m5!1s0x60188b9a4cd32501:0xecc724cfc108521f!8m2!3d35.6505456!4d139.7976429!16s%2Fg%2F11bvt4pg4g",
@@ -166,10 +166,10 @@ MANUAL_G_URL = {
     "Petgevity": "https://www.google.es/maps/place/Petgevity/@52.2277057,-0.8644478,740m/data=!3m3!1e3!4b1!5s0x487708d77e3c7de7:0x522fb5676fbae663!4m6!3m5!1s0x4877090d15fb8bab:0x937b3217ba649c35!8m2!3d52.2277057!4d-0.8618675!16s%2Fg%2F11rsg7vrx0",
 }
 
-# Companies whose Google Maps results must NEVER be attached
+# Companies whose Google results must NEVER be attached
 # (the only matches are for an unrelated parent / branch / namesake).
 BLOCK_GOOGLE = {
-    # The Kennel Club's Google Maps listings are for the parent dog-breed
+    # The Kennel Club's Google listings are for the parent dog-breed
     # organisation, not for its Kennel Club Pet Insurance product (Agria).
     "Kennel Club Pet Insurance",
     "FPC",
@@ -359,7 +359,7 @@ def _int(s):
 
 # Generic words that appear in many company names — they must NOT be used on
 # their own to confirm a match, otherwise unrelated "... Pet Insurance" listings
-# get accepted as the right company (this was the main Google Maps bug).
+# get accepted as the right company (this was the main Google bug).
 _GENERIC_WORDS = {
     "pet","pets","insurance","insurances","assurance","assurances","seguro",
     "seguros","seguranca","versicherung","versicherungen","assicurazione",
@@ -690,7 +690,7 @@ def fetch_trustpilot(page, company_name, website):
 # GOOGLE MAPS  — official Google Places API (exact, reliable)
 # ─────────────────────────────────────────────────────────────
 # Why the API instead of scraping: the Places API returns the EXACT current
-# rating and review count, plus the canonical Google Maps URL of the matched
+# rating and review count, plus the canonical Google URL of the matched
 # place — so the dashboard's source link goes to the right company, and the
 # numbers always match what you see on Google.
 #
@@ -771,7 +771,7 @@ def fetch_google_maps(company_name, country, website=""):
     Returns (status, score, reviews, maps_url):
       "ok"          a place matching this company was found
       "not_listed"  the API returned results but none match this company
-                    (or the company has no Google place) → "Not on Google Maps"
+                    (or the company has no Google place) → "Not on Google"
       "error"       no API key, or an API/network error → keep previous value
     """
     # Manual block — must match BLOCK_GOOGLE behaviour in browser mode.
@@ -1464,9 +1464,9 @@ def _pick_best_maps_listing(page, company_name, website=""):
     return -1
 
 def fetch_google_maps_browser(page, company_name, country, website=""):
-    """Free Google Maps fetch via the browser (PC mode), with validation.
+    """Free Google fetch via the browser (PC mode), with validation.
     Returns (status, score, reviews, url). Only accepts a listing that matches
-    the company; otherwise reports not_listed ('Not on Google Maps')."""
+    the company; otherwise reports not_listed ('Not on Google')."""
     # Manual block — companies whose only matches are wrong (parent org,
     # local branch, namesake) must report not_listed every time.
     if company_name in BLOCK_GOOGLE:
@@ -1536,7 +1536,7 @@ def fetch_google_maps_browser(page, company_name, country, website=""):
                 # Reject single branch/office listings (e.g. "Oficina Sanitas
                 # Sevilla Bellavista") — these are one local office, not the
                 # company's representative rating. Big multi-branch insurers
-                # therefore correctly show "Not on Google Maps".
+                # therefore correctly show "Not on Google".
                 _t = _deaccent(title)
                 _branch = ("oficina", "sucursal", "agencia ", "agence ", "filiale")
                 if _t.startswith(_branch) and not _deaccent(company_name).startswith(_branch):
@@ -1616,7 +1616,7 @@ def run_fetch(companies=None, progress_cb=None, discover=True, use_browser=True,
             tp_page  = ctx.new_page()
             gm_page  = ctx.new_page()
             disc_page = ctx.new_page()   # separate page for discovery, doesn't interfere
-            log("Browser ready (Trustpilot + Google Maps + Discovery) — free PC fetch.")
+            log("Browser ready (Trustpilot + Google + Discovery) — free PC fetch.")
 
             for i, c in enumerate(companies, 1):
                 name    = c["company"]
@@ -1650,7 +1650,7 @@ def run_fetch(companies=None, progress_cb=None, discover=True, use_browser=True,
                     tp_fail += 1
                 time.sleep(random.uniform(0.4, 0.8))
 
-                # ── Google Maps (free browser fetch, validated) ────────────
+                # ── Google (free browser fetch, validated) ────────────
                 g_status, g_s, g_r, g_url = fetch_google_maps_browser(gm_page, name, country, website=website)
                 if g_status == "ok":
                     gm_ok += 1
@@ -1660,7 +1660,7 @@ def run_fetch(companies=None, progress_cb=None, discover=True, use_browser=True,
                 elif g_status == "not_listed":
                     g_s, g_r, g_url = 0.0, 0, ""
                     gm_fail += 1
-                    log(f"         🚫 GM  Not on Google Maps")
+                    log(f"         🚫 GM  Not on Google")
                 else:  # error — keep previous value only if we actually have one
                     prev_gs = old.get("gScore", 0) or 0
                     prev_gr = old.get("gReviews", 0) or 0

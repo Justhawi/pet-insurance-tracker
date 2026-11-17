@@ -178,7 +178,7 @@ def _do_refresh():
 
 @app.route("/api/refresh", methods=["POST"])
 def api_refresh():
-    """Kick off a live re-fetch of Trustpilot + Google Maps in the background."""
+    """Kick off a live re-fetch of Trustpilot + Google in the background."""
     if _refresh["running"]:
         return jsonify({"ok": True, "already_running": True, "message": _refresh["message"]})
     # cost guard: don't allow rapid repeated refreshes
