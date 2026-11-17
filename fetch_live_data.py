@@ -941,11 +941,13 @@ NOT_A_PET_INSURER = {
 #   gopetplan.com                     — the US Petplan brand no longer trades
 #   petinsurance.sainsburysbank.co.uk — a UK generalist bank, not a pet insurer
 #   bivvy.com                         — no longer trading
+#   petinsuranceu.com                 — a comparison site, not an insurer
 # Matched on the registered domain: the display name on Trustpilot changes.
 STRUCK_OFF_DOMAINS = {
     "gopetplan.com",
     "petinsurance.sainsburysbank.co.uk",
     "bivvy.com",                       # no longer trading
+    "petinsuranceu.com",               # comparison site, not an insurer
 }
 
 
